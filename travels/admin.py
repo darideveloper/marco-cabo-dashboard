@@ -30,7 +30,7 @@ class VehicleAdmin(admin.ModelAdmin):
 class SaleAdmin(admin.ModelAdmin):
     list_display = ("client", "code", "vehicle", "passengers", "created_at")
     list_filter = ("created_at", "updated_at")
-    search_fields = ("client", "code", "vehicle", "passengers")
+    search_fields = ("passengers",)
     readonly_fields = ("created_at", "updated_at")
 
 
@@ -38,5 +38,5 @@ class SaleAdmin(admin.ModelAdmin):
 class TransferAdmin(admin.ModelAdmin):
     list_display = ("date", "hour", "place", "type", "sale", "created_at")
     list_filter = ("created_at", "updated_at")
-    search_fields = ("date", "hour", "place", "type", "sale")
+    search_fields = ("date", "hour", "place", "type")
     readonly_fields = ("created_at", "updated_at")
