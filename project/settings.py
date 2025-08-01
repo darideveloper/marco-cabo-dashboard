@@ -233,6 +233,13 @@ JAZZMIN_SETTINGS = {
         "auth": "fas fa-users-cog",
         "auth.user": "fas fa-user",
         "auth.Group": "fas fa-users",
+        # Travels
+        "travels": "fas fa-bus",
+        "travels.client": "fas fa-user",
+        "travels.code": "fas fa-ticket",
+        "travels.vehicle": "fas fa-car",
+        "travels.sale": "fas fa-cash-register",
+        "travels.transfer": "fas fa-truck-fast",
     },
     # Icons that are used when one is not manually specified
     "default_icon_parents": "fas fa-chevron-circle-right",

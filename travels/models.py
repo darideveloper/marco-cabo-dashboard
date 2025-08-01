@@ -30,8 +30,8 @@ class Code(models.Model):
         return self.value
 
     class Meta:
-        verbose_name = "Código"
-        verbose_name_plural = "Códigos"
+        verbose_name = "VIP"
+        verbose_name_plural = "VIPs"
 
 
 class Vehicle(models.Model):
@@ -80,5 +80,5 @@ class Transfer(models.Model):
         return f"{self.date} {self.hour} {self.place} {self.type} {self.sale}"
 
     class Meta:
-        verbose_name = "Transferencia"
-        verbose_name_plural = "Transferencias"
+        verbose_name = "Servicio"
+        verbose_name_plural = "Servicios"
