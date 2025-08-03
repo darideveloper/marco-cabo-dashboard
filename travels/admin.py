@@ -40,3 +40,37 @@ class TransferAdmin(admin.ModelAdmin):
     list_filter = ("created_at", "updated_at")
     search_fields = ("date", "hour", "place", "type")
     readonly_fields = ("created_at", "updated_at")
+
+
+@admin.register(models.TransferView)
+class TransferViewAdmin(admin.ModelAdmin):
+    list_display = (
+        'client_full_name',
+        'vehicle_type',
+        'vehicle_fee',
+        'passengers',
+        'has_code',
+        'place',
+        'hour',
+        'type',
+    )
+
+    def client_full_name(self, obj):
+        return obj.client_full_name
+
+    def vehicle_type(self, obj):
+        return obj.vehicle_type
+
+    def vehicle_fee(self, obj):
+        return obj.vehicle_fee
+
+    def passengers(self, obj):
+        return obj.passengers
+
+    def has_code(self, obj):
+        return "Sí" if obj.has_code else "No"
+
+    client_full_name.short_description = 'Cliente'
+    vehicle_type.short_description = 'Tipo de Vehículo'
+    vehicle_fee.short_description = 'Tarifa'
+    has_code.short_description = '¿VIP?'

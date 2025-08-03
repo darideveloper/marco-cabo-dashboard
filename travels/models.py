@@ -69,7 +69,7 @@ class Sale(models.Model):
 class Transfer(models.Model):
     id = models.AutoField(primary_key=True)
     date = models.DateTimeField(auto_now_add=True)
-    hour = models.TimeField(auto_now_add=True)
+    hour = models.TimeField(auto_now_add=False)
     place = models.CharField(max_length=100)
     type = models.CharField(max_length=100)
     sale = models.ForeignKey(Sale, on_delete=models.CASCADE)
@@ -82,3 +82,33 @@ class Transfer(models.Model):
     class Meta:
         verbose_name = "Servicio"
         verbose_name_plural = "Servicios"
+
+
+class TransferView(Transfer):
+    class Meta:
+        proxy = True
+        verbose_name = "Vista de Servicio"
+        verbose_name_plural = "Vista de Servicios"
+
+    @property
+    def client_full_name(self):
+        return f"{self.sale.client.name} {self.sale.client.last_name}"
+
+    @property
+    def vehicle_type(self):
+        return self.sale.vehicle.type
+
+    @property
+    def vehicle_fee(self):
+        return self.sale.vehicle.fee
+
+    @property
+    def passengers(self):
+        return self.sale.passengers
+
+    @property
+    def has_code(self):
+        return self.sale.code is not None
+
+    def __str__(self):
+        return f"Servicio de {self.client_full_name} en {self.place} a las {self.hour}"
