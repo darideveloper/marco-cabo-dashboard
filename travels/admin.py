@@ -19,6 +19,38 @@ class CodeAdmin(admin.ModelAdmin):
     readonly_fields = ("created_at", "updated_at")
 
 
+@admin.register(models.Zone)
+class ZoneAdmin(admin.ModelAdmin):
+    list_display = ("name", "created_at")
+    list_filter = ("created_at", "updated_at")
+    search_fields = ("name",)
+    readonly_fields = ("created_at", "updated_at")
+
+
+@admin.register(models.Location)
+class LocationAdmin(admin.ModelAdmin):
+    list_display = ("name", "created_at")
+    list_filter = ("created_at", "updated_at")
+    search_fields = ("name",)
+    readonly_fields = ("created_at", "updated_at")
+
+
+@admin.register(models.TransferType)
+class TransferTypeAdmin(admin.ModelAdmin):
+    list_display = ("name", "created_at")
+    list_filter = ("created_at", "updated_at")
+    search_fields = ("name",)
+    readonly_fields = ("created_at", "updated_at")
+
+
+@admin.register(models.VehicleType)
+class VehicleTypeAdmin(admin.ModelAdmin):
+    list_display = ("name", "created_at")
+    list_filter = ("created_at", "updated_at")
+    search_fields = ("name",)
+    readonly_fields = ("created_at", "updated_at")
+
+
 @admin.register(models.Vehicle)
 class VehicleAdmin(admin.ModelAdmin):
     list_display = ("type", "fee", "created_at")
@@ -42,17 +74,32 @@ class TransferAdmin(admin.ModelAdmin):
     readonly_fields = ("created_at", "updated_at")
 
 
+@admin.register(models.Pricing)
+class PricingAdmin(admin.ModelAdmin):
+    list_display = (
+        "zone",
+        "location",
+        "vehicle",
+        "transfer_type",
+        "price",
+        "created_at",
+    )
+    list_filter = ("created_at", "updated_at")
+    search_fields = ("zone", "location", "vehicle", "transfer_type", "price")
+    readonly_fields = ("created_at", "updated_at")
+
+
 @admin.register(models.TransferDetail)
 class TransferDetailAdmin(admin.ModelAdmin):
     list_display = (
-        'client_full_name',
-        'vehicle_type',
-        'vehicle_fee',
-        'passengers',
-        'has_code',
-        'place',
-        'hour',
-        'type',
+        "client_full_name",
+        "vehicle_type",
+        "vehicle_fee",
+        "passengers",
+        "has_code",
+        "place",
+        "hour",
+        "type",
     )
 
     def client_full_name(self, obj):
@@ -70,7 +117,7 @@ class TransferDetailAdmin(admin.ModelAdmin):
     def has_code(self, obj):
         return "Sí" if obj.has_code else "No"
 
-    client_full_name.short_description = 'Cliente'
-    vehicle_type.short_description = 'Tipo de Vehículo'
-    vehicle_fee.short_description = 'Tarifa'
-    has_code.short_description = '¿VIP?'
+    client_full_name.short_description = "Cliente"
+    vehicle_type.short_description = "Tipo de Vehículo"
+    vehicle_fee.short_description = "Tarifa"
+    has_code.short_description = "¿VIP?"
