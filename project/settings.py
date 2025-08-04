@@ -37,6 +37,9 @@ INSTALLED_APPS = [
     "core",
     "travels",
     # Installed apps
+    "corsheaders",
+    "rest_framework",
+    "rest_framework.authtoken",
     "jazzmin",
     # Django apps
     "django.contrib.admin",
@@ -280,38 +283,6 @@ JAZZMIN_SETTINGS = {
     # },
 }
 
-JAZZMIN_UI_TWEAKS = {
-    "navbar_small_text": False,
-    "footer_small_text": False,
-    "body_small_text": False,
-    "brand_small_text": False,
-    "brand_colour": False,
-    "accent": "accent-primary",
-    "navbar": "navbar-white navbar-light",
-    "no_navbar_border": False,
-    "navbar_fixed": False,
-    "layout_boxed": False,
-    "footer_fixed": False,
-    "sidebar_fixed": False,
-    "sidebar": "sidebar-dark-primary",
-    "sidebar_nav_small_text": False,
-    "sidebar_disable_expand": False,
-    "sidebar_nav_child_indent": False,
-    "sidebar_nav_compact_style": False,
-    "sidebar_nav_legacy_style": False,
-    "sidebar_nav_flat_style": False,
-    "theme": "united",
-    "dark_mode_theme": None,
-    "button_classes": {
-        "primary": "btn-outline-primary",
-        "secondary": "btn-outline-secondary",
-        "info": "btn-info",
-        "warning": "btn-warning",
-        "danger": "btn-danger",
-        "success": "btn-success"
-    }
-}
-
 # Cors
 if os.getenv('CORS_ALLOWED_ORIGINS') != 'None':
     CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS').split(',')
@@ -362,3 +333,18 @@ DATE_FORMAT = "d/b/Y"
 TIME_FORMAT = "H:i"
 DATETIME_FORMAT = f"{DATE_FORMAT} {TIME_FORMAT}"
 USE_L10N = False
+
+# Setup drf
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    # DEBUG
+    'PAGE_SIZE': PAGE_SIZE,
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ),
+    'EXCEPTION_HANDLER': 'utils.handlers.custom_exception_handler'
+}
