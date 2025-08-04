@@ -42,8 +42,8 @@ class TransferAdmin(admin.ModelAdmin):
     readonly_fields = ("created_at", "updated_at")
 
 
-@admin.register(models.TransferView)
-class TransferViewAdmin(admin.ModelAdmin):
+@admin.register(models.TransferDetail)
+class TransferDetailAdmin(admin.ModelAdmin):
     list_display = (
         'client_full_name',
         'vehicle_type',

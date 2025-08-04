@@ -12,7 +12,7 @@ class Client(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.name} {self.last_name}"
+        return f"{self.email}"
 
     class Meta:
         verbose_name = "Cliente"
@@ -42,7 +42,7 @@ class Vehicle(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.type
+        return f"{self.type} ({self.fee})"
 
     class Meta:
         verbose_name = "Vehículo"
@@ -58,8 +58,12 @@ class Sale(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    @property
+    def total(self):
+        return 0
+
     def __str__(self):
-        return f"{self.client} {self.code} {self.vehicle} {self.passengers}"
+        return f"{self.client} - {self.vehicle} - {self.created_at}"
 
     class Meta:
         verbose_name = "Venta"
@@ -77,14 +81,14 @@ class Transfer(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.date} {self.hour} {self.place} {self.type} {self.sale}"
+        return f"{self.date} - {self.place} - {self.type}"
 
     class Meta:
         verbose_name = "Servicio"
         verbose_name_plural = "Servicios"
 
 
-class TransferView(Transfer):
+class TransferDetail(Transfer):
     class Meta:
         proxy = True
         verbose_name = "Vista de Servicio"
