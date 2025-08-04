@@ -34,9 +34,23 @@ class Code(models.Model):
         verbose_name_plural = "VIPs"
 
 
+class VehicleType(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Tipo de Vehículo"
+        verbose_name_plural = "Tipos de Vehículos"
+
+
 class Vehicle(models.Model):
     id = models.AutoField(primary_key=True)
-    type = models.CharField(max_length=100)
+    type = models.ForeignKey(VehicleType, on_delete=models.CASCADE)
     fee = models.DecimalField(max_digits=10, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -70,12 +84,19 @@ class Sale(models.Model):
         verbose_name_plural = "Ventas"
 
 
+class TransferType(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
 class Transfer(models.Model):
     id = models.AutoField(primary_key=True)
     date = models.DateTimeField(auto_now_add=True)
     hour = models.TimeField(auto_now_add=False)
     place = models.CharField(max_length=100)
-    type = models.CharField(max_length=100)
+    type = models.ForeignKey(TransferType, on_delete=models.CASCADE)
     sale = models.ForeignKey(Sale, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -86,6 +107,52 @@ class Transfer(models.Model):
     class Meta:
         verbose_name = "Servicio"
         verbose_name_plural = "Servicios"
+
+
+class Zone(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Zona"
+        verbose_name_plural = "Zonas"
+
+
+class Location(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Ubicación"
+        verbose_name_plural = "Ubicaciones"
+
+
+class Pricing(models.Model):
+    id = models.AutoField(primary_key=True)
+    zone = models.ForeignKey(Zone, on_delete=models.CASCADE)
+    location = models.ForeignKey(Location, on_delete=models.CASCADE)
+    vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE)
+    transfer_type = models.ForeignKey(TransferType, on_delete=models.CASCADE)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.zone} - {self.location} - {self.price}"
+
+    class Meta:
+        verbose_name = "Precio"
+        verbose_name_plural = "Precios"
 
 
 class TransferDetail(Transfer):
