@@ -16,6 +16,7 @@ class Command(BaseCommand):
                 "Zone",
                 "Location",
                 "Pricing",
+                "Vehicle",
             ],
         }
         
