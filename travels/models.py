@@ -165,8 +165,8 @@ class Pricing(models.Model):
 class TransferDetail(Transfer):
     class Meta:
         proxy = True
-        verbose_name = "Vista de Servicio"
-        verbose_name_plural = "Vista de Servicios"
+        verbose_name = "Detalle de Servicio"
+        verbose_name_plural = "Detalles de Servicios"
 
     @property
     def client_full_name(self):
