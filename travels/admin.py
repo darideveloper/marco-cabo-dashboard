@@ -2,7 +2,22 @@ from django.contrib import admin
 from travels import models
 
 
-# Register your models here.
+@admin.register(models.Zone)
+class ZoneAdmin(admin.ModelAdmin):
+    list_display = ("name", "created_at")
+    list_filter = ("created_at", "updated_at")
+    search_fields = ("name",)
+    readonly_fields = ("created_at", "updated_at")
+
+
+@admin.register(models.Location)
+class LocationAdmin(admin.ModelAdmin):
+    list_display = ("name", "zone", "created_at")
+    list_filter = ("zone", "created_at", "updated_at")
+    search_fields = ("name",)
+    readonly_fields = ("created_at", "updated_at")
+
+
 @admin.register(models.Client)
 class ClientAdmin(admin.ModelAdmin):
     list_display = ("name", "last_name", "email", "phone", "created_at")
@@ -29,7 +44,14 @@ class VehicleAdmin(admin.ModelAdmin):
 @admin.register(models.Sale)
 class SaleAdmin(admin.ModelAdmin):
     list_display = ("client", "vip_code", "vehicle", "passengers", "created_at")
-    list_filter = ("created_at", "updated_at")
+    list_filter = (
+        "client",
+        "vip_code",
+        "vehicle",
+        "passengers",
+        "created_at",
+        "updated_at",
+    )
     search_fields = ("passengers",)
     readonly_fields = ("created_at", "updated_at")
 
@@ -43,25 +65,16 @@ class TransferTypeAdmin(admin.ModelAdmin):
 
 @admin.register(models.Transfer)
 class TransferAdmin(admin.ModelAdmin):
-    list_display = ("date", "hour", "place", "type", "sale", "created_at")
-    list_filter = ("created_at", "updated_at")
-    search_fields = ("date", "hour", "place", "type__name")
-    readonly_fields = ("created_at", "updated_at")
-
-
-@admin.register(models.Zone)
-class ZoneAdmin(admin.ModelAdmin):
-    list_display = ("name", "created_at")
-    list_filter = ("created_at", "updated_at")
-    search_fields = ("name",)
-    readonly_fields = ("created_at", "updated_at")
-
-
-@admin.register(models.Location)
-class LocationAdmin(admin.ModelAdmin):
-    list_display = ("name", "created_at")
-    list_filter = ("created_at", "updated_at")
-    search_fields = ("name",)
+    list_display = ("date", "hour", "location", "type", "sale", "created_at")
+    list_filter = (
+        "location",
+        "type",
+        "sale__client",
+        "sale__vehicle",
+        "created_at",
+        "updated_at",
+    )
+    search_fields = ("date", "hour", "location", "type__name")
     readonly_fields = ("created_at", "updated_at")
 
 
@@ -74,7 +87,7 @@ class PricingAdmin(admin.ModelAdmin):
         "price",
         "created_at",
     )
-    list_filter = ("created_at", "updated_at")
+    list_filter = ("location", "vehicle", "transfer_type", "created_at", "updated_at")
     search_fields = (
         "location__name",
         "vehicle__name",
@@ -92,16 +105,23 @@ class TransferDetailAdmin(admin.ModelAdmin):
         "vehicle_fee",
         "passengers",
         "has_vip_code",
-        "place",
+        "location",
         "hour",
         "type",
     )
-    list_filter = ("created_at", "updated_at")
+    list_filter = (
+        "location",
+        "type",
+        "sale__client",
+        "sale__vehicle",
+        "created_at",
+        "updated_at",
+    )
     search_fields = (
         "sale__client__name",
         "sale__client__last_name",
         "sale__vehicle__name",
-        "place",
+        "location",
         "hour",
         "type__name",
     )
