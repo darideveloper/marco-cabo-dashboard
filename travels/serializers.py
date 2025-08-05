@@ -20,4 +20,26 @@ class ZoneSerializer(serializers.ModelSerializer):
 class VehicleSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Vehicle
-        fields = "__all__"
+        fields = ("id", "name")
+
+
+class TransferTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.TransferType
+        fields = ("id", "name")
+
+
+class PricingSerializer(serializers.ModelSerializer):
+    location = LocationSerializer(read_only=True)
+    vehicle = VehicleSerializer(read_only=True)
+    transfer_type = TransferTypeSerializer(read_only=True)
+
+    class Meta:
+        model = models.Pricing
+        fields = (
+            "id",
+            "location",
+            "vehicle",
+            "transfer_type",
+            "price",
+        )

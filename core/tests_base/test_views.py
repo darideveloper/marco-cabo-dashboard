@@ -87,15 +87,3 @@ class TestApiViewsMethods(APITestCase, TestAdminBase):
 
         # Check response
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-
-
-class TestTravelViewsBase(TestApiViewsMethods, TestTravelsModelBase):
-    """Base class for testing posts views"""
-
-    def setUp(self, endpoint: str = "/api/zones/"):
-        """Initialize test data
-        
-        Args:
-            endpoint (str): Endpoint to test
-        """
-        super().setUp(endpoint=endpoint)

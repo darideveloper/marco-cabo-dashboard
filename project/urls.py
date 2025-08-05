@@ -12,8 +12,9 @@ from travels import views as travels_views
 # Setup drf router
 router = routers.DefaultRouter()
 router.register(r"zones", travels_views.ZoneViewSet)
-router.register(r"locations", travels_views.LocationViewSet)
 router.register(r"vehicles", travels_views.VehicleViewSet)
+router.register(r"transfer-types", travels_views.TransferTypeViewSet)
+router.register(r"pricing", travels_views.PricingViewSet)
 
 
 urlpatterns = [
