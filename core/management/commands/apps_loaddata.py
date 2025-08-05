@@ -14,6 +14,7 @@ class Command(BaseCommand):
             "travels": [
                 "TransferType",
                 "Zone",
+                "Location",
             ],
         }
         

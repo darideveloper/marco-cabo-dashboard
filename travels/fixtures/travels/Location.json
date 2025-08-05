@@ -1,0 +1,1502 @@
+[
+    {
+        "model": "travels.Location",
+        "pk": 1,
+        "fields": {
+            "name": "Alegranza",
+            "zone": 1,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 2,
+        "fields": {
+            "name": "Royal Solaris Gran Faro",
+            "zone": 1,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 3,
+        "fields": {
+            "name": "Cabo Azul",
+            "zone": 1,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 4,
+        "fields": {
+            "name": "Casa Natalia",
+            "zone": 1,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 5,
+        "fields": {
+            "name": "Club Campestre",
+            "zone": 1,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 6,
+        "fields": {
+            "name": "El Encanto Inn",
+            "zone": 1,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 7,
+        "fields": {
+            "name": "Hotel & Suites Las Palmas",
+            "zone": 1,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 8,
+        "fields": {
+            "name": "Hyatt Place",
+            "zone": 1,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 9,
+        "fields": {
+            "name": "Hyatt Ziva",
+            "zone": 1,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 10,
+        "fields": {
+            "name": "Krystal Grand Los Cabos",
+            "zone": 1,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 11,
+        "fields": {
+            "name": "Mykonos",
+            "zone": 1,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 12,
+        "fields": {
+            "name": "Park Royal Homestay",
+            "zone": 1,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 13,
+        "fields": {
+            "name": "Posada real",
+            "zone": 1,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 14,
+        "fields": {
+            "name": "Royal Decameron",
+            "zone": 1,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 15,
+        "fields": {
+            "name": "Royal Solaris",
+            "zone": 1,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 16,
+        "fields": {
+            "name": "Six Two Four",
+            "zone": 1,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 17,
+        "fields": {
+            "name": "Tortuga Bay",
+            "zone": 1,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 18,
+        "fields": {
+            "name": "Tropican Inn",
+            "zone": 1,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 19,
+        "fields": {
+            "name": "Viceroy",
+            "zone": 1,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 20,
+        "fields": {
+            "name": "Vidanta Grand Mayan",
+            "zone": 1,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 21,
+        "fields": {
+            "name": "Wroldmark Coral Baja",
+            "zone": 1,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 22,
+        "fields": {
+            "name": "Hotel El Ganzo",
+            "zone": 2,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 23,
+        "fields": {
+            "name": "Acre",
+            "zone": 2,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 24,
+        "fields": {
+            "name": "Secrets Puerto Los Cabos",
+            "zone": 2,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 25,
+        "fields": {
+            "name": "JW Marriott",
+            "zone": 2,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 26,
+        "fields": {
+            "name": "Zadun, A Ritz-Carlton Reserve",
+            "zone": 2,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 27,
+        "fields": {
+            "name": "Cabo Surf Hotel",
+            "zone": 3,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 28,
+        "fields": {
+            "name": "Casa del Mar",
+            "zone": 3,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 29,
+        "fields": {
+            "name": "Chileno Bay Resort",
+            "zone": 3,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 30,
+        "fields": {
+            "name": "Dreams Los Cabos",
+            "zone": 3,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 31,
+        "fields": {
+            "name": "El Dorado",
+            "zone": 3,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 32,
+        "fields": {
+            "name": "Fiesta Americana Grand",
+            "zone": 3,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 33,
+        "fields": {
+            "name": "Four Seasons Cabo del Sol",
+            "zone": 3,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 34,
+        "fields": {
+            "name": "Garza Blanca",
+            "zone": 3,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 35,
+        "fields": {
+            "name": "Grand Velas Los Cabos",
+            "zone": 3,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 36,
+        "fields": {
+            "name": "Grand Velas Boutique",
+            "zone": 3,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 37,
+        "fields": {
+            "name": "Hacienda del Mar",
+            "zone": 3,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 38,
+        "fields": {
+            "name": "Hampton Inn & Suites Los Cabos",
+            "zone": 3,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 39,
+        "fields": {
+            "name": "Hilton Los Cabos",
+            "zone": 3,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 40,
+        "fields": {
+            "name": "Las Ventanas al Paraiso",
+            "zone": 3,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 41,
+        "fields": {
+            "name": "Le Blanc",
+            "zone": 3,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 42,
+        "fields": {
+            "name": "Live Aqua Residence Club",
+            "zone": 3,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 43,
+        "fields": {
+            "name": "Mar del Cabo",
+            "zone": 3,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 44,
+        "fields": {
+            "name": "Maravilla",
+            "zone": 3,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 45,
+        "fields": {
+            "name": "Marquis Los Cabos",
+            "zone": 3,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 46,
+        "fields": {
+            "name": "Montage Los Cabos",
+            "zone": 3,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 47,
+        "fields": {
+            "name": "O&O Palmilla",
+            "zone": 3,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 48,
+        "fields": {
+            "name": "Paradisus",
+            "zone": 3,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 49,
+        "fields": {
+            "name": "Querencia",
+            "zone": 3,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 50,
+        "fields": {
+            "name": "Park Hyatt Los Cabos",
+            "zone": 3,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 51,
+        "fields": {
+            "name": "Solaz",
+            "zone": 3,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 52,
+        "fields": {
+            "name": "The Westin Los Cabos",
+            "zone": 3,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 53,
+        "fields": {
+            "name": "Villa at Cabo del Sol",
+            "zone": 3,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 54,
+        "fields": {
+            "name": "Villa at Chileno Bay",
+            "zone": 3,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 55,
+        "fields": {
+            "name": "Villa Rancho Cerro Colorado",
+            "zone": 3,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 56,
+        "fields": {
+            "name": "Villa Valenciana",
+            "zone": 3,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 57,
+        "fields": {
+            "name": "Villas del Mar",
+            "zone": 3,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 58,
+        "fields": {
+            "name": "Bahia",
+            "zone": 4,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 59,
+        "fields": {
+            "name": "Breathless Los Cabos",
+            "zone": 4,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 60,
+        "fields": {
+            "name": "Casa Dorada",
+            "zone": 4,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 61,
+        "fields": {
+            "name": "City Express Suites",
+            "zone": 4,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 62,
+        "fields": {
+            "name": "Comfort Inn & Suites Los Cabos",
+            "zone": 4,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 63,
+        "fields": {
+            "name": "Corazon Los Cabos",
+            "zone": 4,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 64,
+        "fields": {
+            "name": "Esperanza",
+            "zone": 4,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 65,
+        "fields": {
+            "name": "Fairfield Inn Los Cabos",
+            "zone": 4,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 66,
+        "fields": {
+            "name": "Hacienda Encantada",
+            "zone": 4,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 67,
+        "fields": {
+            "name": "Holiday Inn Express Cabo San Lucas",
+            "zone": 4,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 68,
+        "fields": {
+            "name": "Hotel Quinta Sol",
+            "zone": 4,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 69,
+        "fields": {
+            "name": "Hotel Tesoro Los Cabos",
+            "zone": 4,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 70,
+        "fields": {
+            "name": "Los Cabos Golf Resort",
+            "zone": 4,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 71,
+        "fields": {
+            "name": "Los Patios",
+            "zone": 4,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 72,
+        "fields": {
+            "name": "Marina Fiesta Resort & SPA",
+            "zone": 4,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 73,
+        "fields": {
+            "name": "Me Cabo",
+            "zone": 4,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 74,
+        "fields": {
+            "name": "Medano Hotel & Suites",
+            "zone": 4,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 75,
+        "fields": {
+            "name": "Misiones Los Cabos",
+            "zone": 4,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 76,
+        "fields": {
+            "name": "Ocho Cascadas",
+            "zone": 4,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 77,
+        "fields": {
+            "name": "Pueblo Bonito Los Cabos",
+            "zone": 4,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 78,
+        "fields": {
+            "name": "Pueblo Bonito Rose",
+            "zone": 4,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 79,
+        "fields": {
+            "name": "Seven Crown Express",
+            "zone": 4,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 80,
+        "fields": {
+            "name": "Sirena del Mar - Welk Resorts",
+            "zone": 4,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 81,
+        "fields": {
+            "name": "Sunrock - Condo Hotel",
+            "zone": 4,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 82,
+        "fields": {
+            "name": "The Cape, a Thompson Hotel",
+            "zone": 4,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 83,
+        "fields": {
+            "name": "Villa del Arco",
+            "zone": 4,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 84,
+        "fields": {
+            "name": "Villa del Palmar",
+            "zone": 4,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 85,
+        "fields": {
+            "name": "Villa la Estancia",
+            "zone": 4,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 86,
+        "fields": {
+            "name": "Novaispania",
+            "zone": 5,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 87,
+        "fields": {
+            "name": "Playa Grande Los Cabos",
+            "zone": 5,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 88,
+        "fields": {
+            "name": "Pueblo Bonito Pacifica",
+            "zone": 5,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 89,
+        "fields": {
+            "name": "Pueblo Bonito Sunset Beach",
+            "zone": 5,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 90,
+        "fields": {
+            "name": "Quivira",
+            "zone": 5,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 91,
+        "fields": {
+            "name": "Sandos Finisterra",
+            "zone": 5,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 92,
+        "fields": {
+            "name": "St. Regis Los Cabs",
+            "zone": 5,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 93,
+        "fields": {
+            "name": "Solmar Resort",
+            "zone": 5,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 94,
+        "fields": {
+            "name": "Terrasol",
+            "zone": 5,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 95,
+        "fields": {
+            "name": "The Ridge at Playa Grande",
+            "zone": 5,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 96,
+        "fields": {
+            "name": "Villa at Pedregal Los Cabos",
+            "zone": 5,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 97,
+        "fields": {
+            "name": "Waldorf Astoria Los Cabos Pedregal",
+            "zone": 5,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 98,
+        "fields": {
+            "name": "Dimante Cabo San Lucas",
+            "zone": 6,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 99,
+        "fields": {
+            "name": "Grand Solmar at Rancho San Lucas",
+            "zone": 6,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 100,
+        "fields": {
+            "name": "Hard Rock Hotel Los Cabos",
+            "zone": 6,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 101,
+        "fields": {
+            "name": "Nobu Los Cabos",
+            "zone": 6,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 102,
+        "fields": {
+            "name": "Cerritos Beach Hotel",
+            "zone": 7,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 103,
+        "fields": {
+            "name": "Cerritos Beach Inn",
+            "zone": 7,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 104,
+        "fields": {
+            "name": "Cerritos Surf Town",
+            "zone": 7,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 105,
+        "fields": {
+            "name": "Hotel Guaycura",
+            "zone": 7,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 106,
+        "fields": {
+            "name": "Paradero",
+            "zone": 7,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 107,
+        "fields": {
+            "name": "Kimpton Mas Olas Resort and Spa",
+            "zone": 7,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 108,
+        "fields": {
+            "name": "Hotel San Cristobal",
+            "zone": 7,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 109,
+        "fields": {
+            "name": "Serendipity Todos Santos",
+            "zone": 7,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 110,
+        "fields": {
+            "name": "Todos Santos Inn",
+            "zone": 7,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 111,
+        "fields": {
+            "name": "Villa Santa Cruz",
+            "zone": 7,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 112,
+        "fields": {
+            "name": "Four Seasons at Costa Palmas",
+            "zone": 8,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 113,
+        "fields": {
+            "name": "Hotel Palmas de Cortez",
+            "zone": 8,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 114,
+        "fields": {
+            "name": "Hotel Playa del Sol",
+            "zone": 8,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 115,
+        "fields": {
+            "name": "La Ventana Villa/Hotel",
+            "zone": 8,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 116,
+        "fields": {
+            "name": "Los Barriles Hotel",
+            "zone": 8,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 117,
+        "fields": {
+            "name": "La Paz - Villa or Hotel",
+            "zone": 9,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 118,
+        "fields": {
+            "name": "23580",
+            "zone": 10,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 119,
+        "fields": {
+            "name": "23999",
+            "zone": 10,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 120,
+        "fields": {
+            "name": "23434",
+            "zone": 10,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 121,
+        "fields": {
+            "name": "23450",
+            "zone": 10,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 122,
+        "fields": {
+            "name": "23454",
+            "zone": 10,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 123,
+        "fields": {
+            "name": "23455",
+            "zone": 10,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 124,
+        "fields": {
+            "name": "23460",
+            "zone": 10,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 125,
+        "fields": {
+            "name": "23463",
+            "zone": 10,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 126,
+        "fields": {
+            "name": "23467",
+            "zone": 10,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 127,
+        "fields": {
+            "name": "23469",
+            "zone": 10,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 128,
+        "fields": {
+            "name": "23470",
+            "zone": 10,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 129,
+        "fields": {
+            "name": "23472",
+            "zone": 10,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 130,
+        "fields": {
+            "name": "23400",
+            "zone": 10,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 131,
+        "fields": {
+            "name": "23443",
+            "zone": 10,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 132,
+        "fields": {
+            "name": "23405",
+            "zone": 10,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 133,
+        "fields": {
+            "name": "23595",
+            "zone": 10,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 134,
+        "fields": {
+            "name": "23462",
+            "zone": 10,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 135,
+        "fields": {
+            "name": "23551",
+            "zone": 10,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 136,
+        "fields": {
+            "name": "23570",
+            "zone": 10,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 137,
+        "fields": {
+            "name": "23574",
+            "zone": 10,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 138,
+        "fields": {
+            "name": "23330",
+            "zone": 10,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 139,
+        "fields": {
+            "name": "23456",
+            "zone": 10,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 140,
+        "fields": {
+            "name": "23403",
+            "zone": 10,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 141,
+        "fields": {
+            "name": "23473",
+            "zone": 10,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 142,
+        "fields": {
+            "name": "23406",
+            "zone": 10,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 143,
+        "fields": {
+            "name": "23453",
+            "zone": 10,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 144,
+        "fields": {
+            "name": "23300",
+            "zone": 10,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 145,
+        "fields": {
+            "name": "23304",
+            "zone": 10,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 146,
+        "fields": {
+            "name": "23308",
+            "zone": 10,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 147,
+        "fields": {
+            "name": "23334",
+            "zone": 10,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 148,
+        "fields": {
+            "name": "23360",
+            "zone": 10,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 149,
+        "fields": {
+            "name": "23362",
+            "zone": 10,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 150,
+        "fields": {
+            "name": "23364",
+            "zone": 10,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    }
+] 
