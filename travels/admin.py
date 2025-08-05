@@ -8,6 +8,7 @@ class ZoneAdmin(admin.ModelAdmin):
     list_filter = ("created_at", "updated_at")
     search_fields = ("name",)
     readonly_fields = ("created_at", "updated_at")
+    ordering = ("name",)
 
 
 @admin.register(models.Location)
@@ -16,6 +17,7 @@ class LocationAdmin(admin.ModelAdmin):
     list_filter = ("zone", "created_at", "updated_at")
     search_fields = ("name",)
     readonly_fields = ("created_at", "updated_at")
+    ordering = ("name",)
 
 
 @admin.register(models.Client)
@@ -24,6 +26,7 @@ class ClientAdmin(admin.ModelAdmin):
     list_filter = ("created_at", "updated_at")
     search_fields = ("name", "last_name", "email", "phone")
     readonly_fields = ("created_at", "updated_at")
+    ordering = ("name",)
 
 
 @admin.register(models.VipCode)
@@ -32,6 +35,7 @@ class VipCodeAdmin(admin.ModelAdmin):
     list_filter = ("active", "created_at", "updated_at")
     search_fields = ("value",)
     readonly_fields = ("created_at", "updated_at")
+    ordering = ("value",)
 
 
 @admin.register(models.Vehicle)
@@ -39,6 +43,7 @@ class VehicleAdmin(admin.ModelAdmin):
     list_display = ("name", "fee", "created_at")
     list_filter = ("created_at", "updated_at")
     readonly_fields = ("created_at", "updated_at")
+    ordering = ("name",)
 
 
 @admin.register(models.Sale)
@@ -54,6 +59,7 @@ class SaleAdmin(admin.ModelAdmin):
     )
     search_fields = ("client__name", "vehicle__name", "vip_code__value")
     readonly_fields = ("created_at", "updated_at")
+    ordering = ("-created_at",)
 
 
 @admin.register(models.TransferType)
@@ -61,6 +67,7 @@ class TransferTypeAdmin(admin.ModelAdmin):
     list_display = ("name", "created_at")
     list_filter = ("created_at", "updated_at")
     readonly_fields = ("created_at", "updated_at")
+    ordering = ("name",)
 
 
 @admin.register(models.Transfer)
@@ -84,6 +91,7 @@ class TransferAdmin(admin.ModelAdmin):
         "sale__vip_code__value",
     )
     readonly_fields = ("created_at", "updated_at")
+    ordering = ("-created_at",)
 
 
 @admin.register(models.Pricing)
@@ -103,6 +111,7 @@ class PricingAdmin(admin.ModelAdmin):
         "price",
     )
     readonly_fields = ("created_at", "updated_at")
+    ordering = ("location__name", "vehicle__name", "transfer_type__name")
 
 
 @admin.register(models.TransferDetail)
@@ -135,6 +144,7 @@ class TransferDetailAdmin(admin.ModelAdmin):
         "type__name",
     )
     readonly_fields = ("created_at", "updated_at")
+    ordering = ("location__name", "hour", "type__name")
 
     # def client_full_name(self, obj):
     #     return obj.client_full_name
