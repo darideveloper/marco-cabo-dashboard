@@ -38,7 +38,6 @@ class SaleAdmin(admin.ModelAdmin):
 class TransferTypeAdmin(admin.ModelAdmin):
     list_display = ("name", "created_at")
     list_filter = ("created_at", "updated_at")
-    search_fields = ("name",)
     readonly_fields = ("created_at", "updated_at")
 
 
@@ -46,7 +45,7 @@ class TransferTypeAdmin(admin.ModelAdmin):
 class TransferAdmin(admin.ModelAdmin):
     list_display = ("date", "hour", "place", "type", "sale", "created_at")
     list_filter = ("created_at", "updated_at")
-    search_fields = ("date", "hour", "place", "type")
+    search_fields = ("date", "hour", "place", "type__name")
     readonly_fields = ("created_at", "updated_at")
 
 
@@ -77,7 +76,13 @@ class PricingAdmin(admin.ModelAdmin):
         "created_at",
     )
     list_filter = ("created_at", "updated_at")
-    search_fields = ("zone", "location", "vehicle", "transfer_type", "price")
+    search_fields = (
+        "zone__name",
+        "location__name",
+        "vehicle__name",
+        "transfer_type__name",
+        "price",
+    )
     readonly_fields = ("created_at", "updated_at")
 
 
@@ -93,23 +98,33 @@ class TransferDetailAdmin(admin.ModelAdmin):
         "hour",
         "type",
     )
+    list_filter = ("created_at", "updated_at")
+    search_fields = (
+        "sale__client__name",
+        "sale__client__last_name",
+        "sale__vehicle__name",
+        "place",
+        "hour",
+        "type__name",
+    )
+    readonly_fields = ("created_at", "updated_at")
 
-    def client_full_name(self, obj):
-        return obj.client_full_name
+    # def client_full_name(self, obj):
+    #     return obj.client_full_name
 
-    def vehicle_type(self, obj):
-        return obj.vehicle_type
+    # def vehicle_type(self, obj):
+    #     return obj.vehicle_type
 
-    def vehicle_fee(self, obj):
-        return obj.vehicle_fee
+    # def vehicle_fee(self, obj):
+    #     return obj.vehicle_fee
 
-    def passengers(self, obj):
-        return obj.passengers
+    # def passengers(self, obj):
+    #     return obj.passengers
 
-    def has_vip_code(self, obj):
-        return "Sí" if obj.has_vip_code else "No"
+    # def has_vip_code(self, obj):
+    #     return "Sí" if obj.has_vip_code else "No"
 
-    client_full_name.short_description = "Cliente"
-    vehicle_type.short_description = "Tipo de Vehículo"
-    vehicle_fee.short_description = "Tarifa"
-    has_vip_code.short_description = "¿VIP?"
+    # client_full_name.short_description = "Cliente"
+    # vehicle_type.short_description = "Tipo de Vehículo"
+    # vehicle_fee.short_description = "Tarifa"
+    # has_vip_code.short_description = "¿VIP?"
