@@ -30,7 +30,7 @@ class ClientAdmin(admin.ModelAdmin):
 class VipCodeAdmin(admin.ModelAdmin):
     list_display = ("value", "active", "created_at")
     list_filter = ("active", "created_at", "updated_at")
-    search_fields = ("value", "active")
+    search_fields = ("value",)
     readonly_fields = ("created_at", "updated_at")
 
 
@@ -52,7 +52,7 @@ class SaleAdmin(admin.ModelAdmin):
         "created_at",
         "updated_at",
     )
-    search_fields = ("passengers",)
+    search_fields = ("client__name", "vehicle__name", "vip_code__value")
     readonly_fields = ("created_at", "updated_at")
 
 
@@ -74,7 +74,15 @@ class TransferAdmin(admin.ModelAdmin):
         "created_at",
         "updated_at",
     )
-    search_fields = ("date", "hour", "location", "type__name")
+    search_fields = (
+        "date",
+        "hour",
+        "location__name",
+        "type__name",
+        "sale__client__name",
+        "sale__vehicle__name",
+        "sale__vip_code__value",
+    )
     readonly_fields = ("created_at", "updated_at")
 
 
@@ -121,7 +129,8 @@ class TransferDetailAdmin(admin.ModelAdmin):
         "sale__client__name",
         "sale__client__last_name",
         "sale__vehicle__name",
-        "location",
+        "sale__vip_code__value",
+        "location__name",
         "hour",
         "type__name",
     )
