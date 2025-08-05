@@ -68,7 +68,6 @@ class LocationAdmin(admin.ModelAdmin):
 @admin.register(models.Pricing)
 class PricingAdmin(admin.ModelAdmin):
     list_display = (
-        "zone",
         "location",
         "vehicle",
         "transfer_type",
@@ -77,7 +76,6 @@ class PricingAdmin(admin.ModelAdmin):
     )
     list_filter = ("created_at", "updated_at")
     search_fields = (
-        "zone__name",
         "location__name",
         "vehicle__name",
         "transfer_type__name",

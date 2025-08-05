@@ -119,6 +119,7 @@ class Zone(models.Model):
 class Location(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
+    zone = models.ForeignKey(Zone, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -132,7 +133,6 @@ class Location(models.Model):
 
 class Pricing(models.Model):
     id = models.AutoField(primary_key=True)
-    zone = models.ForeignKey(Zone, on_delete=models.CASCADE)
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
     vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE)
     transfer_type = models.ForeignKey(TransferType, on_delete=models.CASCADE)
@@ -141,7 +141,7 @@ class Pricing(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.zone} - {self.location} - {self.price}"
+        return f"{self.location} - {self.price}"
 
     class Meta:
         verbose_name = "Precio"
