@@ -6,12 +6,15 @@ from django.conf.urls.static import static
 
 from rest_framework import routers
 
-from travels.views import VehicleViewSet
+from travels import views as travels_views
 
 
 # Setup drf router
 router = routers.DefaultRouter()
-router.register(r"vehicles", VehicleViewSet)
+router.register(r"zones", travels_views.ZoneViewSet)
+router.register(r"locations", travels_views.LocationViewSet)
+router.register(r"vehicles", travels_views.VehicleViewSet)
+
 
 urlpatterns = [
     path("admin/", admin.site.urls),

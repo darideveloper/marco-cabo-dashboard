@@ -3,16 +3,21 @@ from django.db import models
 
 class Zone(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
+    
     def __str__(self):
         return self.name
 
     class Meta:
         verbose_name = "Zona"
         verbose_name_plural = "Zonas"
+        
+    @property
+    def locations(self):
+        locations_match = Location.objects.filter(zone=self)
+        return locations_match
 
 
 class Location(models.Model):
@@ -28,6 +33,7 @@ class Location(models.Model):
     class Meta:
         verbose_name = "Ubicación"
         verbose_name_plural = "Ubicaciones"
+        unique_together = ("name", "zone")
 
 
 class Client(models.Model):
