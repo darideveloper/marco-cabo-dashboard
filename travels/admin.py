@@ -40,7 +40,7 @@ class VipCodeAdmin(admin.ModelAdmin):
 
 @admin.register(models.Vehicle)
 class VehicleAdmin(admin.ModelAdmin):
-    list_display = ("name", "fee", "created_at")
+    list_display = ("name", "created_at")
     list_filter = ("created_at", "updated_at")
     readonly_fields = ("created_at", "updated_at")
     ordering = ("name",)
@@ -119,7 +119,6 @@ class TransferDetailAdmin(admin.ModelAdmin):
     list_display = (
         "client_full_name",
         "vehicle_type",
-        "vehicle_fee",
         "passengers",
         "has_vip_code",
         "location",
