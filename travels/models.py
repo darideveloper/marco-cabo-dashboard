@@ -19,7 +19,7 @@ class Client(models.Model):
         verbose_name_plural = "Clientes"
 
 
-class Code(models.Model):
+class VipCode(models.Model):
     id = models.AutoField(primary_key=True)
     value = models.CharField(max_length=10)
     active = models.BooleanField(default=True)
@@ -66,7 +66,7 @@ class Vehicle(models.Model):
 class Sale(models.Model):
     id = models.AutoField(primary_key=True)
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
-    code = models.ForeignKey(Code, on_delete=models.CASCADE)
+    vip_code = models.ForeignKey(VipCode, on_delete=models.CASCADE)
     vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE)
     passengers = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
@@ -185,8 +185,8 @@ class TransferDetail(Transfer):
         return self.sale.passengers
 
     @property
-    def has_code(self):
-        return self.sale.code is not None
+    def has_vip_code(self):
+        return self.sale.vip_code is not None
 
     def __str__(self):
         return f"Servicio de {self.client_full_name} en {self.place} a las {self.hour}"
