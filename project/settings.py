@@ -217,7 +217,15 @@ JAZZMIN_SETTINGS = {
 
     # List of apps (and/or models) to base side menu ordering off of
     # (does not need to contain all apps/models)
-    "order_with_respect_to": [],
+    "order_with_respect_to": [
+        "travels.Zone",
+        "travels.Location",
+        "travels.Pricing",
+        "travels.TransferType",
+        "travels.Client",
+        "travels.VipCode",
+        "travels.Vehicle",
+    ],
 
     # Custom links to append to app groups, keyed on app name
     "custom_links": {
