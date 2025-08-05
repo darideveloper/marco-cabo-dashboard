@@ -11,11 +11,42 @@ class ClientAdmin(admin.ModelAdmin):
     readonly_fields = ("created_at", "updated_at")
 
 
-@admin.register(models.Code)
-class CodeAdmin(admin.ModelAdmin):
+@admin.register(models.VipCode)
+class VipCodeAdmin(admin.ModelAdmin):
     list_display = ("value", "active", "created_at")
     list_filter = ("active", "created_at", "updated_at")
     search_fields = ("value", "active")
+    readonly_fields = ("created_at", "updated_at")
+
+
+@admin.register(models.Vehicle)
+class VehicleAdmin(admin.ModelAdmin):
+    list_display = ("name", "fee", "created_at")
+    list_filter = ("created_at", "updated_at")
+    readonly_fields = ("created_at", "updated_at")
+
+
+@admin.register(models.Sale)
+class SaleAdmin(admin.ModelAdmin):
+    list_display = ("client", "vip_code", "vehicle", "passengers", "created_at")
+    list_filter = ("created_at", "updated_at")
+    search_fields = ("passengers",)
+    readonly_fields = ("created_at", "updated_at")
+
+
+@admin.register(models.TransferType)
+class TransferTypeAdmin(admin.ModelAdmin):
+    list_display = ("name", "created_at")
+    list_filter = ("created_at", "updated_at")
+    search_fields = ("name",)
+    readonly_fields = ("created_at", "updated_at")
+
+
+@admin.register(models.Transfer)
+class TransferAdmin(admin.ModelAdmin):
+    list_display = ("date", "hour", "place", "type", "sale", "created_at")
+    list_filter = ("created_at", "updated_at")
+    search_fields = ("date", "hour", "place", "type")
     readonly_fields = ("created_at", "updated_at")
 
 
@@ -32,29 +63,6 @@ class LocationAdmin(admin.ModelAdmin):
     list_display = ("name", "created_at")
     list_filter = ("created_at", "updated_at")
     search_fields = ("name",)
-    readonly_fields = ("created_at", "updated_at")
-
-
-@admin.register(models.Vehicle)
-class VehicleAdmin(admin.ModelAdmin):
-    list_display = ("type", "fee", "created_at")
-    list_filter = ("created_at", "updated_at")
-    readonly_fields = ("created_at", "updated_at")
-
-
-@admin.register(models.Sale)
-class SaleAdmin(admin.ModelAdmin):
-    list_display = ("client", "code", "vehicle", "passengers", "created_at")
-    list_filter = ("created_at", "updated_at")
-    search_fields = ("passengers",)
-    readonly_fields = ("created_at", "updated_at")
-
-
-@admin.register(models.Transfer)
-class TransferAdmin(admin.ModelAdmin):
-    list_display = ("date", "hour", "place", "type", "sale", "created_at")
-    list_filter = ("created_at", "updated_at")
-    search_fields = ("date", "hour", "place", "type")
     readonly_fields = ("created_at", "updated_at")
 
 
@@ -80,7 +88,7 @@ class TransferDetailAdmin(admin.ModelAdmin):
         "vehicle_type",
         "vehicle_fee",
         "passengers",
-        "has_code",
+        "has_vip_code",
         "place",
         "hour",
         "type",
@@ -98,10 +106,10 @@ class TransferDetailAdmin(admin.ModelAdmin):
     def passengers(self, obj):
         return obj.passengers
 
-    def has_code(self, obj):
-        return "Sí" if obj.has_code else "No"
+    def has_vip_code(self, obj):
+        return "Sí" if obj.has_vip_code else "No"
 
     client_full_name.short_description = "Cliente"
     vehicle_type.short_description = "Tipo de Vehículo"
     vehicle_fee.short_description = "Tarifa"
-    has_code.short_description = "¿VIP?"
+    has_vip_code.short_description = "¿VIP?"
