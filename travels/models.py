@@ -1,7 +1,35 @@
 from django.db import models
 
 
-# Create your models here.
+class Zone(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Zona"
+        verbose_name_plural = "Zonas"
+
+
+class Location(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=100)
+    zone = models.ForeignKey(Zone, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Ubicación"
+        verbose_name_plural = "Ubicaciones"
+
+
 class Client(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
@@ -88,47 +116,18 @@ class Transfer(models.Model):
     id = models.AutoField(primary_key=True)
     date = models.DateTimeField(auto_now_add=True)
     hour = models.TimeField(auto_now_add=False)
-    place = models.CharField(max_length=100)
+    location = models.ForeignKey(Location, on_delete=models.CASCADE)
     type = models.ForeignKey(TransferType, on_delete=models.CASCADE)
     sale = models.ForeignKey(Sale, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.date} - {self.place} - {self.type}"
+        return f"{self.date} - {self.location} - {self.type}"
 
     class Meta:
         verbose_name = "Servicio"
         verbose_name_plural = "Servicios"
-
-
-class Zone(models.Model):
-    id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=100)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        verbose_name = "Zona"
-        verbose_name_plural = "Zonas"
-
-
-class Location(models.Model):
-    id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=100)
-    zone = models.ForeignKey(Zone, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        verbose_name = "Ubicación"
-        verbose_name_plural = "Ubicaciones"
 
 
 class Pricing(models.Model):
@@ -175,4 +174,6 @@ class TransferDetail(Transfer):
         return self.sale.vip_code is not None
 
     def __str__(self):
-        return f"Servicio de {self.client_full_name} en {self.place} a las {self.hour}"
+        text = f"Servicio de {self.client_full_name} en "
+        text += f"{self.location} a las {self.hour}"
+        return text
