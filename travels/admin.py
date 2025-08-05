@@ -35,22 +35,6 @@ class LocationAdmin(admin.ModelAdmin):
     readonly_fields = ("created_at", "updated_at")
 
 
-@admin.register(models.TransferType)
-class TransferTypeAdmin(admin.ModelAdmin):
-    list_display = ("name", "created_at")
-    list_filter = ("created_at", "updated_at")
-    search_fields = ("name",)
-    readonly_fields = ("created_at", "updated_at")
-
-
-@admin.register(models.VehicleType)
-class VehicleTypeAdmin(admin.ModelAdmin):
-    list_display = ("name", "created_at")
-    list_filter = ("created_at", "updated_at")
-    search_fields = ("name",)
-    readonly_fields = ("created_at", "updated_at")
-
-
 @admin.register(models.Vehicle)
 class VehicleAdmin(admin.ModelAdmin):
     list_display = ("type", "fee", "created_at")
