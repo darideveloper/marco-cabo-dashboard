@@ -1,0 +1,92 @@
+[
+    {
+        "model": "travels.Zone",
+        "pk": 1,
+        "fields": {
+            "name": "San Jose",
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Zone",
+        "pk": 2,
+        "fields": {
+            "name": "Puerto Los Cabos",
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Zone",
+        "pk": 3,
+        "fields": {
+            "name": "Corridor",
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Zone",
+        "pk": 4,
+        "fields": {
+            "name": "Cabo San Lucas",
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Zone",
+        "pk": 5,
+        "fields": {
+            "name": "Pacifico",
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Zone",
+        "pk": 6,
+        "fields": {
+            "name": "Diamante",
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Zone",
+        "pk": 7,
+        "fields": {
+            "name": "Todos Santos",
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Zone",
+        "pk": 8,
+        "fields": {
+            "name": "Cabo del Este",
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Zone",
+        "pk": 9,
+        "fields": {
+            "name": "La Paz",
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Zone",
+        "pk": 10,
+        "fields": {
+            "name": "Codigo Postal",
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    }
+] 

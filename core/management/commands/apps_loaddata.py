@@ -13,6 +13,7 @@ class Command(BaseCommand):
         commands_data = {
             "travels": [
                 "TransferType",
+                "Zone",
             ],
         }
         
