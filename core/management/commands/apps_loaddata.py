@@ -15,6 +15,7 @@ class Command(BaseCommand):
                 "TransferType",
                 "Zone",
                 "Location",
+                "Pricing",
             ],
         }
         
