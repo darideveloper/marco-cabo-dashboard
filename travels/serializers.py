@@ -57,9 +57,3 @@ class VipCodeValidationSerializer(serializers.Serializer):
             return value
         except models.VipCode.DoesNotExist:
             raise serializers.ValidationError("Invalid or inactive VIP code")
-    
-    def to_representation(self, instance):
-        """
-        Return a simple validation response without exposing the actual code
-        """
-        return True
