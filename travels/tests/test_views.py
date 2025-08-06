@@ -198,11 +198,10 @@ class TestPricingViewSet(TestApiViewsMethods, TestTravelsModelBase):
         """Test get pricing with vehicle filter"""
 
         # Create pricing with different vehicles
-        location = self.create_location(name="location 1")
         vehicle1 = self.create_vehicle(name="vehicle 1")
         vehicle2 = self.create_vehicle(name="vehicle 2")
-        self.create_pricing(location=location, vehicle=vehicle1)
-        self.create_pricing(location=location, vehicle=vehicle2)
+        self.create_pricing(vehicle=vehicle1)
+        self.create_pricing(vehicle=vehicle2)
 
         # Get data and validate status code
         response = self.client.get(self.endpoint, {"vehicle": vehicle1.id})
@@ -220,11 +219,10 @@ class TestPricingViewSet(TestApiViewsMethods, TestTravelsModelBase):
         """Test get pricing with transfer type filter"""
 
         # Create pricing with different transfer types
-        location = self.create_location(name="location 1")
         transfer_type1 = self.create_transfer_type(name="transfer type 1")
         transfer_type2 = self.create_transfer_type(name="transfer type 2")
-        self.create_pricing(location=location, transfer_type=transfer_type1)
-        self.create_pricing(location=location, transfer_type=transfer_type2)
+        self.create_pricing(transfer_type=transfer_type1)
+        self.create_pricing(transfer_type=transfer_type2)
 
         # Get data and validate status code
         response = self.client.get(self.endpoint, {"transfer_type": transfer_type1.id})

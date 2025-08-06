@@ -1,3 +1,5 @@
+import uuid
+
 from django.test import TestCase
 
 from travels import models
@@ -6,7 +8,12 @@ from travels import models
 class TestTravelsModelBase(TestCase):
     """Base class for create travels models"""
 
-    def create_zone(self, name: str = "test zone"):
+    def __replace_random_string__(self, string: str):
+        """Replace random string with a random string"""
+        random_string = str(uuid.uuid4())
+        return string.replace("{x}", random_string)
+
+    def create_zone(self, name: str = "test zone {x}"):
         """Create a zone
 
         Args:
@@ -15,9 +22,10 @@ class TestTravelsModelBase(TestCase):
         Returns:
             Zone: Zone created
         """
+        name = self.__replace_random_string__(name)
         return models.Zone.objects.create(name=name)
 
-    def create_location(self, name: str = "test location", zone: models.Zone = None):
+    def create_location(self, name: str = "test location {x}", zone: models.Zone = None):
         """Create a location
 
         Args:
@@ -27,7 +35,8 @@ class TestTravelsModelBase(TestCase):
         Returns:
             Location: Location created
         """
-
+        name = self.__replace_random_string__(name)
+        
         if not zone:
             zone = self.create_zone()
 
@@ -36,7 +45,7 @@ class TestTravelsModelBase(TestCase):
             zone=zone,
         )
 
-    def create_transfer_type(self, name: str = "test transfer type"):
+    def create_transfer_type(self, name: str = "test transfer type {x}"):
         """Create a transfer type
 
         Args:
@@ -45,9 +54,10 @@ class TestTravelsModelBase(TestCase):
         Returns:
             TransferType: Transfer type created
         """
+        name = self.__replace_random_string__(name)
         return models.TransferType.objects.create(name=name)
 
-    def create_vehicle(self, name: str = "test vehicle"):
+    def create_vehicle(self, name: str = "test vehicle {x}"):
         """Create a vehicle
 
         Args:
@@ -56,9 +66,10 @@ class TestTravelsModelBase(TestCase):
         Returns:
             Vehicle: Vehicle created
         """
+        name = self.__replace_random_string__(name)
         return models.Vehicle.objects.create(name=name)
 
-    def create_vip_code(self, value: str = "VIP123", active: bool = True):
+    def create_vip_code(self, value: str = "VIP123 {x}", active: bool = True):
         """Create a VIP code
 
         Args:
@@ -68,6 +79,7 @@ class TestTravelsModelBase(TestCase):
         Returns:
             VipCode: VIP code created
         """
+        value = self.__replace_random_string__(value)
         return models.VipCode.objects.create(value=value, active=active)
 
     def create_pricing(
