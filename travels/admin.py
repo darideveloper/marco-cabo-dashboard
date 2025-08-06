@@ -57,7 +57,12 @@ class SaleAdmin(admin.ModelAdmin):
         "created_at",
         "updated_at",
     )
-    search_fields = ("client__name", "vehicle__name", "vip_code__value")
+    search_fields = (
+        "client__name",
+        "client__email",
+        "vehicle__name",
+        "vip_code__value",
+    )
     readonly_fields = ("created_at", "updated_at")
     ordering = ("-created_at",)
 
@@ -80,13 +85,13 @@ class TransferAdmin(admin.ModelAdmin):
         "sale__vehicle",
         "created_at",
         "updated_at",
+        "date",
     )
     search_fields = (
-        "date",
-        "hour",
         "location__name",
         "type__name",
         "sale__client__name",
+        "sale__client__email",
         "sale__vehicle__name",
         "sale__vip_code__value",
     )
@@ -114,8 +119,8 @@ class PricingAdmin(admin.ModelAdmin):
     ordering = ("location__name", "vehicle__name", "transfer_type__name")
 
 
-@admin.register(models.TransferDetail)
-class TransferDetailAdmin(admin.ModelAdmin):
+@admin.register(models.SaleDetail)
+class SaleDetailAdmin(admin.ModelAdmin):
     list_display = (
         "client_full_name",
         "vehicle_type",
@@ -136,6 +141,7 @@ class TransferDetailAdmin(admin.ModelAdmin):
     search_fields = (
         "sale__client__name",
         "sale__client__last_name",
+        "sale__client__email",
         "sale__vehicle__name",
         "sale__vip_code__value",
         "location__name",
@@ -143,7 +149,7 @@ class TransferDetailAdmin(admin.ModelAdmin):
         "type__name",
     )
     readonly_fields = ("created_at", "updated_at")
-    ordering = ("location__name", "hour", "type__name")
+    ordering = ("-created_at",)
 
     # def client_full_name(self, obj):
     #     return obj.client_full_name
