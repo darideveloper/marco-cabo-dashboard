@@ -108,12 +108,12 @@ class PricingAdminTestCase(TestAdminBase):
         self.submit_search_bar(self.endpoint)
         
         
-class TransferDetailAdminTestCase(TestAdminBase):
-    """Testing transfer detail admin"""
+class SaleDetailAdminTestCase(TestAdminBase):
+    """Testing sale detail admin"""
 
     def setUp(self):
         super().setUp()
-        self.endpoint = "/admin/travels/transferdetail/"
+        self.endpoint = "/admin/travels/saledetail/"
 
     def test_search_bar(self):
         """Validate search bar working"""
