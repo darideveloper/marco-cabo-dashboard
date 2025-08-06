@@ -22,7 +22,7 @@ class Zone(models.Model):
 
 class Location(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     zone = models.ForeignKey(Zone, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -55,7 +55,7 @@ class Client(models.Model):
 
 class VipCode(models.Model):
     id = models.AutoField(primary_key=True)
-    value = models.CharField(max_length=10)
+    value = models.CharField(max_length=10, unique=True)
     active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -70,7 +70,7 @@ class VipCode(models.Model):
 
 class Vehicle(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -105,7 +105,7 @@ class Sale(models.Model):
 
 class TransferType(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -152,11 +152,11 @@ class Pricing(models.Model):
         verbose_name_plural = "Precios"
 
 
-class TransferDetail(Transfer):
+class SaleDetail(Transfer):
     class Meta:
         proxy = True
-        verbose_name = "Detalle de Servicio"
-        verbose_name_plural = "Detalles de Servicios"
+        verbose_name = "Detalle de Venta"
+        verbose_name_plural = "Detalles de Ventas"
 
     @property
     def client_full_name(self):
