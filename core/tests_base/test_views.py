@@ -2,9 +2,6 @@ from django.contrib.auth.models import User
 from rest_framework.test import APITestCase
 from rest_framework import status
 
-from core.tests_base.test_models import (
-    TestTravelsModelBase,
-)
 from core.tests_base.test_admin import TestAdminBase
 
 
@@ -14,7 +11,7 @@ class TestApiViewsMethods(APITestCase, TestAdminBase):
     def setUp(
         self,
         endpoint="/api/",
-        restricted_get: bool = True,
+        restricted_get: bool = False,
         restricted_post: bool = True,
         restricted_put: bool = True,
         restricted_patch: bool = True,
@@ -75,6 +72,12 @@ class TestApiViewsMethods(APITestCase, TestAdminBase):
 
         if self.restricted_delete:
             self.validate_invalid_method("delete")
+            
+    def test_authenticated_user_get(self):
+        """Test that authenticated users can get to the endpoint"""
+        
+        if self.restricted_get:
+            self.validate_invalid_method("get")
 
     def test_unauthenticated_user_get(self):
         """Test unauthenticated user get request"""

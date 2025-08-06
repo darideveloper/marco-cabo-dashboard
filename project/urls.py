@@ -29,6 +29,11 @@ urlpatterns = [
     
     # API URLs
     path("api/", include(router.urls)),
+    path(
+        "api/validate-vip-code/",
+        travels_views.VipCodeValidationView.as_view(),
+        name="validate-vip-code"
+    ),
 ]
 
 if not settings.STORAGE_AWS:

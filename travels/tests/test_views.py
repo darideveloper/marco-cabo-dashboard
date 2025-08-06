@@ -1,3 +1,5 @@
+import json
+
 from rest_framework import status
 
 from core.tests_base.test_views import TestApiViewsMethods
@@ -271,3 +273,86 @@ class TestPricingViewSet(TestApiViewsMethods, TestTravelsModelBase):
         self.assertEqual(results[0]["vehicle"]["name"], vehicle1.name)
         self.assertEqual(results[0]["transfer_type"]["id"], transfer_type1.id)
         self.assertEqual(results[0]["transfer_type"]["name"], transfer_type1.name)
+
+
+class TestVipCodeValidationView(TestApiViewsMethods, TestTravelsModelBase):
+    """Test vip code validation views"""
+
+    def setUp(self):
+        super().setUp(
+            endpoint="/api/validate-vip-code/",
+            restricted_post=False,
+            restricted_get=True,
+        )
+
+        self.vip_code = self.create_vip_code(value="VIP123", active=True)
+
+    def test_vip_code_valid(self):
+        """Test vip code valid"""
+
+        # Create vip code
+
+        # Send json post data and validate status code
+        response = self.client.post(
+            self.endpoint,
+            json.dumps({"vip_code": self.vip_code.value}),
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # Validate data
+        response_json = response.json()
+        self.assertEqual(response_json["status"], "sucess")
+        self.assertEqual(response_json["message"], "VIP code is valid")
+        self.assertEqual(response_json["data"], [])
+
+    def test_vip_code_invalid(self):
+        """Test vip code invalid"""
+
+        # Send json post data and validate status code
+        response = self.client.post(
+            self.endpoint,
+            json.dumps({"vip_code": "fake vip code"}),
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        # Validate data
+        response_json = response.json()
+        self.assertEqual(response_json["status"], "error")
+        self.assertEqual(response_json["message"], "Invalid VIP code")
+        self.assertEqual(response_json["data"], [])
+
+    def test_vip_code_invalid_inactive(self):
+        """Test vip code invalid inactive"""
+
+        # Create vip code
+        self.vip_code.active = False
+        self.vip_code.save()
+
+        # Send json post data and validate status code
+        response = self.client.post(self.endpoint, {"vip_code": self.vip_code.value})
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        # Validate data
+        response_json = response.json()
+        self.assertEqual(response_json["status"], "error")
+        self.assertEqual(response_json["message"], "Invalid VIP code")
+        self.assertEqual(response_json["data"], [])
+
+    def test_vip_code_invalid_empty(self):
+        """Test vip code invalid empty"""
+
+        # Send json post data and validate status code
+        response = self.client.post(
+            self.endpoint,
+            json.dumps({"vip_code": ""}),
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        # Validate data
+        response_json = response.json()
+        self.assertEqual(response_json["status"], "error")
+        self.assertEqual(response_json["message"], "Invalid VIP code")
+        self.assertEqual(response_json["data"], [])

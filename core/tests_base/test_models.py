@@ -58,6 +58,18 @@ class TestTravelsModelBase(TestCase):
         """
         return models.Vehicle.objects.create(name=name)
 
+    def create_vip_code(self, value: str = "VIP123", active: bool = True):
+        """Create a VIP code
+
+        Args:
+            value (str): Value of the VIP code
+            active (bool): Whether the VIP code is active
+
+        Returns:
+            VipCode: VIP code created
+        """
+        return models.VipCode.objects.create(value=value, active=active)
+
     def create_pricing(
         self,
         location: models.Location = None,
