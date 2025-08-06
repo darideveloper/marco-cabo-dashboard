@@ -255,7 +255,7 @@ JAZZMIN_SETTINGS = {
         "travels.pricing": "fas fa-money-bill",
         "travels.zone": "fas fa-globe",
         "travels.location": "fas fa-location-dot",
-        "travels.transferdetail": "fas fa-circle-info",
+        "travels.saledetail": "fas fa-circle-info",
     },
     # Icons that are used when one is not manually specified
     "default_icon_parents": "fas fa-chevron-circle-right",
