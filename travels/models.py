@@ -116,8 +116,8 @@ class ServiceType(models.Model):
         return self.name
 
     class Meta:
-        verbose_name = "Tipo de Transportación"
-        verbose_name_plural = "Tipos de Transportación"
+        verbose_name = "Tipo de Servicio"
+        verbose_name_plural = "Tipos de Servicios"
 
 
 class Sale(models.Model):
