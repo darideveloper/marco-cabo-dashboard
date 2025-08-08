@@ -1,6 +1,6 @@
 [
     {
-        "model": "travels.TransferType",
+        "model": "travels.ServiceType",
         "pk": 1,
         "fields": {
             "name": "One Way",
@@ -9,7 +9,7 @@
         }
     },
     {
-        "model": "travels.TransferType",
+        "model": "travels.ServiceType",
         "pk": 2,
         "fields": {
             "name": "Round Trip",

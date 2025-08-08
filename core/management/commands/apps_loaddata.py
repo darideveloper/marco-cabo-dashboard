@@ -12,7 +12,7 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         commands_data = {
             "travels": [
-                "TransferType",
+                "ServiceType",
                 "Zone",
                 "Location",
                 "Pricing",

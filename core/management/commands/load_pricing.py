@@ -24,8 +24,8 @@ class Command(BaseCommand):
         suburban = models.Vehicle.objects.get(name="Suburban")
         van = models.Vehicle.objects.get(name="Van")
         sprinter = models.Vehicle.objects.get(name="Sprinter")
-        oneway = models.TransferType.objects.get(name="One Way")
-        roundtrip = models.TransferType.objects.get(name="Round Trip")
+        oneway = models.ServiceType.objects.get(name="One Way")
+        roundtrip = models.ServiceType.objects.get(name="Round Trip")
 
         # Read excel
         csv_path = os.path.join(os.path.dirname(__file__), "pricing.csv")
