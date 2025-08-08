@@ -105,7 +105,9 @@ class Vehicle(models.Model):
 class Sale(models.Model):
     id = models.AutoField(primary_key=True)
     client = models.ForeignKey(Client, on_delete=models.CASCADE, verbose_name="Cliente")
-    vip_code = models.ForeignKey(VipCode, on_delete=models.CASCADE, verbose_name="VIP")
+    vip_code = models.ForeignKey(
+        VipCode, on_delete=models.CASCADE, verbose_name="Código VIP"
+    )
     vehicle = models.ForeignKey(
         Vehicle, on_delete=models.CASCADE, verbose_name="Vehículo"
     )
