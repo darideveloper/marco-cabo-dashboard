@@ -19,9 +19,9 @@ class VehicleViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = serializers.VehicleSerializer
 
 
-class TransferTypeViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = models.TransferType.objects.all()
-    serializer_class = serializers.TransferTypeSerializer
+class ServiceTypeViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = models.ServiceType.objects.all()
+    serializer_class = serializers.ServiceTypeSerializer
 
 
 class PricingViewSet(viewsets.ReadOnlyModelViewSet):

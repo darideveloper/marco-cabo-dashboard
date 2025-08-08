@@ -23,16 +23,16 @@ class VehicleSerializer(serializers.ModelSerializer):
         fields = ("id", "name")
 
 
-class TransferTypeSerializer(serializers.ModelSerializer):
+class ServiceTypeSerializer(serializers.ModelSerializer):
     class Meta:
-        model = models.TransferType
+        model = models.ServiceType
         fields = ("id", "name")
 
 
 class PricingSerializer(serializers.ModelSerializer):
     location = LocationSerializer(read_only=True)
     vehicle = VehicleSerializer(read_only=True)
-    transfer_type = TransferTypeSerializer(read_only=True)
+    transfer_type = ServiceTypeSerializer(read_only=True)
 
     class Meta:
         model = models.Pricing
