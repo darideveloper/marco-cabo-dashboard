@@ -3,17 +3,21 @@ from django.db import models
 
 class Zone(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=100, unique=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    
+    name = models.CharField(max_length=100, unique=True, verbose_name="Nombre")
+    created_at = models.DateTimeField(
+        auto_now_add=True, verbose_name="Fecha de creación"
+    )
+    updated_at = models.DateTimeField(
+        auto_now=True, verbose_name="Fecha de actualización"
+    )
+
     def __str__(self):
         return self.name
 
     class Meta:
         verbose_name = "Zona"
         verbose_name_plural = "Zonas"
-        
+
     @property
     def locations(self):
         locations_match = Location.objects.filter(zone=self)
@@ -22,10 +26,14 @@ class Zone(models.Model):
 
 class Location(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=100, unique=True)
-    zone = models.ForeignKey(Zone, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    name = models.CharField(max_length=100, unique=True, verbose_name="Nombre")
+    zone = models.ForeignKey(Zone, on_delete=models.CASCADE, verbose_name="Zona")
+    created_at = models.DateTimeField(
+        auto_now_add=True, verbose_name="Fecha de creación"
+    )
+    updated_at = models.DateTimeField(
+        auto_now=True, verbose_name="Fecha de actualización"
+    )
 
     def __str__(self):
         return self.name
@@ -38,12 +46,16 @@ class Location(models.Model):
 
 class Client(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
-    email = models.EmailField()
-    phone = models.CharField(max_length=15)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    name = models.CharField(max_length=100, verbose_name="Nombre")
+    last_name = models.CharField(max_length=100, verbose_name="Apellido")
+    email = models.EmailField(verbose_name="Correo")
+    phone = models.CharField(max_length=15, verbose_name="Teléfono")
+    created_at = models.DateTimeField(
+        auto_now_add=True, verbose_name="Fecha de creación"
+    )
+    updated_at = models.DateTimeField(
+        auto_now=True, verbose_name="Fecha de actualización"
+    )
 
     def __str__(self):
         return f"{self.email}"
@@ -55,10 +67,14 @@ class Client(models.Model):
 
 class VipCode(models.Model):
     id = models.AutoField(primary_key=True)
-    value = models.CharField(max_length=10, unique=True)
-    active = models.BooleanField(default=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    value = models.CharField(max_length=10, unique=True, verbose_name="Código")
+    active = models.BooleanField(default=True, verbose_name="Activo")
+    created_at = models.DateTimeField(
+        auto_now_add=True, verbose_name="Fecha de creación"
+    )
+    updated_at = models.DateTimeField(
+        auto_now=True, verbose_name="Fecha de actualización"
+    )
 
     def __str__(self):
         return self.value
@@ -70,9 +86,13 @@ class VipCode(models.Model):
 
 class Vehicle(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=100, unique=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    name = models.CharField(max_length=100, unique=True, verbose_name="Nombre")
+    created_at = models.DateTimeField(
+        auto_now_add=True, verbose_name="Fecha de creación"
+    )
+    updated_at = models.DateTimeField(
+        auto_now=True, verbose_name="Fecha de actualización"
+    )
 
     def __str__(self):
         return f"{self.name}"
@@ -84,12 +104,18 @@ class Vehicle(models.Model):
 
 class Sale(models.Model):
     id = models.AutoField(primary_key=True)
-    client = models.ForeignKey(Client, on_delete=models.CASCADE)
-    vip_code = models.ForeignKey(VipCode, on_delete=models.CASCADE)
-    vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE)
-    passengers = models.IntegerField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    client = models.ForeignKey(Client, on_delete=models.CASCADE, verbose_name="Cliente")
+    vip_code = models.ForeignKey(VipCode, on_delete=models.CASCADE, verbose_name="VIP")
+    vehicle = models.ForeignKey(
+        Vehicle, on_delete=models.CASCADE, verbose_name="Vehículo"
+    )
+    passengers = models.IntegerField(verbose_name="Pasajeros")
+    created_at = models.DateTimeField(
+        auto_now_add=True, verbose_name="Fecha de creación"
+    )
+    updated_at = models.DateTimeField(
+        auto_now=True, verbose_name="Fecha de actualización"
+    )
 
     @property
     def total(self):
@@ -105,9 +131,13 @@ class Sale(models.Model):
 
 class TransferType(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=100, unique=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    name = models.CharField(max_length=100, unique=True, verbose_name="Nombre")
+    created_at = models.DateTimeField(
+        auto_now_add=True, verbose_name="Fecha de creación"
+    )
+    updated_at = models.DateTimeField(
+        auto_now=True, verbose_name="Fecha de actualización"
+    )
 
     def __str__(self):
         return self.name
@@ -119,13 +149,21 @@ class TransferType(models.Model):
 
 class Transfer(models.Model):
     id = models.AutoField(primary_key=True)
-    date = models.DateTimeField(auto_now_add=True)
-    hour = models.TimeField(auto_now_add=False)
-    location = models.ForeignKey(Location, on_delete=models.CASCADE)
-    type = models.ForeignKey(TransferType, on_delete=models.CASCADE)
-    sale = models.ForeignKey(Sale, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    date = models.DateTimeField(auto_now_add=True, verbose_name="Fecha")
+    hour = models.TimeField(auto_now_add=False, verbose_name="Hora")
+    location = models.ForeignKey(
+        Location, on_delete=models.CASCADE, verbose_name="Ubicación"
+    )
+    type = models.ForeignKey(
+        TransferType, on_delete=models.CASCADE, verbose_name="Tipo de Servicio"
+    )
+    sale = models.ForeignKey(Sale, on_delete=models.CASCADE, verbose_name="Venta")
+    created_at = models.DateTimeField(
+        auto_now_add=True, verbose_name="Fecha de creación"
+    )
+    updated_at = models.DateTimeField(
+        auto_now=True, verbose_name="Fecha de actualización"
+    )
 
     def __str__(self):
         return f"{self.date} - {self.location} - {self.type}"
@@ -137,12 +175,22 @@ class Transfer(models.Model):
 
 class Pricing(models.Model):
     id = models.AutoField(primary_key=True)
-    location = models.ForeignKey(Location, on_delete=models.CASCADE)
-    vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE)
-    transfer_type = models.ForeignKey(TransferType, on_delete=models.CASCADE)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    location = models.ForeignKey(
+        Location, on_delete=models.CASCADE, verbose_name="Ubicación"
+    )
+    vehicle = models.ForeignKey(
+        Vehicle, on_delete=models.CASCADE, verbose_name="Vehículo"
+    )
+    transfer_type = models.ForeignKey(
+        TransferType, on_delete=models.CASCADE, verbose_name="Tipo de Servicio"
+    )
+    price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Precio")
+    created_at = models.DateTimeField(
+        auto_now_add=True, verbose_name="Fecha de creación"
+    )
+    updated_at = models.DateTimeField(
+        auto_now=True, verbose_name="Fecha de actualización"
+    )
 
     def __str__(self):
         return f"{self.location} - {self.price}"
