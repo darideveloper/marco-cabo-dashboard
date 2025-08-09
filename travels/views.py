@@ -51,3 +51,25 @@ class VipCodeValidationView(APIView):
                 "message": "Invalid VIP code",
                 "data": [],
             }, status=status.HTTP_400_BAD_REQUEST)
+
+
+class SaleViewSet(APIView):
+    """
+    API endpoint to create sales
+    """
+    
+    def post(self, request):
+        serializer = serializers.SaleSerializer(data=request.data)
+        
+        if serializer.is_valid():
+            return Response({
+                "status": "sucess",
+                "message": "Sale created successfully",
+                "data": []
+            })
+        else:
+            return Response({
+                "status": "error",
+                "message": "Invalid sale data",
+                "data": [],
+            }, status=status.HTTP_400_BAD_REQUEST)
