@@ -48,11 +48,19 @@ class VehicleAdmin(admin.ModelAdmin):
 
 @admin.register(models.Sale)
 class SaleAdmin(admin.ModelAdmin):
-    list_display = ("client", "vip_code", "vehicle", "passengers", "created_at")
+    list_display = (
+        "client",
+        "vip_code",
+        "vehicle",
+        "service_type",
+        "passengers",
+        "created_at",
+    )
     list_filter = (
         "client",
         "vip_code",
         "vehicle",
+        "service_type",
         "passengers",
         "created_at",
         "updated_at",
@@ -67,8 +75,8 @@ class SaleAdmin(admin.ModelAdmin):
     ordering = ("-created_at",)
 
 
-@admin.register(models.TransferType)
-class TransferTypeAdmin(admin.ModelAdmin):
+@admin.register(models.ServiceType)
+class ServiceTypeAdmin(admin.ModelAdmin):
     list_display = ("name", "created_at")
     list_filter = ("created_at", "updated_at")
     readonly_fields = ("created_at", "updated_at")
