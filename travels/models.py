@@ -163,6 +163,8 @@ class Transfer(models.Model):
     )
     type = models.CharField(max_length=100, choices=TRANSFER_TYPE, default="Departure")
     sale = models.ForeignKey(Sale, on_delete=models.CASCADE, verbose_name="Venta")
+    airline = models.CharField(max_length=100, verbose_name="Aerolínea")
+    flight_number = models.CharField(max_length=100, verbose_name="Número de Vuelo")
     created_at = models.DateTimeField(
         auto_now_add=True, verbose_name="Fecha de creación"
     )
