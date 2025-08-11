@@ -207,6 +207,7 @@ class Pricing(models.Model):
         verbose_name_plural = "Precios"
 
 
+"""
 class SaleDetail(Transfer):
     class Meta:
         proxy = True
@@ -233,3 +234,4 @@ class SaleDetail(Transfer):
         text = f"Servicio de {self.client_full_name} en "
         text += f"{self.location} a las {self.hour}"
         return text
+"""

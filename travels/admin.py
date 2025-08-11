@@ -127,6 +127,7 @@ class PricingAdmin(admin.ModelAdmin):
     ordering = ("location__name", "vehicle__name", "transfer_type__name")
 
 
+"""
 @admin.register(models.SaleDetail)
 class SaleDetailAdmin(admin.ModelAdmin):
     list_display = (
@@ -178,3 +179,4 @@ class SaleDetailAdmin(admin.ModelAdmin):
     # vehicle_type.short_description = "Tipo de Vehículo"
     # vehicle_fee.short_description = "Tarifa"
     # has_vip_code.short_description = "¿VIP?"
+"""
