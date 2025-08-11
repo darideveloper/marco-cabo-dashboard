@@ -8,6 +8,9 @@ from django_filters.rest_framework import DjangoFilterBackend
 from travels import models
 from travels import serializers
 
+from django.shortcuts import redirect
+from django.conf import settings
+
 
 class ZoneViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = models.Zone.objects.all()
@@ -65,7 +68,7 @@ class SaleViewSet(APIView):
         if serializer.is_valid():
             # Create data
             sale = serializer.save()
-            
+
             # Get payment link
             # payment_link = create_stripe_checkout_link(
             #     sale_id=sale.id,
@@ -93,70 +96,21 @@ class SaleViewSet(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        #     data = serializer.validated_data
 
-        #     # Obtener datos del cliente o crearlo
-        #     client, _ = models.Client.objects.get_or_create(
-        #         name=data["client"]["name"],
-        #         last_name=data["client"]["last_name"],
-        #         email=data["client"]["email"],
-        #         phone=data["client"]["phone"]
-        #     )
+class SaleDoneView(APIView):
+    """
+    API endpoint to confirm a sale
+    """
 
-        #     # Obtener vehículo, VIP y ubicación
-        #     vehicle = models.Vehicle.objects.get(id=data["vehicle"]["id"])
-        #     vip_code = models.VipCode.objects.get(value=data["vip_code"])
-        #     location = models.Location.objects.get(id=data["location"]["id"])
+    def get(self, request, sale_stripe_code):
+        try:
+            sale = models.Sale.objects.filter(stripe_code=sale_stripe_code).first()
+        except Exception:
+            return redirect(settings.LANDING_HOST + "?status=error")
 
-        #     # Determinar tipo de servicio según departure
-        #     has_departure = (
-        #         data.get("departure", {}).get("date") and
-        #         data.get("departure", {}).get("hour")
-        #     )
-        #     service_type = models.ServiceType.objects.get(id=data["service_type"]["id"])
+        # Confirm sale
+        sale.paid = True
+        sale.save()
 
-        #     # Crear la venta
-        #     sale = models.Sale.objects.create(
-        #         client=client,
-        #         vip_code=vip_code,
-        #         vehicle=vehicle,
-        #         passengers=data["passengers"],
-        #         service_type=service_type
-        #     )
-
-        #     # Crear transfer de llegada
-        #     arrival_data = data.get("arrival", {})
-        #     models.Transfer.objects.create(
-        #         date=arrival_data["date"],
-        #         hour=arrival_data["hour"],
-        #         location=location,
-        #         type="Arrival",
-        #         sale=sale,
-        #         airline=arrival_data["airline"],
-        #         flight_number=arrival_data["flight_number"]
-        #     )
-
-        #     # Crear transfer de salida (solo si hay datos)
-        #     if has_departure:
-        #         departure_data = data.get("departure", {})
-        #         models.Transfer.objects.create(
-        #             date=departure_data["date"],
-        #             hour=departure_data["hour"],
-        #             location=location,
-        #             type="Departure",
-        #             sale=sale,
-        #             airline=departure_data["airline"],
-        #             flight_number=departure_data["flight_number"]
-        #         )
-
-        #     return Response({
-        #         "status": "success",
-        #         "message": "Sale created successfully",
-        #         "data": {"sale_id": sale.id}
-        #     }, status=status.HTTP_201_CREATED)
-
-        # return Response({
-        #     "status": "error",
-        #     "message": "Invalid sale data",
-        #     "errors": serializer.errors
-        # }, status=status.HTTP_400_BAD_REQUEST)
+        # Check if sale is already confirmed
+        return redirect(settings.LANDING_HOST + "?status=done")

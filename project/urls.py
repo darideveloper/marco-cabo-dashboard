@@ -39,6 +39,11 @@ urlpatterns = [
         travels_views.SaleViewSet.as_view(),
         name="sales"
     ),
+    path(
+        "api/sales/done/<str:sale_stripe_code>/",
+        travels_views.SaleDoneView.as_view(),
+        name="sale-done"
+    ),
 ]
 
 if not settings.STORAGE_AWS:

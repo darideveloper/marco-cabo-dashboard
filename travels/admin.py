@@ -56,6 +56,7 @@ class SaleAdmin(admin.ModelAdmin):
         "service_type",
         "passengers",
         "total",
+        "paid",
         "created_at",
     )
     list_filter = (
@@ -64,6 +65,7 @@ class SaleAdmin(admin.ModelAdmin):
         "vehicle",
         "service_type",
         "passengers",
+        "paid",
         "created_at",
         "updated_at",
     )
@@ -72,6 +74,7 @@ class SaleAdmin(admin.ModelAdmin):
         "client__email",
         "vehicle__name",
         "vip_code__value",
+        "total",
     )
     readonly_fields = ("stripe_code", "created_at", "updated_at")
     ordering = ("-created_at",)

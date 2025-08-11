@@ -152,6 +152,7 @@ class Sale(models.Model):
         unique=True,
     )
     total = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Total")
+    paid = models.BooleanField(default=False, verbose_name="Pagado")
 
     def __str__(self):
         return f"{self.client} - {self.vehicle.name} - {self.created_at}"
