@@ -62,10 +62,15 @@ class SaleViewSet(APIView):
         serializer = serializers.SaleSerializer(data=request.data)
 
         if serializer.is_valid():
+            # Create data
+            sale = serializer.save()
+            
             return Response({
                 "status": "success",
                 "message": "Sale created successfully",
-                "data": []
+                "data": {
+                    "sale_id": sale.id
+                }
             }, status=status.HTTP_201_CREATED)
         else:
             return Response({

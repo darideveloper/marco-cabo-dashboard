@@ -60,14 +60,14 @@ class VipCodeValidationSerializer(serializers.Serializer):
 
 
 class SaleSerializer(serializers.Serializer):
-    
+
     service_type = serializers.PrimaryKeyRelatedField(
         queryset=models.ServiceType.objects.all(), required=True
     )
-    client_name = serializers.CharField(required=True)
-    client_last_name = serializers.CharField(required=True)
-    client_email = serializers.EmailField(required=True)
-    client_phone = serializers.CharField(required=True)
+    client_name = serializers.CharField(required=True, source="client.name")
+    client_last_name = serializers.CharField(required=True, source="client.last_name")
+    client_email = serializers.EmailField(required=True, source="client.email")
+    client_phone = serializers.CharField(required=True, source="client.phone")
     passengers = serializers.IntegerField(required=True)
     location = serializers.PrimaryKeyRelatedField(
         queryset=models.Location.objects.all(), required=True
@@ -89,7 +89,7 @@ class SaleSerializer(serializers.Serializer):
     vehicle = serializers.PrimaryKeyRelatedField(
         queryset=models.Vehicle.objects.all(), required=True
     )
-    
+
     class Meta:
         model = models.Sale
         fields = (
@@ -111,6 +111,19 @@ class SaleSerializer(serializers.Serializer):
             "departure_flight_number",
             "vehicle",
         )
+
+    def create(self, validated_data):
+        client = models.Client.objects.create(**validated_data.pop("client"))
+
+        sale_data = {
+            "client": client,
+            "vip_code": validated_data.pop("vip_code"),
+            "vehicle": validated_data.pop("vehicle"),
+            "service_type": validated_data.pop("service_type"),
+            "passengers": validated_data.pop("passengers"),
+        }
+        sale = models.Sale.objects.create(**sale_data)
+        return sale
 
     # def validate_vip_code(self, value):
     #     """
