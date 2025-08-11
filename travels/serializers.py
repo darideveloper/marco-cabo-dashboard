@@ -47,7 +47,7 @@ class PricingSerializer(serializers.ModelSerializer):
 
 class VipCodeValidationSerializer(serializers.Serializer):
     vip_code = serializers.CharField(max_length=10, required=True)
-    
+
     def validate_vip_code(self, value):
         """
         Validate that the VIP code exists and is active
@@ -60,30 +60,64 @@ class VipCodeValidationSerializer(serializers.Serializer):
 
 
 class SaleSerializer(serializers.Serializer):
-    service_type = serializers.IntegerField(source="service_type.id", required=True)
-    client_name = serializers.CharField(source="client.name", required=True)
-    client_last_name = serializers.CharField(source="client.last_name", required=True)
+    
+    service_type = serializers.PrimaryKeyRelatedField(
+        queryset=models.ServiceType.objects.all(), required=True
+    )
+    client_name = serializers.CharField(required=True)
+    client_last_name = serializers.CharField(required=True)
+    client_email = serializers.EmailField(required=True)
+    client_phone = serializers.CharField(required=True)
     passengers = serializers.IntegerField(required=True)
-    client_email = serializers.EmailField(source="client.email", required=True)
-    client_phone = serializers.CharField(source="client.phone", required=True)
-    location = serializers.IntegerField(source="location.id", required=True)
-    vip_code = serializers.CharField(max_length=10, required=True)
-    arrival_date = serializers.DateField(source="arrival.date")
-    arrival_time = serializers.TimeField(source="arrival.hour")
-    arrival_airline = serializers.CharField(source="arrival.airline")
-    arrival_flight_number = serializers.CharField(source="arrival.flight_number")
-    departure_date = serializers.DateField(source="departure.date")
-    departure_time = serializers.TimeField(source="departure.hour")
-    departure_airline = serializers.CharField(source="departure.airline")
-    departure_flight_number = serializers.CharField(source="departure.flight_number")
-    vehicle = serializers.IntegerField(source="vehicle.id")
+    location = serializers.PrimaryKeyRelatedField(
+        queryset=models.Location.objects.all(), required=True
+    )
+    vip_code = serializers.SlugRelatedField(
+        queryset=models.VipCode.objects.all(),
+        slug_field="value",
+        required=False,
+        allow_null=True,
+    )
+    arrival_date = serializers.DateField(required=True)
+    arrival_time = serializers.TimeField(required=True)
+    arrival_airline = serializers.CharField(required=True)
+    arrival_flight_number = serializers.CharField(required=True)
+    departure_date = serializers.DateField(required=True)
+    departure_time = serializers.TimeField(required=True)
+    departure_airline = serializers.CharField(required=True)
+    departure_flight_number = serializers.CharField(required=True)
+    vehicle = serializers.PrimaryKeyRelatedField(
+        queryset=models.Vehicle.objects.all(), required=True
+    )
+    
+    class Meta:
+        model = models.Sale
+        fields = (
+            "service_type",
+            "client_name",
+            "client_last_name",
+            "client_email",
+            "client_phone",
+            "passengers",
+            "location",
+            "vip_code",
+            "arrival_date",
+            "arrival_time",
+            "arrival_airline",
+            "arrival_flight_number",
+            "departure_date",
+            "departure_time",
+            "departure_airline",
+            "departure_flight_number",
+            "vehicle",
+        )
 
-    def validate_vip_code(self, value):
-        """
-        Validate that the VIP code exists and is active
-        """
-        try:
-            models.VipCode.objects.get(value=value, active=True)
-            return value
-        except models.VipCode.DoesNotExist:
-            raise serializers.ValidationError("Invalid or inactive VIP code")
+    # def validate_vip_code(self, value):
+    #     """
+    #     Validate that the VIP code exists and is active
+    #     """
+    #     try:
+    #         models.VipCode.objects.get(value=value, active=True)
+    #         return value
+    #     except models.VipCode.DoesNotExist:
+    #         raise serializers.ValidationError("Invalid or inactive VIP code")

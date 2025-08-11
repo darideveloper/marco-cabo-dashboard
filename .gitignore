@@ -11,3 +11,5 @@ temp.*
 *temp*
 
 .vscode/
+
+/json_data/
