@@ -62,15 +62,15 @@ class VipCodeValidationSerializer(serializers.Serializer):
 class SaleSerializer(serializers.Serializer):
 
     service_type = serializers.PrimaryKeyRelatedField(
-        queryset=models.ServiceType.objects.all(), required=True
+        queryset=models.ServiceType.objects.all()
     )
-    client_name = serializers.CharField(required=True, source="client.name")
-    client_last_name = serializers.CharField(required=True, source="client.last_name")
-    client_email = serializers.EmailField(required=True, source="client.email")
-    client_phone = serializers.CharField(required=True, source="client.phone")
-    passengers = serializers.IntegerField(required=True)
+    client_name = serializers.CharField(source="client.name")
+    client_last_name = serializers.CharField(source="client.last_name")
+    client_email = serializers.EmailField(source="client.email")
+    client_phone = serializers.CharField(source="client.phone")
+    passengers = serializers.IntegerField()
     location = serializers.PrimaryKeyRelatedField(
-        queryset=models.Location.objects.all(), required=True
+        queryset=models.Location.objects.all()
     )
     vip_code = serializers.SlugRelatedField(
         queryset=models.VipCode.objects.all(),
@@ -78,59 +78,46 @@ class SaleSerializer(serializers.Serializer):
         required=False,
         allow_null=True,
     )
-    arrival_date = serializers.DateField(required=True)
-    arrival_time = serializers.TimeField(required=True)
-    arrival_airline = serializers.CharField(required=True)
-    arrival_flight_number = serializers.CharField(required=True)
-    departure_date = serializers.DateField(required=True)
-    departure_time = serializers.TimeField(required=True)
-    departure_airline = serializers.CharField(required=True)
-    departure_flight_number = serializers.CharField(required=True)
-    vehicle = serializers.PrimaryKeyRelatedField(
-        queryset=models.Vehicle.objects.all(), required=True
+    arrival_date = serializers.DateField(source="arrival.date")
+    arrival_time = serializers.TimeField(source="arrival.hour")
+    arrival_airline = serializers.CharField(source="arrival.airline")
+    arrival_flight_number = serializers.CharField(source="arrival.flight_number")
+    departure_date = serializers.DateField(source="departure.date", required=False)
+    departure_time = serializers.TimeField(source="departure.hour", required=False)
+    departure_airline = serializers.CharField(
+        source="departure.airline", required=False
     )
-
-    class Meta:
-        model = models.Sale
-        fields = (
-            "service_type",
-            "client_name",
-            "client_last_name",
-            "client_email",
-            "client_phone",
-            "passengers",
-            "location",
-            "vip_code",
-            "arrival_date",
-            "arrival_time",
-            "arrival_airline",
-            "arrival_flight_number",
-            "departure_date",
-            "departure_time",
-            "departure_airline",
-            "departure_flight_number",
-            "vehicle",
-        )
+    departure_flight_number = serializers.CharField(
+        source="departure.flight_number", required=False
+    )
+    vehicle = serializers.PrimaryKeyRelatedField(queryset=models.Vehicle.objects.all())
 
     def create(self, validated_data):
-        client = models.Client.objects.create(**validated_data.pop("client"))
 
+        # Create client and sale
+        client = models.Client.objects.create(**validated_data["client"])
         sale_data = {
             "client": client,
-            "vip_code": validated_data.pop("vip_code"),
-            "vehicle": validated_data.pop("vehicle"),
-            "service_type": validated_data.pop("service_type"),
-            "passengers": validated_data.pop("passengers"),
+            "vip_code": validated_data["vip_code"],
+            "vehicle": validated_data["vehicle"],
+            "service_type": validated_data["service_type"],
+            "passengers": validated_data["passengers"],
         }
         sale = models.Sale.objects.create(**sale_data)
-        return sale
 
-    # def validate_vip_code(self, value):
-    #     """
-    #     Validate that the VIP code exists and is active
-    #     """
-    #     try:
-    #         models.VipCode.objects.get(value=value, active=True)
-    #         return value
-    #     except models.VipCode.DoesNotExist:
-    #         raise serializers.ValidationError("Invalid or inactive VIP code")
+        # Create transfers
+        models.Transfer.objects.create(
+            **validated_data["arrival"],
+            location=validated_data["location"],
+            type="arrival",
+            sale=sale,
+        )
+        if "departure" in validated_data:
+            models.Transfer.objects.create(
+                **validated_data["departure"],
+                location=validated_data["location"],
+                type="departure",
+                sale=sale,
+            )
+
+        return sale

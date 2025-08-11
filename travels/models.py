@@ -124,7 +124,11 @@ class Sale(models.Model):
     id = models.AutoField(primary_key=True)
     client = models.ForeignKey(Client, on_delete=models.CASCADE, verbose_name="Cliente")
     vip_code = models.ForeignKey(
-        VipCode, on_delete=models.CASCADE, verbose_name="Código VIP"
+        VipCode,
+        on_delete=models.CASCADE,
+        verbose_name="Código VIP",
+        null=True,
+        blank=True,
     )
     vehicle = models.ForeignKey(
         Vehicle, on_delete=models.CASCADE, verbose_name="Vehículo"
@@ -153,17 +157,22 @@ class Sale(models.Model):
 
 
 class Transfer(models.Model):
-    TRANSFER_TYPE = (
-        ("Departure", "Departure"),
-        ("Arrival", "Arrival"),
+    # Options
+    TRANSFER_TYPE_OPTIONS = (
+        ("departure", "Regreso"),
+        ("arrival", "Llegada"),
     )
+
+    # Fields
     id = models.AutoField(primary_key=True)
     date = models.DateTimeField(auto_now_add=True, verbose_name="Fecha")
     hour = models.TimeField(auto_now_add=False, verbose_name="Hora")
     location = models.ForeignKey(
         Location, on_delete=models.CASCADE, verbose_name="Ubicación"
     )
-    type = models.CharField(max_length=100, choices=TRANSFER_TYPE, default="Departure")
+    type = models.CharField(
+        max_length=100, choices=TRANSFER_TYPE_OPTIONS, default="Departure"
+    )
     sale = models.ForeignKey(Sale, on_delete=models.CASCADE, verbose_name="Venta")
     airline = models.CharField(max_length=100, verbose_name="Aerolínea")
     flight_number = models.CharField(max_length=100, verbose_name="Número de Vuelo")
