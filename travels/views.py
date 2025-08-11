@@ -82,10 +82,7 @@ class SaleViewSet(APIView):
                 data.get("departure", {}).get("date") and
                 data.get("departure", {}).get("hour")
             )
-            if has_departure:
-                service_type = models.ServiceType.objects.get(name__iexact="Round Trip")
-            else:
-                service_type = models.ServiceType.objects.get(name__iexact="One Way")
+            service_type = models.ServiceType.objects.get(id=data["service_type"]["id"])
 
             # Crear la venta
             sale = models.Sale.objects.create(
