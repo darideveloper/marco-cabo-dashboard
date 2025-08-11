@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 
 
@@ -142,6 +144,12 @@ class Sale(models.Model):
     )
     updated_at = models.DateTimeField(
         auto_now=True, verbose_name="Fecha de actualización"
+    )
+    stripe_code = models.UUIDField(
+        default=uuid.uuid4,
+        editable=False,
+        verbose_name="Código de Venta",
+        unique=True,
     )
 
     @property

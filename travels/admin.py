@@ -49,6 +49,7 @@ class VehicleAdmin(admin.ModelAdmin):
 @admin.register(models.Sale)
 class SaleAdmin(admin.ModelAdmin):
     list_display = (
+        "stripe_code",
         "client",
         "vip_code",
         "vehicle",
@@ -71,7 +72,7 @@ class SaleAdmin(admin.ModelAdmin):
         "vehicle__name",
         "vip_code__value",
     )
-    readonly_fields = ("created_at", "updated_at")
+    readonly_fields = ("stripe_code", "created_at", "updated_at")
     ordering = ("-created_at",)
 
 
