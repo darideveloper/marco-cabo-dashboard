@@ -151,11 +151,39 @@ class Sale(models.Model):
         verbose_name="Código de Venta",
         unique=True,
     )
-    total = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Total")
+    total = models.FloatField(verbose_name="Total")
     paid = models.BooleanField(default=False, verbose_name="Pagado")
 
     def __str__(self):
         return f"{self.client} - {self.vehicle.name} - {self.created_at}"
+
+    def get_summary(self):
+        arrival_transfer = self.transfer_set.filter(type="arrival", sale=self).first()
+        departure_transfers = self.transfer_set.filter(type="departure", sale=self)
+
+        summary = f"Marco Cabo {self.vehicle.name}"
+        summary += f" - {self.client.name} {self.client.last_name}"
+        summary += f" - {self.client.email}"
+        summary += f" - {self.client.phone}"
+        summary += f" - {self.service_type.name}"
+        summary += f" - {self.passengers} passengers"
+        summary += f" - {self.vip_code.value}" if self.vip_code else "No VIP"
+        summary += f" - {self.total} USD"
+        summary += f" - Arrival: {arrival_transfer.date} {arrival_transfer.hour}"
+        summary += f" - {arrival_transfer.airline} {arrival_transfer.flight_number}"
+        summary += f" - {arrival_transfer.location.name}"
+
+        if departure_transfers:
+            departure_transfer = departure_transfers[0]
+            summary += (
+                f" - Departure: {departure_transfer.date} {departure_transfer.hour}"
+            )
+            summary += (
+                f" - {departure_transfer.airline} {departure_transfer.flight_number}"
+            )
+            summary += f" - {departure_transfer.location.name}"
+
+        return summary
 
     class Meta:
         verbose_name = "Venta"
@@ -208,7 +236,7 @@ class Pricing(models.Model):
     transfer_type = models.ForeignKey(
         ServiceType, on_delete=models.CASCADE, verbose_name="Tipo de Servicio"
     )
-    price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Precio")
+    price = models.FloatField(verbose_name="Precio")
     created_at = models.DateTimeField(
         auto_now_add=True, verbose_name="Fecha de creación"
     )

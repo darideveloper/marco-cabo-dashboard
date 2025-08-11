@@ -22,6 +22,9 @@ HOST = os.getenv("HOST")
 TEST_HEADLESS = os.getenv("TEST_HEADLESS", "False") == "True"
 PAGE_SIZE = int(os.getenv("PAGE_SIZE", 10))
 LANDING_HOST = os.getenv("LANDING_HOST")
+STRIPE_API_HOST = os.getenv("STRIPE_API_HOST")
+STRIPE_API_USER = os.getenv("STRIPE_API_USER")
+STRIPE_API_IMAGE = os.getenv("STRIPE_API_IMAGE")
 
 print(f"DEBUG: {DEBUG}")
 print(f"STORAGE_AWS: {STORAGE_AWS}")

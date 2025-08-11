@@ -4,12 +4,12 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from django_filters.rest_framework import DjangoFilterBackend
+from django.shortcuts import redirect
+from django.conf import settings
 
 from travels import models
 from travels import serializers
-
-from django.shortcuts import redirect
-from django.conf import settings
+from utils.stripe import get_payment_link
 
 
 class ZoneViewSet(viewsets.ReadOnlyModelViewSet):
@@ -69,20 +69,19 @@ class SaleViewSet(APIView):
             # Create data
             sale = serializer.save()
 
-            # Get payment link
-            # payment_link = create_stripe_checkout_link(
-            #     sale_id=sale.id,
-            #     email=sale.client.email,
-            #     total=sale.total,
-            #     description=f"Venta de {sale.vehicle.name}",
-            #     product_name=f"Venta de {sale.vehicle.name}",
-            # )
+            payment_link = get_payment_link(
+                product_name="Marco Cabo Transfer",
+                total=sale.total,
+                description=sale.get_summary(),
+                email=sale.client.email,
+                sale_id=sale.stripe_code,
+            )
 
             return Response(
                 {
                     "status": "success",
                     "message": "Sale created successfully",
-                    "data": {"sale_id": sale.id},
+                    "data": {"sale_id": sale.id, "payment_link": payment_link},
                 },
                 status=status.HTTP_201_CREATED,
             )
@@ -106,11 +105,11 @@ class SaleDoneView(APIView):
         try:
             sale = models.Sale.objects.filter(stripe_code=sale_stripe_code).first()
         except Exception:
-            return redirect(settings.LANDING_HOST + "?status=error")
+            return redirect(settings.LANDING_HOST + "/?status=error")
 
         # Confirm sale
         sale.paid = True
         sale.save()
 
         # Check if sale is already confirmed
-        return redirect(settings.LANDING_HOST + "?status=done")
+        return redirect(settings.LANDING_HOST + "/?status=done")

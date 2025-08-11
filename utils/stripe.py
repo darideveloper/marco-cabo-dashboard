@@ -22,7 +22,7 @@ def get_payment_link(
     products = {}
     products[product_name] = {
         "amount": 1,
-        "image_url": "https://www.nyxtrackers.com/logo.png",
+        "image_url": settings.STRIPE_API_IMAGE,
         "price": total,
         "description": description,
     }
@@ -30,7 +30,7 @@ def get_payment_link(
     request_json = {
         "user": settings.STRIPE_API_USER,
         "url": f"{settings.LANDING_HOST}/",
-        "url_success": f"{settings.HOST}/api/store/sale-done/{sale_id}",
+        "url_success": f"{settings.HOST}/api/sales/done/{sale_id}",
         "products": products,
         "email": email,
     }
