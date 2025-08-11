@@ -248,7 +248,7 @@ JAZZMIN_SETTINGS = {
         # Travels
         "travels": "fas fa-bus",
         "travels.client": "fas fa-user",
-        "travels.code": "fas fa-ticket",
+        "travels.vipcode": "fas fa-ticket",
         "travels.vehicle": "fas fa-car",
         "travels.sale": "fas fa-cash-register",
         "travels.transfer": "fas fa-truck-fast",
