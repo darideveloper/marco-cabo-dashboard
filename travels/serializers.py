@@ -94,14 +94,24 @@ class SaleSerializer(serializers.Serializer):
 
     def create(self, validated_data):
 
-        # Create client and sale
+        # Create client
         client = models.Client.objects.create(**validated_data["client"])
+        
+        # Get total from pricing
+        pricing = models.Pricing.objects.get(
+            location=validated_data["location"],
+            vehicle=validated_data["vehicle"],
+            transfer_type=validated_data["service_type"],
+        )
+        
+        # Create sale
         sale_data = {
             "client": client,
             "vip_code": validated_data["vip_code"],
             "vehicle": validated_data["vehicle"],
             "service_type": validated_data["service_type"],
             "passengers": validated_data["passengers"],
+            "total": pricing.price,
         }
         sale = models.Sale.objects.create(**sale_data)
 

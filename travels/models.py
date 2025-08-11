@@ -151,10 +151,7 @@ class Sale(models.Model):
         verbose_name="Código de Venta",
         unique=True,
     )
-
-    @property
-    def total(self):
-        return 0
+    total = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Total")
 
     def __str__(self):
         return f"{self.client} - {self.vehicle.name} - {self.created_at}"

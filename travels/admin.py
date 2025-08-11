@@ -55,6 +55,7 @@ class SaleAdmin(admin.ModelAdmin):
         "vehicle",
         "service_type",
         "passengers",
+        "total",
         "created_at",
     )
     list_filter = (

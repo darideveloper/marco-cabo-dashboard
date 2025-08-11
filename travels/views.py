@@ -28,29 +28,30 @@ class PricingViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = models.Pricing.objects.all()
     serializer_class = serializers.PricingSerializer
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['location', 'vehicle', 'transfer_type']
+    filterset_fields = ["location", "vehicle", "transfer_type"]
 
 
 class VipCodeValidationView(APIView):
     """
     API endpoint to validate VIP codes
     """
-    
+
     def post(self, request):
         serializer = serializers.VipCodeValidationSerializer(data=request.data)
-        
+
         if serializer.is_valid():
-            return Response({
-                "status": "sucess",
-                "message": "VIP code is valid",
-                "data": []
-            })
+            return Response(
+                {"status": "sucess", "message": "VIP code is valid", "data": []}
+            )
         else:
-            return Response({
-                "status": "error",
-                "message": "Invalid VIP code",
-                "data": [],
-            }, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {
+                    "status": "error",
+                    "message": "Invalid VIP code",
+                    "data": [],
+                },
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
 
 class SaleViewSet(APIView):
@@ -65,20 +66,33 @@ class SaleViewSet(APIView):
             # Create data
             sale = serializer.save()
             
-            return Response({
-                "status": "success",
-                "message": "Sale created successfully",
-                "data": {
-                    "sale_id": sale.id
-                }
-            }, status=status.HTTP_201_CREATED)
+            # Get payment link
+            # payment_link = create_stripe_checkout_link(
+            #     sale_id=sale.id,
+            #     email=sale.client.email,
+            #     total=sale.total,
+            #     description=f"Venta de {sale.vehicle.name}",
+            #     product_name=f"Venta de {sale.vehicle.name}",
+            # )
+
+            return Response(
+                {
+                    "status": "success",
+                    "message": "Sale created successfully",
+                    "data": {"sale_id": sale.id},
+                },
+                status=status.HTTP_201_CREATED,
+            )
         else:
-            return Response({
-                "status": "error",
-                "message": "Invalid sale data",
-                "errors": serializer.errors
-            }, status=status.HTTP_400_BAD_REQUEST)
-            
+            return Response(
+                {
+                    "status": "error",
+                    "message": "Invalid sale data",
+                    "errors": serializer.errors,
+                },
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
         #     data = serializer.validated_data
 
         #     # Obtener datos del cliente o crearlo
