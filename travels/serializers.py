@@ -32,7 +32,7 @@ class ServiceTypeSerializer(serializers.ModelSerializer):
 class PricingSerializer(serializers.ModelSerializer):
     location = LocationSerializer(read_only=True)
     vehicle = VehicleSerializer(read_only=True)
-    transfer_type = ServiceTypeSerializer(read_only=True)
+    service_type = ServiceTypeSerializer(read_only=True)
 
     class Meta:
         model = models.Pricing
@@ -40,7 +40,7 @@ class PricingSerializer(serializers.ModelSerializer):
             "id",
             "location",
             "vehicle",
-            "transfer_type",
+            "service_type",
             "price",
         )
 
@@ -101,7 +101,7 @@ class SaleSerializer(serializers.Serializer):
         pricing = models.Pricing.objects.get(
             location=validated_data["location"],
             vehicle=validated_data["vehicle"],
-            transfer_type=validated_data["service_type"],
+            service_type=validated_data["service_type"],
         )
         
         # Create sale

@@ -117,19 +117,19 @@ class PricingAdmin(admin.ModelAdmin):
     list_display = (
         "location",
         "vehicle",
-        "transfer_type",
+        "service_type",
         "price",
         "created_at",
     )
-    list_filter = ("location", "vehicle", "transfer_type", "created_at", "updated_at")
+    list_filter = ("location", "vehicle", "service_type", "created_at", "updated_at")
     search_fields = (
         "location__name",
         "vehicle__name",
-        "transfer_type__name",
+        "service_type__name",
         "price",
     )
     readonly_fields = ("created_at", "updated_at")
-    ordering = ("location__name", "vehicle__name", "transfer_type__name")
+    ordering = ("location__name", "vehicle__name", "service_type__name")
 
 
 """

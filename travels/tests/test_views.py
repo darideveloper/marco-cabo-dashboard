@@ -106,11 +106,11 @@ class TestServiceTypeViewSet(TestApiViewsMethods, TestTravelsModelBase):
     def setUp(self):
         super().setUp(endpoint="/api/service-types/")
 
-    def test_get_transfer_types(self):
+    def test_get_service_types(self):
         """Test get transfer types"""
 
-        self.create_transfer_type("one way")
-        self.create_transfer_type("round trip")
+        self.create_service_type("one way")
+        self.create_service_type("round trip")
 
         # Get data and validate status code
         response = self.client.get(self.endpoint)
@@ -125,8 +125,8 @@ class TestServiceTypeViewSet(TestApiViewsMethods, TestTravelsModelBase):
         self.assertEqual(results[1]["id"], 2)
         self.assertEqual(results[1]["name"], "round trip")
 
-    def test_get_transfer_types_no_transfer_type(self):
-        """Test get transfer types with no transfer type"""
+    def test_get_service_types_no_service_type(self):
+        """Test get service types with no service type"""
 
         # Get data and validate status code
         response = self.client.get(self.endpoint)
@@ -150,9 +150,9 @@ class TestPricingViewSet(TestApiViewsMethods, TestTravelsModelBase):
         # Create pricing
         location = self.create_location(name="location 1")
         vehicle = self.create_vehicle(name="vehicle 1")
-        transfer_type = self.create_transfer_type(name="transfer type 1")
+        service_type = self.create_service_type(name="service type 1")
         self.create_pricing(
-            location=location, vehicle=vehicle, transfer_type=transfer_type
+            location=location, vehicle=vehicle, service_type=service_type
         )
 
         # Get data and validate status code
@@ -168,8 +168,8 @@ class TestPricingViewSet(TestApiViewsMethods, TestTravelsModelBase):
         self.assertEqual(results[0]["location"]["name"], location.name)
         self.assertEqual(results[0]["vehicle"]["id"], vehicle.id)
         self.assertEqual(results[0]["vehicle"]["name"], vehicle.name)
-        self.assertEqual(results[0]["transfer_type"]["id"], transfer_type.id)
-        self.assertEqual(results[0]["transfer_type"]["name"], transfer_type.name)
+        self.assertEqual(results[0]["service_type"]["id"], service_type.id)
+        self.assertEqual(results[0]["service_type"]["name"], service_type.name)
         self.assertEqual(results[0]["price"], 100.00)
 
     def test_get_pricing_filter_location(self):
@@ -217,17 +217,17 @@ class TestPricingViewSet(TestApiViewsMethods, TestTravelsModelBase):
         self.assertEqual(results[0]["vehicle"]["name"], vehicle1.name)
         self.assertEqual(results[0]["price"], 100.00)
 
-    def test_get_pricing_filter_transfer_type(self):
-        """Test get pricing with transfer type filter"""
+    def test_get_pricing_filter_service_type(self):
+        """Test get pricing with service type filter"""
 
-        # Create pricing with different transfer types
-        transfer_type1 = self.create_transfer_type(name="transfer type 1")
-        transfer_type2 = self.create_transfer_type(name="transfer type 2")
-        self.create_pricing(transfer_type=transfer_type1)
-        self.create_pricing(transfer_type=transfer_type2)
+        # Create pricing with different service types
+        service_type1 = self.create_service_type(name="service type 1")
+        service_type2 = self.create_service_type(name="service type 2")
+        self.create_pricing(service_type=service_type1)
+        self.create_pricing(service_type=service_type2)
 
         # Get data and validate status code
-        response = self.client.get(self.endpoint, {"transfer_type": transfer_type1.id})
+        response = self.client.get(self.endpoint, {"service_type": service_type1.id})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         # Validate data
@@ -235,12 +235,12 @@ class TestPricingViewSet(TestApiViewsMethods, TestTravelsModelBase):
         results = response_json["results"]
         self.assertEqual(len(results), 1)
         self.assertEqual(results[0]["id"], 1)
-        self.assertEqual(results[0]["transfer_type"]["id"], transfer_type1.id)
-        self.assertEqual(results[0]["transfer_type"]["name"], transfer_type1.name)
+        self.assertEqual(results[0]["service_type"]["id"], service_type1.id)
+        self.assertEqual(results[0]["service_type"]["name"], service_type1.name)
         self.assertEqual(results[0]["price"], 100.00)
 
-    def test_get_pricing_filter_location_vehicle_transfer_type(self):
-        """Test get pricing with location, vehicle and transfer type filter"""
+    def test_get_pricing_filter_location_vehicle_service_type(self):
+        """Test get pricing with location, vehicle and service type filter"""
 
         # Create pricing with different location, vehicle and transfer type
         zone = self.create_zone()
@@ -248,13 +248,13 @@ class TestPricingViewSet(TestApiViewsMethods, TestTravelsModelBase):
         location2 = self.create_location(name="location 2", zone=zone)
         vehicle1 = self.create_vehicle(name="vehicle 1")
         vehicle2 = self.create_vehicle(name="vehicle 2")
-        transfer_type1 = self.create_transfer_type(name="transfer type 1")
-        transfer_type2 = self.create_transfer_type(name="transfer type 2")
+        service_type1 = self.create_service_type(name="service type 1")
+        service_type2 = self.create_service_type(name="service type 2")
         self.create_pricing(
-            location=location1, vehicle=vehicle1, transfer_type=transfer_type1
+            location=location1, vehicle=vehicle1, service_type=service_type1
         )
         self.create_pricing(
-            location=location2, vehicle=vehicle2, transfer_type=transfer_type2
+            location=location2, vehicle=vehicle2, service_type=service_type2
         )
 
         # Get data and validate status code
@@ -263,7 +263,7 @@ class TestPricingViewSet(TestApiViewsMethods, TestTravelsModelBase):
             {
                 "location": location1.id,
                 "vehicle": vehicle1.id,
-                "transfer_type": transfer_type1.id,
+                "service_type": service_type1.id,
             },
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -277,8 +277,8 @@ class TestPricingViewSet(TestApiViewsMethods, TestTravelsModelBase):
         self.assertEqual(results[0]["location"]["name"], location1.name)
         self.assertEqual(results[0]["vehicle"]["id"], vehicle1.id)
         self.assertEqual(results[0]["vehicle"]["name"], vehicle1.name)
-        self.assertEqual(results[0]["transfer_type"]["id"], transfer_type1.id)
-        self.assertEqual(results[0]["transfer_type"]["name"], transfer_type1.name)
+        self.assertEqual(results[0]["service_type"]["id"], service_type1.id)
+        self.assertEqual(results[0]["service_type"]["name"], service_type1.name)
         self.assertEqual(results[0]["price"], 100.00)
 
 

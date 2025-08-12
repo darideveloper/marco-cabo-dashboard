@@ -236,7 +236,7 @@ class Pricing(models.Model):
     vehicle = models.ForeignKey(
         Vehicle, on_delete=models.CASCADE, verbose_name="Vehículo"
     )
-    transfer_type = models.ForeignKey(
+    service_type = models.ForeignKey(
         ServiceType, on_delete=models.CASCADE, verbose_name="Tipo de Servicio"
     )
     price = models.FloatField(verbose_name="Precio")

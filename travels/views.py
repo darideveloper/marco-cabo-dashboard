@@ -31,7 +31,7 @@ class PricingViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = models.Pricing.objects.all().order_by("id")
     serializer_class = serializers.PricingSerializer
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ["location", "vehicle", "transfer_type"]
+    filterset_fields = ["location", "vehicle", "service_type"]
 
 
 class VipCodeValidationView(APIView):

@@ -68,21 +68,21 @@ class Command(BaseCommand):
                 models.Pricing.objects.create(
                     location=location,
                     vehicle=suburban,
-                    transfer_type=oneway,
+                    service_type=oneway,
                     price=suburban_oneway_price,
                 )
                 
                 models.Pricing.objects.create(
                     location=location,
                     vehicle=van,
-                    transfer_type=oneway,
+                    service_type=oneway,
                     price=van_oneway_price,
                 )
                 
                 models.Pricing.objects.create(
                     location=location,
                     vehicle=sprinter,
-                    transfer_type=oneway,
+                    service_type=oneway,
                     price=sprinter_oneway_price,
                 )
                 
@@ -90,20 +90,20 @@ class Command(BaseCommand):
                 models.Pricing.objects.create(
                     location=location,
                     vehicle=suburban,
-                    transfer_type=roundtrip,
+                    service_type=roundtrip,
                     price=suburban_roundtrip_price,
                 )
                 
                 models.Pricing.objects.create(
                     location=location,
                     vehicle=van,
-                    transfer_type=roundtrip,
+                    service_type=roundtrip,
                     price=van_roundtrip_price,
                 )
                 
                 models.Pricing.objects.create(
                     location=location,
                     vehicle=sprinter,
-                    transfer_type=roundtrip,
+                    service_type=roundtrip,
                     price=sprinter_roundtrip_price,
                 )

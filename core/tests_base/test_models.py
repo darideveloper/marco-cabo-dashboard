@@ -45,7 +45,7 @@ class TestTravelsModelBase(TestCase):
             zone=zone,
         )
 
-    def create_transfer_type(self, name: str = "test transfer type {x}"):
+    def create_service_type(self, name: str = "test transfer type {x}"):
         """Create a transfer type
 
         Args:
@@ -86,7 +86,7 @@ class TestTravelsModelBase(TestCase):
         self,
         location: models.Location = None,
         vehicle: models.Vehicle = None,
-        transfer_type: models.ServiceType = None,
+        service_type: models.ServiceType = None,
         price: float = 100,
     ):
         """Create a pricing
@@ -94,7 +94,7 @@ class TestTravelsModelBase(TestCase):
         Args:
             location (Location): Location of the pricing
             vehicle (Vehicle): Vehicle of the pricing
-            transfer_type (ServiceType): Transfer type of the pricing
+            service_type (ServiceType): Service type of the pricing
             price (float): Price of the pricing
 
         Returns:
@@ -107,12 +107,12 @@ class TestTravelsModelBase(TestCase):
         if not vehicle:
             vehicle = self.create_vehicle()
 
-        if not transfer_type:
-            transfer_type = self.create_transfer_type()
+        if not service_type:
+            service_type = self.create_service_type()
 
         return models.Pricing.objects.create(
             location=location,
             vehicle=vehicle,
-            transfer_type=transfer_type,
+            service_type=service_type,
             price=price,
         )
