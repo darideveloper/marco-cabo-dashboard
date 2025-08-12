@@ -104,7 +104,7 @@ class TestServiceTypeViewSet(TestApiViewsMethods, TestTravelsModelBase):
     """Test transfer type views"""
 
     def setUp(self):
-        super().setUp(endpoint="/api/transfer-types/")
+        super().setUp(endpoint="/api/service-types/")
 
     def test_get_transfer_types(self):
         """Test get transfer types"""
