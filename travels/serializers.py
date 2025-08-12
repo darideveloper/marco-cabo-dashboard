@@ -73,7 +73,7 @@ class SaleSerializer(serializers.Serializer):
         queryset=models.Location.objects.all()
     )
     vip_code = serializers.SlugRelatedField(
-        queryset=models.VipCode.objects.all(),
+        queryset=models.VipCode.objects.filter(active=True),
         slug_field="value",
         required=False,
         allow_null=True,
@@ -107,7 +107,7 @@ class SaleSerializer(serializers.Serializer):
         # Create sale
         sale_data = {
             "client": client,
-            "vip_code": validated_data["vip_code"],
+            "vip_code": validated_data.get("vip_code", None),
             "vehicle": validated_data["vehicle"],
             "service_type": validated_data["service_type"],
             "passengers": validated_data["passengers"],
