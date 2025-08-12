@@ -205,7 +205,10 @@ class Transfer(models.Model):
         Location, on_delete=models.CASCADE, verbose_name="Ubicación"
     )
     type = models.CharField(
-        max_length=100, choices=TRANSFER_TYPE_OPTIONS, default="Departure"
+        max_length=100,
+        choices=TRANSFER_TYPE_OPTIONS,
+        default="Departure",
+        verbose_name="Tipo",
     )
     sale = models.ForeignKey(Sale, on_delete=models.CASCADE, verbose_name="Venta")
     airline = models.CharField(max_length=100, verbose_name="Aerolínea")
