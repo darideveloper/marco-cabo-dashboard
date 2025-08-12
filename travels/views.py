@@ -13,22 +13,22 @@ from utils.stripe import get_payment_link
 
 
 class ZoneViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = models.Zone.objects.all()
+    queryset = models.Zone.objects.all().order_by("id")
     serializer_class = serializers.ZoneSerializer
 
 
 class VehicleViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = models.Vehicle.objects.all()
+    queryset = models.Vehicle.objects.all().order_by("id")
     serializer_class = serializers.VehicleSerializer
 
 
 class ServiceTypeViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = models.ServiceType.objects.all()
+    queryset = models.ServiceType.objects.all().order_by("id")
     serializer_class = serializers.ServiceTypeSerializer
 
 
 class PricingViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = models.Pricing.objects.all()
+    queryset = models.Pricing.objects.all().order_by("id")
     serializer_class = serializers.PricingSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ["location", "vehicle", "transfer_type"]
