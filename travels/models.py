@@ -57,7 +57,7 @@ class Client(models.Model):
     )
     updated_at = models.DateTimeField(
         auto_now=True, verbose_name="Fecha de actualización"
-    )
+    ) 
 
     def __str__(self):
         return f"{self.email} - {self.phone}"
@@ -139,6 +139,9 @@ class Sale(models.Model):
     service_type = models.ForeignKey(
         ServiceType, on_delete=models.CASCADE, verbose_name="Tipo de Servicio"
     )
+    location = models.ForeignKey(
+        Location, on_delete=models.CASCADE, verbose_name="Ubicación"
+    )
     created_at = models.DateTimeField(
         auto_now_add=True, verbose_name="Fecha de creación"
     )
@@ -171,7 +174,7 @@ class Sale(models.Model):
         summary += f" - {self.total} USD"
         summary += f" - Arrival: {arrival_transfer.date} {arrival_transfer.hour}"
         summary += f" - {arrival_transfer.airline} {arrival_transfer.flight_number}"
-        summary += f" - {arrival_transfer.location.name}"
+        summary += f" - {self.location.name}"
 
         if departure_transfers:
             departure_transfer = departure_transfers[0]
@@ -181,7 +184,7 @@ class Sale(models.Model):
             summary += (
                 f" - {departure_transfer.airline} {departure_transfer.flight_number}"
             )
-            summary += f" - {departure_transfer.location.name}"
+            summary += f" - {self.location.name}"
 
         return summary
 
@@ -201,9 +204,6 @@ class Transfer(models.Model):
     id = models.AutoField(primary_key=True)
     date = models.DateTimeField(auto_now_add=True, verbose_name="Fecha")
     hour = models.TimeField(auto_now_add=False, verbose_name="Hora")
-    location = models.ForeignKey(
-        Location, on_delete=models.CASCADE, verbose_name="Ubicación"
-    )
     type = models.CharField(
         max_length=100,
         choices=TRANSFER_TYPE_OPTIONS,
@@ -221,7 +221,7 @@ class Transfer(models.Model):
     )
 
     def __str__(self):
-        return f"{self.date} - {self.location} - {self.type}"
+        return f"{self.date} - {self.sale.location.name} - {self.type}"
 
     class Meta:
         verbose_name = "Transportación"
@@ -248,7 +248,7 @@ class Pricing(models.Model):
     )
 
     def __str__(self):
-        return f"{self.location} - {self.price}"
+        return f"{self.location.name} - {self.price}"
 
     class Meta:
         verbose_name = "Precio"

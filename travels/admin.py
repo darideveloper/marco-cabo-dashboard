@@ -54,6 +54,7 @@ class SaleAdmin(admin.ModelAdmin):
         "vip_code",
         "vehicle",
         "service_type",
+        "location",
         "passengers",
         "total",
         "paid",
@@ -64,6 +65,7 @@ class SaleAdmin(admin.ModelAdmin):
         "vip_code",
         "vehicle",
         "service_type",
+        "location",
         "passengers",
         "paid",
         "created_at",
@@ -90,18 +92,17 @@ class ServiceTypeAdmin(admin.ModelAdmin):
 
 @admin.register(models.Transfer)
 class TransferAdmin(admin.ModelAdmin):
-    list_display = ("date", "hour", "location", "type", "sale", "created_at")
+    list_display = ("date", "hour", "type", "sale", "created_at")
     list_filter = (
-        "location",
         "type",
         "sale__client",
         "sale__vehicle",
+        "sale__location",
         "created_at",
         "updated_at",
-        "date",
     )
     search_fields = (
-        "location__name",
+        "sale__location__name",
         "sale__client__name",
         "sale__client__email",
         "sale__vehicle__name",
