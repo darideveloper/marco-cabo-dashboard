@@ -48,12 +48,12 @@ class SaleAdminTestCase(TestAdminBase):
         self.submit_search_bar(self.endpoint)
 
 
-class TransferTypeAdminTestCase(TestAdminBase):
+class ServiceTypeAdminTestCase(TestAdminBase):
     """Testing transfer type admin"""
 
     def setUp(self):
         super().setUp()
-        self.endpoint = "/admin/travels/transfertype/"
+        self.endpoint = "/admin/travels/servicetype/"
 
 
 class TransferAdminTestCase(TestAdminBase):

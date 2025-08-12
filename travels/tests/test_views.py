@@ -100,7 +100,7 @@ class TestVehicleViewSet(TestApiViewsMethods, TestTravelsModelBase):
         self.assertEqual(len(results), 0)
 
 
-class TestTransferTypeViewSet(TestApiViewsMethods, TestTravelsModelBase):
+class TestServiceTypeViewSet(TestApiViewsMethods, TestTravelsModelBase):
     """Test transfer type views"""
 
     def setUp(self):

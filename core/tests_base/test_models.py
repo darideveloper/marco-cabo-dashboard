@@ -52,10 +52,10 @@ class TestTravelsModelBase(TestCase):
             name (str): Name of the transfer type
 
         Returns:
-            TransferType: Transfer type created
+            ServiceType: Transfer type created
         """
         name = self.__replace_random_string__(name)
-        return models.TransferType.objects.create(name=name)
+        return models.ServiceType.objects.create(name=name)
 
     def create_vehicle(self, name: str = "test vehicle {x}"):
         """Create a vehicle
@@ -86,7 +86,7 @@ class TestTravelsModelBase(TestCase):
         self,
         location: models.Location = None,
         vehicle: models.Vehicle = None,
-        transfer_type: models.TransferType = None,
+        transfer_type: models.ServiceType = None,
         price: float = 100,
     ):
         """Create a pricing
@@ -94,7 +94,7 @@ class TestTravelsModelBase(TestCase):
         Args:
             location (Location): Location of the pricing
             vehicle (Vehicle): Vehicle of the pricing
-            transfer_type (TransferType): Transfer type of the pricing
+            transfer_type (ServiceType): Transfer type of the pricing
             price (float): Price of the pricing
 
         Returns:
