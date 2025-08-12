@@ -170,7 +170,7 @@ class TestPricingViewSet(TestApiViewsMethods, TestTravelsModelBase):
         self.assertEqual(results[0]["vehicle"]["name"], vehicle.name)
         self.assertEqual(results[0]["transfer_type"]["id"], transfer_type.id)
         self.assertEqual(results[0]["transfer_type"]["name"], transfer_type.name)
-        self.assertEqual(results[0]["price"], "100.00")
+        self.assertEqual(results[0]["price"], 100.00)
 
     def test_get_pricing_filter_location(self):
         """Test get pricing with location filter"""
@@ -193,6 +193,7 @@ class TestPricingViewSet(TestApiViewsMethods, TestTravelsModelBase):
         self.assertEqual(results[0]["id"], 1)
         self.assertEqual(results[0]["location"]["id"], location1.id)
         self.assertEqual(results[0]["location"]["name"], location1.name)
+        self.assertEqual(results[0]["price"], 100.00)
 
     def test_get_pricing_filter_vehicle(self):
         """Test get pricing with vehicle filter"""
@@ -214,6 +215,7 @@ class TestPricingViewSet(TestApiViewsMethods, TestTravelsModelBase):
         self.assertEqual(results[0]["id"], 1)
         self.assertEqual(results[0]["vehicle"]["id"], vehicle1.id)
         self.assertEqual(results[0]["vehicle"]["name"], vehicle1.name)
+        self.assertEqual(results[0]["price"], 100.00)
 
     def test_get_pricing_filter_transfer_type(self):
         """Test get pricing with transfer type filter"""
@@ -235,6 +237,7 @@ class TestPricingViewSet(TestApiViewsMethods, TestTravelsModelBase):
         self.assertEqual(results[0]["id"], 1)
         self.assertEqual(results[0]["transfer_type"]["id"], transfer_type1.id)
         self.assertEqual(results[0]["transfer_type"]["name"], transfer_type1.name)
+        self.assertEqual(results[0]["price"], 100.00)
 
     def test_get_pricing_filter_location_vehicle_transfer_type(self):
         """Test get pricing with location, vehicle and transfer type filter"""
@@ -276,6 +279,7 @@ class TestPricingViewSet(TestApiViewsMethods, TestTravelsModelBase):
         self.assertEqual(results[0]["vehicle"]["name"], vehicle1.name)
         self.assertEqual(results[0]["transfer_type"]["id"], transfer_type1.id)
         self.assertEqual(results[0]["transfer_type"]["name"], transfer_type1.name)
+        self.assertEqual(results[0]["price"], 100.00)
 
 
 class TestVipCodeValidationView(TestApiViewsMethods, TestTravelsModelBase):
