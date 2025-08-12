@@ -102,7 +102,6 @@ class TransferAdmin(admin.ModelAdmin):
     )
     search_fields = (
         "location__name",
-        "type__name",
         "sale__client__name",
         "sale__client__email",
         "sale__vehicle__name",
