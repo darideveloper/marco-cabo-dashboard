@@ -1,12 +1,15 @@
 import json
 
+from django.core.management import call_command
+
 from rest_framework import status
 
 from core.tests_base.test_models import TestTravelsModelBase
 from core.tests_base.test_views import TestApiViewsMethods
+from travels import models
 
 
-class TestZoneViewSet(TestApiViewsMethods, TestTravelsModelBase):
+class ZoneViewSetTestCase(TestApiViewsMethods, TestTravelsModelBase):
     """Test zone views"""
 
     def setUp(self):
@@ -59,7 +62,7 @@ class TestZoneViewSet(TestApiViewsMethods, TestTravelsModelBase):
         self.assertEqual(len(results[0]["locations"]), 0)
 
 
-class TestVehicleViewSet(TestApiViewsMethods, TestTravelsModelBase):
+class VehicleViewSetTestCase(TestApiViewsMethods, TestTravelsModelBase):
     """Test vehicle views"""
 
     def setUp(self):
@@ -100,7 +103,7 @@ class TestVehicleViewSet(TestApiViewsMethods, TestTravelsModelBase):
         self.assertEqual(len(results), 0)
 
 
-class TestServiceTypeViewSet(TestApiViewsMethods, TestTravelsModelBase):
+class ServiceTypeViewSetTestCase(TestApiViewsMethods, TestTravelsModelBase):
     """Test transfer type views"""
 
     def setUp(self):
@@ -138,7 +141,7 @@ class TestServiceTypeViewSet(TestApiViewsMethods, TestTravelsModelBase):
         self.assertEqual(len(results), 0)
 
 
-class TestPricingViewSet(TestApiViewsMethods, TestTravelsModelBase):
+class PricingViewSetTestCase(TestApiViewsMethods, TestTravelsModelBase):
     """Test pricing views"""
 
     def setUp(self):
@@ -282,7 +285,7 @@ class TestPricingViewSet(TestApiViewsMethods, TestTravelsModelBase):
         self.assertEqual(results[0]["price"], 100.00)
 
 
-class TestVipCodeValidationView(TestApiViewsMethods, TestTravelsModelBase):
+class VipCodeValidationViewTestCase(TestApiViewsMethods, TestTravelsModelBase):
     """Test vip code validation views"""
 
     def setUp(self):
@@ -378,3 +381,292 @@ class TestVipCodeValidationView(TestApiViewsMethods, TestTravelsModelBase):
         self.assertEqual(response_json["status"], "error")
         self.assertEqual(response_json["message"], "Invalid VIP code")
         self.assertEqual(response_json["data"], [])
+
+
+class SaleViewSetTestCase(TestApiViewsMethods, TestTravelsModelBase):
+    """Test sale views"""
+
+    @classmethod
+    def setUpTestData(cls):
+        # Create db
+        call_command("apps_loaddata")
+        call_command("load_pricing")
+
+    def setUp(self):
+        super().setUp(
+            endpoint="/api/sales/", restricted_post=False, restricted_get=True
+        )
+
+        # Api missing data
+        self.data = {
+            "service_type": 1,
+            "client_name": "John",
+            "client_last_name": "Doe",
+            "client_email": "john.doe@example.com",
+            "client_phone": "1234567890",
+            "passengers": 4,
+            "location": 1,
+            "vip_code": "",
+            "arrival_date": "2025-01-01",
+            "arrival_time": "10:00",
+            "arrival_airline": "Airline",
+            "arrival_flight_number": "1234567890",
+            "departure_date": "2025-01-01",
+            "departure_time": "10:00",
+            "departure_airline": "Airline",
+            "departure_flight_number": "1234567890",
+            "vehicle": 1,
+        }
+
+    def validate_no_data_created(self):
+        """Validate no data created"""
+        self.assertEqual(models.Sale.objects.count(), 0)
+        self.assertEqual(models.Client.objects.count(), 0)
+        self.assertEqual(models.Transfer.objects.count(), 0)
+
+    def test_post_missing_data(self):
+        """Test post missing data
+        Expected: Missing required fields
+        """
+
+        # Send json post data and validate status code
+        response = self.client.post(self.endpoint, content_type="application/json")
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        # Validate data
+        response_json = response.json()
+        self.assertEqual(response_json["status"], "error")
+        self.assertEqual(response_json["message"], "Invalid sale data")
+        required_fields = [
+            "service_type",
+            "client_name",
+            "client_last_name",
+            "client_email",
+            "client_phone",
+            "passengers",
+            "location",
+            "arrival_date",
+            "arrival_time",
+            "arrival_airline",
+            "arrival_flight_number",
+            "vehicle",
+        ]
+        for field in required_fields:
+            self.assertIn(field, response_json["errors"])
+            self.assertIn("Este campo es requerido.", response_json["errors"][field])
+
+        # Validate no data created
+        self.validate_no_data_created()
+
+    def test_post_service_type_invalid(self):
+        """Test post invalid service type
+        Expected: service_type not found
+        """
+
+        # Change service type
+        service_type_invalid = 99
+        self.data["service_type"] = service_type_invalid
+
+        # Send json post data and validate status code
+        response = self.client.post(
+            self.endpoint, json.dumps(self.data), content_type="application/json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        # Validate data
+        response_json = response.json()
+        self.assertEqual(response_json["status"], "error")
+        self.assertEqual(response_json["message"], "Invalid sale data")
+        self.assertIn("service_type", response_json["errors"])
+        self.assertIn(
+            f'Clave primaria "{service_type_invalid}" inválida - objeto no existe.',
+            response_json["errors"]["service_type"],
+        )
+
+        # Validate no data created
+        self.validate_no_data_created()
+
+    def test_post_location_invalid(self):
+        """Test post invalid location
+        Expected: location not found
+        """
+
+        # Change location
+        location_invalid = 999
+        self.data["location"] = location_invalid
+
+        # Send json post data and validate status code
+        response = self.client.post(
+            self.endpoint, json.dumps(self.data), content_type="application/json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        # Validate data
+        response_json = response.json()
+        self.assertEqual(response_json["status"], "error")
+        self.assertEqual(response_json["message"], "Invalid sale data")
+        self.assertIn("location", response_json["errors"])
+        self.assertIn(
+            f'Clave primaria "{location_invalid}" inválida - objeto no existe.',
+            response_json["errors"]["location"],
+        )
+
+        # Validate no data created
+        self.validate_no_data_created()
+
+    def test_post_vip_code_invalid(self):
+        """Test post invalid vip code
+        Expected: vip code not found
+        """
+
+        # Change vip code
+        vip_code = "fake vip code"
+        self.data["vip_code"] = vip_code
+
+        # Send json post data and validate status code
+        response = self.client.post(
+            self.endpoint, json.dumps(self.data), content_type="application/json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        # Validate data
+        response_json = response.json()
+        self.assertEqual(response_json["status"], "error")
+        self.assertEqual(response_json["message"], "Invalid sale data")
+        self.assertIn("vip_code", response_json["errors"])
+        self.assertIn(
+            f"Objeto con value={vip_code} no existe.",
+            response_json["errors"]["vip_code"],
+        )
+
+        # Validate no data created
+        self.validate_no_data_created()
+
+    def test_post_vip_code_inactive(self):
+        """Test post inactive vip code
+        Expected: vip code not found
+        """
+
+        # Change vip code
+        vip_code = "VIP123"
+        self.create_vip_code(value=vip_code, active=False)
+        self.data["vip_code"] = vip_code
+
+        # Send json post data and validate status code
+        response = self.client.post(
+            self.endpoint, json.dumps(self.data), content_type="application/json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        # Validate data
+        response_json = response.json()
+        self.assertEqual(response_json["status"], "error")
+        self.assertEqual(response_json["message"], "Invalid sale data")
+        self.assertIn("vip_code", response_json["errors"])
+        self.assertIn(
+            f"Objeto con value={vip_code} no existe.",
+            response_json["errors"]["vip_code"],
+        )
+
+        # Validate no data created
+        self.validate_no_data_created()
+
+    def test_post_vip_code_empty(self):
+        """Test post empty vip code
+        Expected: ok
+        """
+
+        # Change vip code
+        self.data["vip_code"] = ""
+
+        # Send json post data and validate status code
+        response = self.client.post(
+            self.endpoint, json.dumps(self.data), content_type="application/json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        # Validate data
+        response_json = response.json()
+        self.assertEqual(response_json["status"], "success")
+        self.assertEqual(response_json["message"], "Sale created successfully")
+
+    def test_post_vip_code_missing(self):
+        """Test post missing vip code
+        Expected: ok
+        """
+
+        # Remove vip code from data if exists
+        if "vip_code" in self.data:
+            del self.data["vip_code"]
+
+        # Send json post data and validate status code
+        response = self.client.post(
+            self.endpoint, json.dumps(self.data), content_type="application/json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        # Validate data
+        response_json = response.json()
+        self.assertEqual(response_json["status"], "success")
+        self.assertEqual(response_json["message"], "Sale created successfully")
+
+    def test_post_vehicle_invalid(self):
+        """Test post invalid vehicle
+        Expected: vehicle not found
+        """
+
+        # Change vehicle
+        vehicle_invalid = 999
+        self.data["vehicle"] = vehicle_invalid
+
+        # Send json post data and validate status code
+        response = self.client.post(
+            self.endpoint, json.dumps(self.data), content_type="application/json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        # Validate data
+        response_json = response.json()
+        self.assertEqual(response_json["status"], "error")
+        self.assertEqual(response_json["message"], "Invalid sale data")
+        self.assertIn("vehicle", response_json["errors"])
+        self.assertIn(
+            f'Clave primaria "{vehicle_invalid}" inválida - objeto no existe.',
+            response_json["errors"]["vehicle"],
+        )
+
+        # Validate no data created
+        self.validate_no_data_created()
+
+    def test_post_ok_one_way(self):
+        """Test post ok one way
+        Expected: ok
+        """
+
+        # Change service type
+        del self.data["departure_date"]
+        del self.data["departure_time"]
+        del self.data["departure_airline"]
+        del self.data["departure_flight_number"]
+
+        # Send json post data and validate status code
+        response = self.client.post(
+            self.endpoint, json.dumps(self.data), content_type="application/json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        # Validate data
+        response_json = response.json()
+        self.assertEqual(response_json["status"], "success")
+        self.assertEqual(response_json["message"], "Sale created successfully")
+        self.assertTrue(
+            response_json["data"]["payment_link"].startswith(
+                "https://checkout.stripe.com/"
+            )
+        )
+
+        # Validate data created
+        # TODO
+
+        # Validate total calculation
+        # TODO

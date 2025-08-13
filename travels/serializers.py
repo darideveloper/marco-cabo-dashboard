@@ -110,6 +110,7 @@ class SaleSerializer(serializers.Serializer):
             "vip_code": validated_data.get("vip_code", None),
             "vehicle": validated_data["vehicle"],
             "service_type": validated_data["service_type"],
+            "location": validated_data["location"],
             "passengers": validated_data["passengers"],
             "total": pricing.price,
         }
@@ -118,14 +119,12 @@ class SaleSerializer(serializers.Serializer):
         # Create transfers
         models.Transfer.objects.create(
             **validated_data["arrival"],
-            location=validated_data["location"],
             type="arrival",
             sale=sale,
         )
         if "departure" in validated_data:
             models.Transfer.objects.create(
                 **validated_data["departure"],
-                location=validated_data["location"],
                 type="departure",
                 sale=sale,
             )
