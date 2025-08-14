@@ -2,6 +2,7 @@ from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.permissions import AllowAny
 
 from django_filters.rest_framework import DjangoFilterBackend
 from django.shortcuts import redirect
@@ -71,7 +72,7 @@ class SaleViewSet(APIView):
             
             # Go directly to confirmation page if vip code
             # Or generate payment
-            payment_link = settings.LANDING_HOST + "/?status=done"
+            payment_link = settings.LANDING_HOST_SUCCESS
             if not sale.vip_code:
                 payment_link = get_payment_link(
                     product_name="Marco Cabo Transfer",
@@ -104,16 +105,18 @@ class SaleDoneView(APIView):
     """
     API endpoint to confirm a sale
     """
+    
+    permission_classes = [AllowAny]
 
     def get(self, request, sale_stripe_code):
         try:
             sale = models.Sale.objects.filter(stripe_code=sale_stripe_code).first()
         except Exception:
-            return redirect(settings.LANDING_HOST + "/?status=error")
+            return redirect(settings.LANDING_HOST_ERROR)
 
         # Confirm sale
         sale.paid = True
         sale.save()
 
         # Check if sale is already confirmed
-        return redirect(settings.LANDING_HOST + "/?status=done")
+        return redirect(settings.LANDING_HOST_SUCCESS)
