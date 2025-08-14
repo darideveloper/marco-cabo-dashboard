@@ -208,8 +208,8 @@ class Transfer(models.Model):
 
     # Fields
     id = models.AutoField(primary_key=True)
-    date = models.DateTimeField(auto_now_add=True, verbose_name="Fecha")
-    hour = models.TimeField(auto_now_add=False, verbose_name="Hora")
+    date = models.DateTimeField(verbose_name="Fecha")
+    hour = models.TimeField(verbose_name="Hora")
     type = models.CharField(
         max_length=100,
         choices=TRANSFER_TYPE_OPTIONS,
