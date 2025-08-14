@@ -1,12 +1,14 @@
 import json
+from time import sleep
 
 from django.core.management import call_command
 from django.conf import settings
+from django.contrib.auth.models import User
 
 from rest_framework import status
 
 from core.tests_base.test_models import TestTravelsModelBase
-from core.tests_base.test_views import TestApiViewsMethods
+from core.tests_base.test_views import TestApiViewsMethods, TestSeleniumBase
 from travels import models
 
 
@@ -773,7 +775,7 @@ class SaleViewSetTestCase(TestApiViewsMethods, TestTravelsModelBase):
         self.assertEqual(response_json["message"], "Sale created successfully")
         self.assertEqual(
             response_json["data"]["payment_link"],
-            settings.LANDING_HOST + "/?status=done",
+            settings.LANDING_HOST_SUCCESS,
         )
 
     def test_post_ok_round_trip_vip_code(self):
@@ -783,25 +785,188 @@ class SaleViewSetTestCase(TestApiViewsMethods, TestTravelsModelBase):
 
         # Set service type to round trip
         self.data["service_type"] = 2
-        
+
         # Create vip code
         vip_code = "VIP123"
         self.create_vip_code(value=vip_code, active=True)
-        
+
         # Set vip code
         self.data["vip_code"] = vip_code
-        
+
         # Send json post data and validate status code
         response = self.client.post(
             self.endpoint, json.dumps(self.data), content_type="application/json"
         )
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        
+
         # Validate data
         response_json = response.json()
         self.assertEqual(response_json["status"], "success")
         self.assertEqual(response_json["message"], "Sale created successfully")
         self.assertEqual(
             response_json["data"]["payment_link"],
-            settings.LANDING_HOST + "/?status=done",
+            settings.LANDING_HOST_SUCCESS,
         )
+
+
+class SaleViewSetLiveTestCase(TestSeleniumBase):
+    """Test sale view set live"""
+
+    def setUp(self):
+        endpoint = "/api/sales/"
+        super().setUp(endpoint=endpoint)
+
+        # Create user and login to api
+        username = "test_user"
+        password = "test_pass"
+        User.objects.create_superuser(
+            username=username,
+            email="test@gmail.com",
+            password=password,
+        )
+        self.client.login(username=username, password=password)
+
+        # Create db
+        call_command("apps_loaddata")
+        call_command("load_pricing")
+
+        # Create sale
+        self.sale_data = {
+            "client_name": "John",
+            "client_last_name": "Doe",
+            "client_email": "john.doe@example.com",
+            "client_phone": "1234567890",
+            "service_type": 2,
+            "location": 1,
+            "vehicle": 1,
+            "passengers": 1,
+            "departure_date": "2025-01-01",
+            "departure_time": "10:00",
+            "departure_airline": "Airline",
+            "departure_flight_number": "1234567890",
+            "arrival_date": "2025-01-01",
+            "arrival_time": "10:00",
+            "arrival_airline": "Airline",
+            "arrival_flight_number": "1234567890",
+        }
+
+        self.stripe_data = {
+            "amount": 170,
+            "name": "John Doe",
+            "card": {
+                "number": "4242424242424242",
+                "exp": "12 / 34",
+                "cvc": "123",
+            },
+        }
+
+        self.selectors = {
+            "card_number": "input[name='cardNumber']",
+            "card_date": "input[name='cardExpiry']",
+            "card_cvc": "input[name='cardCvc']",
+            "card_name": "input[name='billingName']",
+            "card_submit": "button.SubmitButton",
+            "ammount": "span.CurrencyAmount",
+        }
+
+    def load_stripe(self):
+        """Get payment link"""
+
+        # Get payment link
+        response = self.client.post(
+            self.endpoint, json.dumps(self.sale_data), content_type="application/json"
+        )
+
+        # Validate data
+        response_json = response.json()
+        self.assertEqual(response_json["status"], "success")
+        self.assertEqual(response_json["message"], "Sale created successfully")
+        payment_link = response_json["data"]["payment_link"]
+
+        # Open payment link
+        self.driver.get(payment_link)
+        sleep(4)
+
+    def test_stripe_amount(self):
+        """Test stripe amount is correct
+        Expected: ok
+        """
+
+        # Load stripe page
+        self.load_stripe()
+
+        # Validate stripe amount
+        fields = self.get_selenium_elems(self.selectors)
+        self.assertEqual(fields["ammount"].text, "$170.00")  # amount from pricing csv
+
+    def test_stripe_sucess_payment(self):
+        """Test stripe success payment
+        Expected: redirect to confirmation page
+        """
+
+        # Load stripe pageº
+        self.load_stripe()
+
+        # Fill payment data
+        fields = self.get_selenium_elems(self.selectors)
+        fields["card_number"].send_keys(self.stripe_data["card"]["number"])
+        fields["card_date"].send_keys(self.stripe_data["card"]["exp"])
+        fields["card_cvc"].send_keys(self.stripe_data["card"]["cvc"])
+        fields["card_name"].send_keys(self.stripe_data["name"])
+        sleep(2)
+        self.click_js_elem(fields["card_submit"])
+        sleep(6)
+
+        # Validate redirect to confirmation page
+        sale = models.Sale.objects.get(client__email=self.sale_data["client_email"])
+        confirmation_url = self.driver.current_url
+        self.assertIn(f"/api/sales/done/{sale.stripe_code}", confirmation_url)
+
+        # Open link in test live mode
+        confirmation_endpoint = confirmation_url.split("/api")[1]
+        self.set_page(f"/api{confirmation_endpoint}")
+
+        # Validate redirect to confirmation page
+        self.assertEqual(
+            self.driver.current_url, settings.LANDING_HOST_SUCCESS
+        )
+
+
+class SaleDoneViewTestCase(TestApiViewsMethods, TestTravelsModelBase):
+    """Test sale done view"""
+
+    def setUp(self):
+        super().setUp(endpoint="/api/sales/done/sample-stripe-code/")
+
+    def test_get_sale_done(self):
+        """Test get sale done
+        Expected: ok
+        """
+
+        # Create sale
+        sale = self.create_sale()
+
+        # Get data and validate status code
+        response = self.client.get(
+            self.endpoint.replace("sample-stripe-code", str(sale.stripe_code))
+        )
+        self.assertEqual(response.status_code, status.HTTP_302_FOUND)
+
+        # Validate sale paid
+        sale = models.Sale.objects.get(stripe_code=sale.stripe_code)
+        self.assertEqual(sale.paid, True)
+
+        # Validate success redirect
+        self.assertEqual(response.url, settings.LANDING_HOST_SUCCESS)
+
+    def test_get_sale_done_invalid_stripe_code(self):
+        """Test get sale done with invalid stripe code
+        Expected: error redirect
+        """
+
+        # Get data and validate status code
+        response = self.client.get(self.endpoint, {"sale_stripe_code": "invalid"})
+        self.assertEqual(response.status_code, status.HTTP_302_FOUND)
+
+        # Validate error redirect
+        self.assertEqual(response.url, settings.LANDING_HOST_ERROR)

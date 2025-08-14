@@ -1,11 +1,19 @@
+from time import sleep
+
+from django.test import LiveServerTestCase
+from django.conf import settings
 from django.contrib.auth.models import User
+
 from rest_framework.test import APITestCase
 from rest_framework import status
 
-from core.tests_base.test_admin import TestAdminBase
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.remote.webelement import WebElement
+from selenium.webdriver.common.by import By
 
 
-class TestApiViewsMethods(APITestCase, TestAdminBase):
+class TestApiViewsMethods(APITestCase):
     """Base class for testing api views that only allows get views"""
 
     def setUp(
@@ -66,16 +74,16 @@ class TestApiViewsMethods(APITestCase, TestAdminBase):
 
         if self.restricted_patch:
             self.validate_invalid_method("patch")
-            
+
     def test_authenticated_user_delete(self):
         """Test that authenticated users can not delete to the endpoint"""
 
         if self.restricted_delete:
             self.validate_invalid_method("delete")
-            
+
     def test_authenticated_user_get(self):
         """Test that authenticated users can get to the endpoint"""
-        
+
         if self.restricted_get:
             self.validate_invalid_method("get")
 
@@ -90,3 +98,68 @@ class TestApiViewsMethods(APITestCase, TestAdminBase):
 
         # Check response
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+
+class TestSeleniumBase(LiveServerTestCase):
+    """Base class to test admin with selenium (login and setup)"""
+
+    def setUp(self, endpoint="/"):
+        """Load data, setup and login in each test"""
+
+        # Setup selenium
+        self.endpoint = endpoint
+        self.__setup_selenium__()
+
+    def tearDown(self):
+        """Close selenium"""
+        try:
+            self.driver.quit()
+        except Exception:
+            pass
+
+    def __setup_selenium__(self):
+        """Setup and open selenium browser"""
+        chrome_options = Options()
+
+        # Run in headless mode if enabled
+        if settings.TEST_HEADLESS:
+            chrome_options.add_argument("--headless=new")
+            chrome_options.add_argument("--disable-gpu")
+
+        # Allow clipboard access
+        prefs = {"profile.default_content_setting_values.clipboard": 1}
+        chrome_options.add_experimental_option("prefs", prefs)
+
+        # Disable Chrome automation infobars and password save popups
+        chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
+        chrome_options.add_experimental_option("useAutomationExtension", False)
+        chrome_options.add_argument("--disable-blink-features=AutomationControlled")
+
+        self.driver = webdriver.Chrome(options=chrome_options)
+        self.driver.implicitly_wait(5)
+
+    def set_page(self, endpoint):
+        """Set page"""
+        self.driver.get(f"{self.live_server_url}{endpoint}")
+        sleep(2)
+
+    def get_selenium_elems(self, selectors: dict) -> dict[str, WebElement]:
+        """Get selenium elements from selectors
+
+        Args:
+            selectors (dict): css selectors to find: name, value
+
+        Returns:
+            dict[str, WebElement]: selenium elements: name, value
+        """
+        fields = {}
+        for key, value in selectors.items():
+            try:
+                fields[key] = self.driver.find_element(By.CSS_SELECTOR, value)
+            except Exception:
+                fields[key] = None
+        return fields
+    
+    def click_js_elem(self, element: WebElement):
+        """Click element with javascript"""
+        self.driver.execute_script("arguments[0].click();", element)
