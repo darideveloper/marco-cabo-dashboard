@@ -867,6 +867,7 @@ class SaleViewSetLiveTestCase(TestSeleniumBase):
             "card_name": "input[name='billingName']",
             "card_submit": "button.SubmitButton",
             "ammount": "span.CurrencyAmount",
+            "back_button": 'a[data-testid="business-link"]',
         }
 
     def load_stripe(self):
@@ -930,6 +931,21 @@ class SaleViewSetLiveTestCase(TestSeleniumBase):
         self.assertEqual(
             self.driver.current_url, settings.LANDING_HOST_SUCCESS
         )
+        
+    def test_stripe_back_button(self):
+        """Test stripe back button
+        Expected: redirect to landing page
+        """
+        
+        # Load stripe page
+        self.load_stripe()
+        
+        # Click back button
+        fields = self.get_selenium_elems(self.selectors)
+        self.click_js_elem(fields["back_button"])
+        
+        # Validate redirect to landing page
+        self.assertIn(settings.LANDING_HOST, self.driver.current_url)
 
 
 class SaleDoneViewTestCase(TestApiViewsMethods, TestTravelsModelBase):
