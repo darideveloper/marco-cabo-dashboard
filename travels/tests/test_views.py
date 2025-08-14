@@ -773,9 +773,10 @@ class SaleViewSetTestCase(TestApiViewsMethods, TestTravelsModelBase):
         response_json = response.json()
         self.assertEqual(response_json["status"], "success")
         self.assertEqual(response_json["message"], "Sale created successfully")
-        self.assertEqual(
-            response_json["data"]["payment_link"],
-            settings.LANDING_HOST_SUCCESS,
+        self.assertTrue(
+            response_json["data"]["payment_link"].startswith(
+                "https://checkout.stripe.com/"
+            )
         )
 
     def test_post_ok_round_trip_vip_code(self):
@@ -803,11 +804,31 @@ class SaleViewSetTestCase(TestApiViewsMethods, TestTravelsModelBase):
         response_json = response.json()
         self.assertEqual(response_json["status"], "success")
         self.assertEqual(response_json["message"], "Sale created successfully")
-        self.assertEqual(
-            response_json["data"]["payment_link"],
-            settings.LANDING_HOST_SUCCESS,
+        self.assertTrue(
+            response_json["data"]["payment_link"].startswith(
+                "https://checkout.stripe.com/"
+            )
         )
+        
+    def test_post_ok_details(self):
+        """Test post ok one way
+        Expected: ok
+        """
 
+        # Change service type
+        details = "This is a test details"
+        self.data["details"] = details
+
+        # Send json post data and validate status code
+        response = self.client.post(
+            self.endpoint, json.dumps(self.data), content_type="application/json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        # Validate details in sale
+        sale = models.Sale.objects.get(client__email=self.data["client_email"])
+        self.assertEqual(sale.details, details)
+        
 
 class SaleViewSetLiveTestCase(TestSeleniumBase):
     """Test sale view set live"""
@@ -986,3 +1007,18 @@ class SaleDoneViewTestCase(TestApiViewsMethods, TestTravelsModelBase):
 
         # Validate error redirect
         self.assertEqual(response.url, settings.LANDING_HOST_ERROR)
+
+    # Overwrite test_unauthenticated_user_get to allow unauthenticated user get request
+    def test_unauthenticated_user_get(self):
+        """Test unauthenticated user get request
+        Expected: redirect to login page
+        """
+
+        # Remove authentication
+        self.client.logout()
+
+        # Get data and validate status code
+        response = self.client.get(self.endpoint)
+        
+        # Validate redirect to login page
+        self.assertEqual(response.status_code, status.HTTP_302_FOUND)

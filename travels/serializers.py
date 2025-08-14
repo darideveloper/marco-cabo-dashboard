@@ -62,21 +62,25 @@ class VipCodeValidationSerializer(serializers.Serializer):
 class SaleSerializer(serializers.Serializer):
 
     service_type = serializers.PrimaryKeyRelatedField(
-        queryset=models.ServiceType.objects.all()
+        queryset=models.ServiceType.objects.all(), source="sale.service_type"
     )
     client_name = serializers.CharField(source="client.name")
     client_last_name = serializers.CharField(source="client.last_name")
     client_email = serializers.EmailField(source="client.email")
     client_phone = serializers.CharField(source="client.phone")
-    passengers = serializers.IntegerField()
+    passengers = serializers.IntegerField(source="sale.passengers")
     location = serializers.PrimaryKeyRelatedField(
-        queryset=models.Location.objects.all()
+        queryset=models.Location.objects.all(), source="sale.location"
+    )
+    details = serializers.CharField(
+        required=False, allow_null=True, source="sale.details"
     )
     vip_code = serializers.SlugRelatedField(
         queryset=models.VipCode.objects.filter(active=True),
         slug_field="value",
         required=False,
         allow_null=True,
+        source="sale.vip_code",
     )
     arrival_date = serializers.DateField(source="arrival.date")
     arrival_time = serializers.TimeField(source="arrival.hour")
@@ -90,31 +94,27 @@ class SaleSerializer(serializers.Serializer):
     departure_flight_number = serializers.CharField(
         source="departure.flight_number", required=False
     )
-    vehicle = serializers.PrimaryKeyRelatedField(queryset=models.Vehicle.objects.all())
+    vehicle = serializers.PrimaryKeyRelatedField(
+        queryset=models.Vehicle.objects.all(), source="sale.vehicle"
+    )
 
     def create(self, validated_data):
 
         # Create client
         client = models.Client.objects.create(**validated_data["client"])
-        
+
         # Get total from pricing
         pricing = models.Pricing.objects.get(
-            location=validated_data["location"],
-            vehicle=validated_data["vehicle"],
-            service_type=validated_data["service_type"],
+            location=validated_data["sale"]["location"],
+            vehicle=validated_data["sale"]["vehicle"],
+            service_type=validated_data["sale"]["service_type"],
         )
-        
+
         # Create sale
-        sale_data = {
-            "client": client,
-            "vip_code": validated_data.get("vip_code", None),
-            "vehicle": validated_data["vehicle"],
-            "service_type": validated_data["service_type"],
-            "location": validated_data["location"],
-            "passengers": validated_data["passengers"],
-            "total": pricing.price,
-        }
-        sale = models.Sale.objects.create(**sale_data)
+        validated_data["sale"]["client"] = client
+        validated_data["sale"]["vip_code"] = validated_data.get("vip_code", None)
+        validated_data["sale"]["total"] = pricing.price
+        sale = models.Sale.objects.create(**validated_data["sale"])
 
         # Create transfers
         models.Transfer.objects.create(

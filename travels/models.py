@@ -142,6 +142,9 @@ class Sale(models.Model):
     location = models.ForeignKey(
         Location, on_delete=models.CASCADE, verbose_name="Ubicación"
     )
+    details = models.TextField(
+        verbose_name="Detalles adicionales", null=True, blank=True
+    )
     created_at = models.DateTimeField(
         auto_now_add=True, verbose_name="Fecha de creación"
     )
