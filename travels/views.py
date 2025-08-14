@@ -68,14 +68,18 @@ class SaleViewSet(APIView):
         if serializer.is_valid():
             # Create data
             sale = serializer.save()
-
-            payment_link = get_payment_link(
-                product_name="Marco Cabo Transfer",
-                total=sale.total,
-                description=sale.get_summary(),
-                email=sale.client.email,
-                sale_id=sale.stripe_code,
-            )
+            
+            # Go directly to confirmation page if vip code
+            # Or generate payment
+            payment_link = settings.LANDING_HOST + "/?status=done"
+            if not sale.vip_code:
+                payment_link = get_payment_link(
+                    product_name="Marco Cabo Transfer",
+                    total=sale.total,
+                    description=sale.get_summary(),
+                    email=sale.client.email,
+                    sale_id=sale.stripe_code,
+                )
 
             return Response(
                 {

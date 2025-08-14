@@ -1,6 +1,7 @@
 import json
 
 from django.core.management import call_command
+from django.conf import settings
 
 from rest_framework import status
 
@@ -666,7 +667,141 @@ class SaleViewSetTestCase(TestApiViewsMethods, TestTravelsModelBase):
         )
 
         # Validate data created
-        # TODO
+        client = models.Client.objects.get(email=self.data["client_email"])
+        self.assertEqual(client.name, self.data["client_name"])
+        self.assertEqual(client.last_name, self.data["client_last_name"])
+        self.assertEqual(client.email, self.data["client_email"])
+        self.assertEqual(client.phone, self.data["client_phone"])
 
-        # Validate total calculation
-        # TODO
+        sale = models.Sale.objects.get(client=client)
+        self.assertEqual(sale.service_type.name, "One Way")
+        self.assertEqual(sale.location.name, "Alegranza")  # csv data
+        self.assertEqual(sale.vip_code, None)
+        self.assertEqual(sale.vehicle.name, "Suburban")  # fixtures data
+        self.assertEqual(sale.passengers, 4)
+
+        transfer_arrival = models.Transfer.objects.get(sale=sale, type="arrival")
+        self.assertEqual(transfer_arrival.date.strftime("%Y-%m-%d"), "2025-01-01")
+        self.assertEqual(transfer_arrival.hour.strftime("%H:%M"), "10:00")
+        self.assertEqual(transfer_arrival.airline, "Airline")
+        self.assertEqual(transfer_arrival.flight_number, "1234567890")
+
+        # Validate no departure data
+        transfers_departure = models.Transfer.objects.filter(
+            sale=sale, type="departure"
+        )
+        self.assertEqual(len(transfers_departure), 0)
+
+        # Validate total calculation (with csv pricing data )
+        self.assertEqual(sale.total, 90.00)
+
+    def test_post_ok_round_trip(self):
+        """Test post ok round trip
+        Expected: ok
+        """
+
+        # Set service type to round trip
+        self.data["service_type"] = 2
+
+        # Send json post data and validate status code
+        response = self.client.post(
+            self.endpoint, json.dumps(self.data), content_type="application/json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        # Validate data
+        response_json = response.json()
+        self.assertEqual(response_json["status"], "success")
+        self.assertEqual(response_json["message"], "Sale created successfully")
+        self.assertTrue(
+            response_json["data"]["payment_link"].startswith(
+                "https://checkout.stripe.com/"
+            )
+        )
+
+        # Validate data created
+        client = models.Client.objects.get(email=self.data["client_email"])
+        self.assertEqual(client.name, self.data["client_name"])
+        self.assertEqual(client.last_name, self.data["client_last_name"])
+        self.assertEqual(client.email, self.data["client_email"])
+        self.assertEqual(client.phone, self.data["client_phone"])
+
+        sale = models.Sale.objects.get(client=client)
+        self.assertEqual(sale.service_type.name, "Round Trip")
+        self.assertEqual(sale.location.name, "Alegranza")  # csv data
+        self.assertEqual(sale.vip_code, None)
+        self.assertEqual(sale.vehicle.name, "Suburban")  # fixtures data
+        self.assertEqual(sale.passengers, 4)
+
+        transfer_arrival = models.Transfer.objects.get(sale=sale, type="arrival")
+        self.assertEqual(transfer_arrival.date.strftime("%Y-%m-%d"), "2025-01-01")
+        self.assertEqual(transfer_arrival.hour.strftime("%H:%M"), "10:00")
+        self.assertEqual(transfer_arrival.airline, "Airline")
+        self.assertEqual(transfer_arrival.flight_number, "1234567890")
+
+        # Validate departure data
+        transfer_departure = models.Transfer.objects.get(sale=sale, type="departure")
+        self.assertEqual(transfer_departure.date.strftime("%Y-%m-%d"), "2025-01-01")
+        self.assertEqual(transfer_departure.hour.strftime("%H:%M"), "10:00")
+        self.assertEqual(transfer_departure.airline, "Airline")
+        self.assertEqual(transfer_departure.flight_number, "1234567890")
+
+        # Validate total calculation (with csv pricing data)
+        self.assertEqual(sale.total, 170.00)
+
+    def test_post_ok_one_way_vip_code(self):
+        """Test post ok one way with vip code
+        Expected: ok
+        """
+
+        # Create vip code
+        vip_code = "VIP123"
+        self.create_vip_code(value=vip_code, active=True)
+
+        # Set vip code
+        self.data["vip_code"] = vip_code
+
+        # Send json post data and validate status code
+        response = self.client.post(
+            self.endpoint, json.dumps(self.data), content_type="application/json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        # Validate data
+        response_json = response.json()
+        self.assertEqual(response_json["status"], "success")
+        self.assertEqual(response_json["message"], "Sale created successfully")
+        self.assertEqual(
+            response_json["data"]["payment_link"],
+            settings.LANDING_HOST + "/?status=done",
+        )
+
+    def test_post_ok_round_trip_vip_code(self):
+        """Test post ok round trip with vip code
+        Expected: ok
+        """
+
+        # Set service type to round trip
+        self.data["service_type"] = 2
+        
+        # Create vip code
+        vip_code = "VIP123"
+        self.create_vip_code(value=vip_code, active=True)
+        
+        # Set vip code
+        self.data["vip_code"] = vip_code
+        
+        # Send json post data and validate status code
+        response = self.client.post(
+            self.endpoint, json.dumps(self.data), content_type="application/json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        
+        # Validate data
+        response_json = response.json()
+        self.assertEqual(response_json["status"], "success")
+        self.assertEqual(response_json["message"], "Sale created successfully")
+        self.assertEqual(
+            response_json["data"]["payment_link"],
+            settings.LANDING_HOST + "/?status=done",
+        )
