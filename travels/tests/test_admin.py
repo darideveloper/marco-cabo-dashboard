@@ -46,6 +46,21 @@ class SaleAdminTestCase(TestAdminBase):
         """Validate search bar working"""
 
         self.submit_search_bar(self.endpoint)
+        
+    def test_custom_links(self):
+        """Validate custom custom links"""
+
+        links = {
+            "Transportaciones": "/admin/travels/transfer/",
+        }
+
+        # Open employee list page
+        response = self.client.get("/admin/travels/sale/")
+
+        # Validate links
+        for link_text, link in links.items():
+            self.assertContains(response, link_text)
+            self.assertContains(response, link)
 
 
 class ServiceTypeAdminTestCase(TestAdminBase):
@@ -106,16 +121,3 @@ class PricingAdminTestCase(TestAdminBase):
         """Validate search bar working"""
 
         self.submit_search_bar(self.endpoint)
-        
-        
-# class SaleDetailAdminTestCase(TestAdminBase):
-#     """Testing sale detail admin"""
-
-#     def setUp(self):
-#         super().setUp()
-#         self.endpoint = "/admin/travels/saledetail/"
-
-#     def test_search_bar(self):
-#         """Validate search bar working"""
-
-#         self.submit_search_bar(self.endpoint)
