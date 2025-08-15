@@ -64,6 +64,22 @@ class ZoneViewSetTestCase(TestApiViewsMethods, TestTravelsModelBase):
         self.assertEqual(results[0]["id"], zone.id)
         self.assertEqual(len(results[0]["locations"]), 0)
 
+    def test_get_zones_no_postal_code(self):
+        """Test get zones with no postal code"""
+
+        # Create zone with postal code
+        zone = self.create_zone(name="Codigo Postal")
+        self.create_location(name="location 1", zone=zone)
+
+        # Get data and validate status code
+        response = self.client.get(self.endpoint)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # Validate data
+        response_json = response.json()
+        results = response_json["results"]
+        self.assertEqual(len(results), 0)
+
 
 class VehicleViewSetTestCase(TestApiViewsMethods, TestTravelsModelBase):
     """Test vehicle views"""
@@ -809,7 +825,7 @@ class SaleViewSetTestCase(TestApiViewsMethods, TestTravelsModelBase):
                 "https://checkout.stripe.com/"
             )
         )
-        
+
     def test_post_ok_details(self):
         """Test post ok one way
         Expected: ok
@@ -828,7 +844,7 @@ class SaleViewSetTestCase(TestApiViewsMethods, TestTravelsModelBase):
         # Validate details in sale
         sale = models.Sale.objects.get(client__email=self.data["client_email"])
         self.assertEqual(sale.details, details)
-        
+
 
 class SaleViewSetLiveTestCase(TestSeleniumBase):
     """Test sale view set live"""
@@ -949,22 +965,20 @@ class SaleViewSetLiveTestCase(TestSeleniumBase):
         self.set_page(f"/api{confirmation_endpoint}")
 
         # Validate redirect to confirmation page
-        self.assertEqual(
-            self.driver.current_url, settings.LANDING_HOST_SUCCESS
-        )
-        
+        self.assertEqual(self.driver.current_url, settings.LANDING_HOST_SUCCESS)
+
     def test_stripe_back_button(self):
         """Test stripe back button
         Expected: redirect to landing page
         """
-        
+
         # Load stripe page
         self.load_stripe()
-        
+
         # Click back button
         fields = self.get_selenium_elems(self.selectors)
         self.click_js_elem(fields["back_button"])
-        
+
         # Validate redirect to landing page
         self.assertIn(settings.LANDING_HOST, self.driver.current_url)
 
@@ -1019,6 +1033,6 @@ class SaleDoneViewTestCase(TestApiViewsMethods, TestTravelsModelBase):
 
         # Get data and validate status code
         response = self.client.get(self.endpoint)
-        
+
         # Validate redirect to login page
         self.assertEqual(response.status_code, status.HTTP_302_FOUND)

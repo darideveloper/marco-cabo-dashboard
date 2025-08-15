@@ -14,7 +14,8 @@ from utils.stripe import get_payment_link
 
 
 class ZoneViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = models.Zone.objects.all().order_by("id")
+    # Return all zones except "Postal Code"
+    queryset = models.Zone.objects.exclude(name="Codigo Postal").order_by("id")
     serializer_class = serializers.ZoneSerializer
 
 
