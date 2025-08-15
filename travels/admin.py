@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.utils.html import format_html
+
 from travels import models
 
 
@@ -58,7 +60,9 @@ class SaleAdmin(admin.ModelAdmin):
         "passengers",
         "total",
         "paid",
+        "custom_links",
         "created_at",
+        "updated_at",
     )
     list_filter = (
         "client",
@@ -69,7 +73,6 @@ class SaleAdmin(admin.ModelAdmin):
         "passengers",
         "paid",
         "created_at",
-        "updated_at",
     )
     search_fields = (
         "client__name",
@@ -80,6 +83,17 @@ class SaleAdmin(admin.ModelAdmin):
     )
     readonly_fields = ("stripe_code", "created_at", "updated_at")
     ordering = ("-created_at",)
+    
+    # CUSTOM FIELDS
+    def custom_links(self, obj):
+        """Create custom Imprimir and Ver buttons"""
+        return format_html(
+            '<a class="btn btn-secondary my-1" href="{}">Transportaciones</a>',
+            f"/admin/travels/transfer/?sale__id__exact={obj.id}&q=",
+        )
+
+    # Labels for custom fields
+    custom_links.short_description = "Acciones"
 
 
 @admin.register(models.ServiceType)
@@ -95,6 +109,7 @@ class TransferAdmin(admin.ModelAdmin):
     list_display = ("date", "hour", "type", "sale", "created_at")
     list_filter = (
         "type",
+        "sale",
         "sale__client",
         "sale__vehicle",
         "sale__location",
@@ -130,58 +145,3 @@ class PricingAdmin(admin.ModelAdmin):
     )
     readonly_fields = ("created_at", "updated_at")
     ordering = ("location__name", "vehicle__name", "service_type__name")
-
-
-"""
-@admin.register(models.SaleDetail)
-class SaleDetailAdmin(admin.ModelAdmin):
-    list_display = (
-        "client_full_name",
-        "vehicle_type",
-        "passengers",
-        "has_vip_code",
-        "location",
-        "hour",
-        "type",
-    )
-    list_filter = (
-        "location",
-        "type",
-        "sale__client",
-        "sale__vehicle",
-        "created_at",
-        "updated_at",
-    )
-    search_fields = (
-        "sale__client__name",
-        "sale__client__last_name",
-        "sale__client__email",
-        "sale__vehicle__name",
-        "sale__vip_code__value",
-        "location__name",
-        "hour",
-        "type__name",
-    )
-    readonly_fields = ("created_at", "updated_at")
-    ordering = ("-created_at",)
-
-    # def client_full_name(self, obj):
-    #     return obj.client_full_name
-
-    # def vehicle_type(self, obj):
-    #     return obj.vehicle_type
-
-    # def vehicle_fee(self, obj):
-    #     return obj.vehicle_fee
-
-    # def passengers(self, obj):
-    #     return obj.passengers
-
-    # def has_vip_code(self, obj):
-    #     return "Sí" if obj.has_vip_code else "No"
-
-    # client_full_name.short_description = "Cliente"
-    # vehicle_type.short_description = "Tipo de Vehículo"
-    # vehicle_fee.short_description = "Tarifa"
-    # has_vip_code.short_description = "¿VIP?"
-"""

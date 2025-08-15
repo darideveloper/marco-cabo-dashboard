@@ -211,7 +211,7 @@ class Transfer(models.Model):
 
     # Fields
     id = models.AutoField(primary_key=True)
-    date = models.DateTimeField(verbose_name="Fecha")
+    date = models.DateField(verbose_name="Fecha")
     hour = models.TimeField(verbose_name="Hora")
     type = models.CharField(
         max_length=100,
