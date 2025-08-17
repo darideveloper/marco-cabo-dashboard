@@ -827,7 +827,7 @@ class SaleViewSetTestCase(TestApiViewsMethods, TestTravelsModelBase):
         )
 
     def test_post_ok_details(self):
-        """Test post ok one way
+        """Test post ok one way with details
         Expected: ok
         """
 
@@ -844,6 +844,35 @@ class SaleViewSetTestCase(TestApiViewsMethods, TestTravelsModelBase):
         # Validate details in sale
         sale = models.Sale.objects.get(client__email=self.data["client_email"])
         self.assertEqual(sale.details, details)
+        
+    def test_post_ok_details_empty(self):
+        """Test post ok one way with empty details
+        Expected: ok
+        """
+        
+        # Change service type
+        self.data["details"] = ""
+
+        # Send json post data and validate status code
+        response = self.client.post(
+            self.endpoint, json.dumps(self.data), content_type="application/json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        
+    def test_post_ok_details_missing(self):
+        """Test post ok one way with missing details
+        Expected: ok
+        """
+        
+        # Remove details from data if exists
+        if "details" in self.data:
+            del self.data["details"]
+
+        # Send json post data and validate status code
+        response = self.client.post(
+            self.endpoint, json.dumps(self.data), content_type="application/json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
 
 class SaleViewSetLiveTestCase(TestSeleniumBase):

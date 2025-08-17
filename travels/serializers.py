@@ -73,7 +73,7 @@ class SaleSerializer(serializers.Serializer):
         queryset=models.Location.objects.all(), source="sale.location"
     )
     details = serializers.CharField(
-        required=False, allow_null=True, source="sale.details"
+        required=False, allow_null=True, allow_blank=True, source="sale.details"
     )
     vip_code = serializers.SlugRelatedField(
         queryset=models.VipCode.objects.filter(active=True),
