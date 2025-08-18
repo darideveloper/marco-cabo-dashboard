@@ -112,7 +112,9 @@ class SaleSerializer(serializers.Serializer):
 
         # Create sale
         validated_data["sale"]["client"] = client
-        validated_data["sale"]["vip_code"] = validated_data.get("vip_code", None)
+        validated_data["sale"]["vip_code"] = validated_data.get("sale", {}).get(
+            "vip_code", None
+        )
         validated_data["sale"]["total"] = pricing.price
         sale = models.Sale.objects.create(**validated_data["sale"])
 
