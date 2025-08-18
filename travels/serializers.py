@@ -117,6 +117,11 @@ class SaleSerializer(serializers.Serializer):
         )
         validated_data["sale"]["total"] = pricing.price
         sale = models.Sale.objects.create(**validated_data["sale"])
+        
+        # Marek sale as paid if there is vip code
+        if validated_data["sale"]["vip_code"]:
+            sale.paid = True
+            sale.save()
 
         # Create transfers
         models.Transfer.objects.create(

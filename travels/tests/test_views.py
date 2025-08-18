@@ -629,6 +629,36 @@ class SaleViewSetTestCase(TestApiViewsMethods, TestTravelsModelBase):
         self.assertEqual(response_json["status"], "success")
         self.assertEqual(response_json["message"], "Sale created successfully")
 
+    def test_post_vip_code_paid(self):
+        """Test post vip code paid
+        Expected: ok
+        """
+
+        # Create vip code
+        vip_code = "VIP123"
+        self.create_vip_code(value=vip_code, active=True)
+
+        # Set vip code
+        self.data["vip_code"] = vip_code
+
+        # Send json post data and validate status code
+        response = self.client.post(
+            self.endpoint, json.dumps(self.data), content_type="application/json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        # Validate data (payment link is not generated)
+        response_json = response.json()
+        self.assertEqual(response_json["status"], "success")
+        self.assertEqual(response_json["message"], "Sale created successfully")
+        self.assertEqual(
+            response_json["data"]["payment_link"], settings.LANDING_HOST_SUCCESS
+        )
+
+        # Validate sale paid
+        sale = models.Sale.objects.get(client__email=self.data["client_email"])
+        self.assertTrue(sale.paid)
+
     def test_post_vehicle_invalid(self):
         """Test post invalid vehicle
         Expected: vehicle not found
@@ -772,13 +802,6 @@ class SaleViewSetTestCase(TestApiViewsMethods, TestTravelsModelBase):
         Expected: ok
         """
 
-        # Create vip code
-        vip_code = "VIP123"
-        self.create_vip_code(value=vip_code, active=True)
-
-        # Set vip code
-        self.data["vip_code"] = vip_code
-
         # Send json post data and validate status code
         response = self.client.post(
             self.endpoint, json.dumps(self.data), content_type="application/json"
@@ -802,13 +825,6 @@ class SaleViewSetTestCase(TestApiViewsMethods, TestTravelsModelBase):
 
         # Set service type to round trip
         self.data["service_type"] = 2
-
-        # Create vip code
-        vip_code = "VIP123"
-        self.create_vip_code(value=vip_code, active=True)
-
-        # Set vip code
-        self.data["vip_code"] = vip_code
 
         # Send json post data and validate status code
         response = self.client.post(
@@ -844,12 +860,12 @@ class SaleViewSetTestCase(TestApiViewsMethods, TestTravelsModelBase):
         # Validate details in sale
         sale = models.Sale.objects.get(client__email=self.data["client_email"])
         self.assertEqual(sale.details, details)
-        
+
     def test_post_ok_details_empty(self):
         """Test post ok one way with empty details
         Expected: ok
         """
-        
+
         # Change service type
         self.data["details"] = ""
 
@@ -858,12 +874,12 @@ class SaleViewSetTestCase(TestApiViewsMethods, TestTravelsModelBase):
             self.endpoint, json.dumps(self.data), content_type="application/json"
         )
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        
+
     def test_post_ok_details_missing(self):
         """Test post ok one way with missing details
         Expected: ok
         """
-        
+
         # Remove details from data if exists
         if "details" in self.data:
             del self.data["details"]
