@@ -33,6 +33,8 @@ def get_payment_link(
         "url_success": f"{settings.HOST}/api/sales/done/{sale_id}",
         "products": products,
         "email": email,
+        "collect_phone": settings.STRIPE_COLLECT_PHONE,
+        "collect_billing_address": settings.STRIPE_COLLECT_BILLING_ADDRESS,
     }
 
     res = requests.post(settings.STRIPE_API_HOST, json=request_json)
