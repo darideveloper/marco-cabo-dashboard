@@ -49,9 +49,19 @@ class Location(models.Model):
 class Client(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100, verbose_name="Nombre")
-    last_name = models.CharField(max_length=100, verbose_name="Apellido")
+    last_name = models.CharField(
+        max_length=100,
+        verbose_name="Apellido",
+        null=True,
+        blank=True,
+    )
     email = models.EmailField(verbose_name="Correo")
-    phone = models.CharField(max_length=15, verbose_name="Teléfono")
+    phone = models.CharField(
+        max_length=15,
+        verbose_name="Teléfono",
+        null=True,
+        blank=True,
+    )
     created_at = models.DateTimeField(
         auto_now_add=True, verbose_name="Fecha de creación"
     )
@@ -135,7 +145,11 @@ class Sale(models.Model):
     vehicle = models.ForeignKey(
         Vehicle, on_delete=models.CASCADE, verbose_name="Vehículo"
     )
-    passengers = models.IntegerField(verbose_name="Pasajeros")
+    passengers = models.IntegerField(
+        verbose_name="Pasajeros",
+        null=True,
+        blank=True,
+    )
     service_type = models.ForeignKey(
         ServiceType, on_delete=models.CASCADE, verbose_name="Tipo de Servicio"
     )
