@@ -65,34 +65,9 @@ class SaleSerializer(serializers.Serializer):
         queryset=models.ServiceType.objects.all(), source="sale.service_type"
     )
     client_name = serializers.CharField(source="client.name")
-    client_last_name = serializers.CharField(source="client.last_name")
     client_email = serializers.EmailField(source="client.email")
-    client_phone = serializers.CharField(source="client.phone")
-    passengers = serializers.IntegerField(source="sale.passengers")
     location = serializers.PrimaryKeyRelatedField(
         queryset=models.Location.objects.all(), source="sale.location"
-    )
-    details = serializers.CharField(
-        required=False, allow_null=True, allow_blank=True, source="sale.details"
-    )
-    vip_code = serializers.SlugRelatedField(
-        queryset=models.VipCode.objects.filter(active=True),
-        slug_field="value",
-        required=False,
-        allow_null=True,
-        source="sale.vip_code",
-    )
-    arrival_date = serializers.DateField(source="arrival.date")
-    arrival_time = serializers.TimeField(source="arrival.hour")
-    arrival_airline = serializers.CharField(source="arrival.airline")
-    arrival_flight_number = serializers.CharField(source="arrival.flight_number")
-    departure_date = serializers.DateField(source="departure.date", required=False)
-    departure_time = serializers.TimeField(source="departure.hour", required=False)
-    departure_airline = serializers.CharField(
-        source="departure.airline", required=False
-    )
-    departure_flight_number = serializers.CharField(
-        source="departure.flight_number", required=False
     )
     vehicle = serializers.PrimaryKeyRelatedField(
         queryset=models.Vehicle.objects.all(), source="sale.vehicle"
@@ -112,28 +87,8 @@ class SaleSerializer(serializers.Serializer):
 
         # Create sale
         validated_data["sale"]["client"] = client
-        validated_data["sale"]["vip_code"] = validated_data.get("sale", {}).get(
-            "vip_code", None
-        )
+
         validated_data["sale"]["total"] = pricing.price
         sale = models.Sale.objects.create(**validated_data["sale"])
-        
-        # Marek sale as paid if there is vip code
-        if validated_data["sale"]["vip_code"]:
-            sale.paid = True
-            sale.save()
-
-        # Create transfers
-        models.Transfer.objects.create(
-            **validated_data["arrival"],
-            type="arrival",
-            sale=sale,
-        )
-        if "departure" in validated_data:
-            models.Transfer.objects.create(
-                **validated_data["departure"],
-                type="departure",
-                sale=sale,
-            )
 
         return sale
