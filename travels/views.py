@@ -2,7 +2,7 @@ from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.permissions import AllowAny
+# from rest_framework.permissions import AllowAny
 
 from django_filters.rest_framework import DjangoFilterBackend
 from django.shortcuts import redirect
@@ -70,7 +70,7 @@ class SaleViewSet(APIView):
         if serializer.is_valid():
             # Create data
             sale = serializer.save()
-            
+
             # Go directly to confirmation page if vip code
             # Or generate payment
             payment_link = settings.LANDING_HOST_SUCCESS
@@ -106,18 +106,50 @@ class SaleDoneView(APIView):
     """
     API endpoint to confirm a sale
     """
-    
-    permission_classes = [AllowAny]
 
-    def get(self, request, sale_stripe_code):
-        try:
-            sale = models.Sale.objects.filter(stripe_code=sale_stripe_code).first()
-        except Exception:
-            return redirect(settings.LANDING_HOST_ERROR)
+    # permission_classes = [AllowAny]
 
-        # Confirm sale
-        sale.paid = True
-        sale.save()
+    def post(self, request):
+        serializer = serializers.SaleDoneSerializer(data=request.data)
 
-        # Check if sale is already confirmed
-        return redirect(settings.LANDING_HOST_SUCCESS)
+        if serializer.is_valid():
+            try:
+                sale = models.Sale.objects.filter(
+                    stripe_code=serializer.validated_data["sale_stripe_code"]
+                ).first()
+            except Exception:
+                return redirect(settings.LANDING_HOST_ERROR)
+
+            # Update client
+            client = models.Client.objects.filter(
+                    email=serializer.validated_data["client_email"]
+                ).first()
+            client.last_name = serializer.validated_data["client_last_name"]
+            client.phone = serializer.validated_data["client_phone"]
+            client.save()
+
+            # Confirm sale
+            sale.paid = True
+            sale.arrival_date = serializer.validated_data["arrival_date"]
+            sale.arrival_time = serializer.validated_data["arrival_time"]
+            sale.arrival_airline = serializer.validated_data["arrival_airline"]
+            sale.arrival_flight_number = serializer.validated_data["arrival_flight_number"]
+            if sale.service_type.name == "Round Trip":
+                sale.departure_date = serializer.validated_data["departure_date"]
+                sale.departure_time = serializer.validated_data["departure_time"]
+                sale.departure_airline = serializer.validated_data["departure_airline"]
+                sale.departure_flight_number = serializer.validated_data["departure_flight_number"]
+            sale.details = serializer.validated_data["details"]
+            sale.save()
+
+            # Check if sale is already confirmed
+            return redirect(settings.LANDING_HOST_SUCCESS)
+        else:
+            return Response(
+                {
+                    "status": "error",
+                    "message": "Invalid sale data",
+                    "errors": serializer.errors,
+                },
+                status=status.HTTP_400_BAD_REQUEST,
+            )
