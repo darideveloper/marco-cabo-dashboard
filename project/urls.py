@@ -26,23 +26,18 @@ urlpatterns = [
         RedirectView.as_view(url="/admin/"),
         name="login-redirect-admin",
     ),
-    
     # API URLs
     path("api/", include(router.urls)),
     path(
         "api/validate-vip-code/",
         travels_views.VipCodeValidationView.as_view(),
-        name="validate-vip-code"
+        name="validate-vip-code",
     ),
+    path("api/sales/", travels_views.SaleViewSet.as_view(), name="sales"),
     path(
-        "api/sales/",
-        travels_views.SaleViewSet.as_view(),
-        name="sales"
-    ),
-    path(
-        "api/sales/done/<str:sale_stripe_code>/",
+        "api/sales/done/",
         travels_views.SaleDoneView.as_view(),
-        name="sale-done"
+        name="sale-done",
     ),
 ]
 
