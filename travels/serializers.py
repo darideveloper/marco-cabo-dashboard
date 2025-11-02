@@ -92,3 +92,26 @@ class SaleSerializer(serializers.Serializer):
         sale = models.Sale.objects.create(**validated_data["sale"])
 
         return sale
+
+
+class SaleDoneSerializer(serializers.Serializer):
+    sale_stripe_code = serializers.CharField(max_length=10, required=True)
+    client_last_name = serializers.CharField(source="client.last_name")
+    client_email = serializers.EmailField(source="client.email")
+    client_phone = serializers.CharField(source="client.phone")
+    passengers = serializers.IntegerField(source="sale.passengers")
+    details = serializers.CharField(
+        required=False, allow_null=True, allow_blank=True, source="sale.details"
+    )
+    arrival_date = serializers.DateField(source="arrival.date")
+    arrival_time = serializers.TimeField(source="arrival.hour")
+    arrival_airline = serializers.CharField(source="arrival.airline")
+    arrival_flight_number = serializers.CharField(source="arrival.flight_number")
+    departure_date = serializers.DateField(source="departure.date", required=False)
+    departure_time = serializers.TimeField(source="departure.hour", required=False)
+    departure_airline = serializers.CharField(
+        source="departure.airline", required=False
+    )
+    departure_flight_number = serializers.CharField(
+        source="departure.flight_number", required=False
+    )
