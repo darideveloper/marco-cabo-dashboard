@@ -2,6 +2,7 @@ from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+
 # from rest_framework.permissions import AllowAny
 
 from django_filters.rest_framework import DjangoFilterBackend
@@ -120,26 +121,34 @@ class SaleDoneView(APIView):
             except Exception:
                 return redirect(settings.LANDING_HOST_ERROR)
 
+            input(serializer.validated_data)
             # Update client
             client = models.Client.objects.filter(
-                    email=serializer.validated_data["client_email"]
-                ).first()
-            client.last_name = serializer.validated_data["client_last_name"]
-            client.phone = serializer.validated_data["client_phone"]
+                email=serializer.validated_data["client"]["email"]
+            ).first()
+            client.last_name = serializer.validated_data["client"]["last_name"]
+            client.phone = serializer.validated_data["client"]["phone"]
             client.save()
 
             # Confirm sale
             sale.paid = True
-            sale.arrival_date = serializer.validated_data["arrival_date"]
-            sale.arrival_time = serializer.validated_data["arrival_time"]
-            sale.arrival_airline = serializer.validated_data["arrival_airline"]
-            sale.arrival_flight_number = serializer.validated_data["arrival_flight_number"]
+            sale.arrival_date = serializer.validated_data["arrival"]["date"]
+            sale.arrival_time = serializer.validated_data["arrival"]["hour"]
+            sale.arrival_airline = serializer.validated_data["arrival"]["airline"]
+            sale.arrival_flight_number = serializer.validated_data["arrival"][
+                "flight_number"
+            ]
             if sale.service_type.name == "Round Trip":
-                sale.departure_date = serializer.validated_data["departure_date"]
-                sale.departure_time = serializer.validated_data["departure_time"]
-                sale.departure_airline = serializer.validated_data["departure_airline"]
-                sale.departure_flight_number = serializer.validated_data["departure_flight_number"]
-            sale.details = serializer.validated_data["details"]
+                sale.departure_date = serializer.validated_data["departure"]["date"]
+                sale.departure_time = serializer.validated_data["departure"]["hour"]
+                sale.departure_airline = serializer.validated_data["departure"][
+                    "airline"
+                ]
+                sale.departure_flight_number = serializer.validated_data["departure"][
+                    "flight_number"
+                ]
+            sale.passengers = serializer.validated_data["sale"]["passengers"]
+            sale.details = serializer.validated_data["sale"]["details"]
             sale.save()
 
             # Check if sale is already confirmed
