@@ -178,36 +178,12 @@ class Sale(models.Model):
         return f"{self.client} - {self.vehicle.name} - {self.created_at}"
 
     def get_summary(self):
-        arrival_transfers = self.transfer_set.filter(type="arrival", sale=self)
-        departure_transfers = self.transfer_set.filter(type="departure", sale=self)
-
         summary = f"Marco Cabo {self.vehicle.name}"
-        summary += f" - {self.client.name} {self.client.last_name}"
         summary += f" - {self.client.email}"
-        summary += f" - {self.client.phone}"
         summary += f" - {self.location.zone.name}"
         summary += f" - {self.location.name}"
         summary += f" - {self.service_type.name}"
-        summary += f" - {self.vehicle.name}"
-        summary += f" - {self.passengers} passengers"
-        summary += f" - {self.vip_code.value}" if self.vip_code else " - No VIP"
         summary += f" - {self.total} USD"
-
-        if arrival_transfers:
-            arrival_transfer = arrival_transfers[0]
-            summary += f" - Arrival: {arrival_transfer.date} {arrival_transfer.hour}"
-            summary += f" - {arrival_transfer.airline} {arrival_transfer.flight_number}"
-            summary += f" - {self.location.name}"
-
-        if departure_transfers:
-            departure_transfer = departure_transfers[0]
-            summary += (
-                f" - Departure: {departure_transfer.date} {departure_transfer.hour}"
-            )
-            summary += (
-                f" - {departure_transfer.airline} {departure_transfer.flight_number}"
-            )
-            summary += f" - {self.location.name}"
 
         return summary
 
