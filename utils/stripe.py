@@ -34,7 +34,9 @@ def get_payment_link(
         "products": products,
         "email": email,
         "collect_phone": settings.STRIPE_COLLECT_PHONE,
-        "collect_billing_address": settings.STRIPE_COLLECT_BILLING_ADDRESS,
+        "collect_billing_address": (
+            False if settings.IS_TESTING else settings.STRIPE_COLLECT_BILLING_ADDRESS
+        ),
     }
 
     res = requests.post(settings.STRIPE_API_HOST, json=request_json)
