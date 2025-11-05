@@ -122,7 +122,9 @@ class SaleDoneView(APIView):
                 sale = models.Sale.objects.filter(
                     stripe_code=serializer.validated_data["sale_stripe_code"]
                 ).first()
+                input(sale)
             except Exception:
+                input(Exception)
                 return redirect(settings.LANDING_HOST_ERROR)
 
             # Update client

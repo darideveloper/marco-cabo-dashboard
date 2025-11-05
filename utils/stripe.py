@@ -30,7 +30,7 @@ def get_payment_link(
     request_json = {
         "user": settings.STRIPE_API_USER,
         "url": f"{settings.LANDING_HOST}/",
-        "url_success": f"{settings.HOST}/api/sales/done/{sale_id}",
+        "url_success": f"{settings.LANDING_HOST_SUCCESS}/api/sales/done/{sale_id}",
         "products": products,
         "email": email,
         "collect_phone": settings.STRIPE_COLLECT_PHONE,
