@@ -45,18 +45,18 @@ class PricingSerializer(serializers.ModelSerializer):
         )
 
 
-class VipCodeValidationSerializer(serializers.Serializer):
-    vip_code = serializers.CharField(max_length=10, required=True)
+# class VipCodeValidationSerializer(serializers.Serializer):
+#     vip_code = serializers.CharField(max_length=10, required=True)
 
-    def validate_vip_code(self, value):
-        """
-        Validate that the VIP code exists and is active
-        """
-        try:
-            models.VipCode.objects.get(value=value, active=True)
-            return value
-        except models.VipCode.DoesNotExist:
-            raise serializers.ValidationError("Invalid or inactive VIP code")
+#     def validate_vip_code(self, value):
+#         """
+#         Validate that the VIP code exists and is active
+#         """
+#         try:
+#             models.VipCode.objects.get(value=value, active=True)
+#             return value
+#         except models.VipCode.DoesNotExist:
+#             raise serializers.ValidationError("Invalid or inactive VIP code")
 
 
 class SaleSerializer(serializers.Serializer):

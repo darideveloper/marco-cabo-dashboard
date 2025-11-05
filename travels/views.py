@@ -41,27 +41,27 @@ class PricingViewSet(viewsets.ReadOnlyModelViewSet):
     filterset_fields = ["location", "vehicle", "service_type"]
 
 
-class VipCodeValidationView(APIView):
-    """
-    API endpoint to validate VIP codes
-    """
+# class VipCodeValidationView(APIView):
+#     """
+#     API endpoint to validate VIP codes
+#     """
 
-    def post(self, request):
-        serializer = serializers.VipCodeValidationSerializer(data=request.data)
+#     def post(self, request):
+#         serializer = serializers.VipCodeValidationSerializer(data=request.data)
 
-        if serializer.is_valid():
-            return Response(
-                {"status": "sucess", "message": "VIP code is valid", "data": []}
-            )
-        else:
-            return Response(
-                {
-                    "status": "error",
-                    "message": "Invalid VIP code",
-                    "data": [],
-                },
-                status=status.HTTP_400_BAD_REQUEST,
-            )
+#         if serializer.is_valid():
+#             return Response(
+#                 {"status": "sucess", "message": "VIP code is valid", "data": []}
+#             )
+#         else:
+#             return Response(
+#                 {
+#                     "status": "error",
+#                     "message": "Invalid VIP code",
+#                     "data": [],
+#                 },
+#                 status=status.HTTP_400_BAD_REQUEST,
+#             )
 
 
 class SaleViewSet(APIView):
@@ -79,14 +79,14 @@ class SaleViewSet(APIView):
             # Go directly to confirmation page if vip code
             # Or generate payment
             payment_link = settings.LANDING_HOST_SUCCESS
-            if not sale.vip_code:
-                payment_link = get_payment_link(
-                    product_name="Marco Cabo Transfer",
-                    total=sale.total,
-                    description=sale.get_summary(),
-                    email=sale.client.email,
-                    sale_id=sale.stripe_code,
-                )
+            # if not sale.vip_code:
+            payment_link = get_payment_link(
+                product_name="Marco Cabo Transfer",
+                total=sale.total,
+                description=sale.get_summary(),
+                email=sale.client.email,
+                sale_id=sale.stripe_code,
+            )
 
             return Response(
                 {

@@ -135,13 +135,13 @@ class ServiceType(models.Model):
 class Sale(models.Model):
     id = models.AutoField(primary_key=True)
     client = models.ForeignKey(Client, on_delete=models.CASCADE, verbose_name="Cliente")
-    vip_code = models.ForeignKey(
-        VipCode,
-        on_delete=models.CASCADE,
-        verbose_name="Código VIP",
-        null=True,
-        blank=True,
-    )
+    # vip_code = models.ForeignKey(
+    #     VipCode,
+    #     on_delete=models.CASCADE,
+    #     verbose_name="Código VIP",
+    #     null=True,
+    #     blank=True,
+    # )
     vehicle = models.ForeignKey(
         Vehicle, on_delete=models.CASCADE, verbose_name="Vehículo"
     )
@@ -252,33 +252,3 @@ class Pricing(models.Model):
     class Meta:
         verbose_name = "Precio"
         verbose_name_plural = "Precios"
-
-
-"""
-class SaleDetail(Transfer):
-    class Meta:
-        proxy = True
-        verbose_name = "Detalle de Venta"
-        verbose_name_plural = "Detalles de Ventas"
-
-    @property
-    def client_full_name(self):
-        return f"{self.sale.client.name} {self.sale.client.last_name}"
-
-    @property
-    def vehicle_type(self):
-        return self.sale.vehicle.type
-
-    @property
-    def passengers(self):
-        return self.sale.passengers
-
-    @property
-    def has_vip_code(self):
-        return self.sale.vip_code is not None
-
-    def __str__(self):
-        text = f"Servicio de {self.client_full_name} en "
-        text += f"{self.location} a las {self.hour}"
-        return text
-"""

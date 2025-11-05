@@ -153,7 +153,7 @@ class TestTravelsModelBase(TestCase):
     def create_sale(
         self,
         client: models.Client = None,
-        vip_code: models.VipCode = None,
+        # vip_code: models.VipCode = None,
         vehicle: models.Vehicle = None,
         passengers: int = 1,
         service_type: models.ServiceType = None,
@@ -180,8 +180,8 @@ class TestTravelsModelBase(TestCase):
         if not client:
             client = self.create_client()
 
-        if not vip_code and auto_create_vip_code:
-            vip_code = self.create_vip_code()
+        # if not vip_code and auto_create_vip_code:
+        #     vip_code = self.create_vip_code()
 
         if not vehicle:
             vehicle = self.create_vehicle()
@@ -194,7 +194,7 @@ class TestTravelsModelBase(TestCase):
 
         return models.Sale.objects.create(
             client=client,
-            vip_code=vip_code,
+            # vip_code=vip_code,
             vehicle=vehicle,
             passengers=passengers,
             service_type=service_type,

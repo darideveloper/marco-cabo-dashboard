@@ -336,102 +336,102 @@ class PricingViewSetTestCase(TestApiViewsMethods, TestTravelsModelBase):
         self.assertEqual(results[0]["price"], 100.00)
 
 
-class VipCodeValidationViewTestCase(TestApiViewsMethods, TestTravelsModelBase):
-    """Test vip code validation views"""
+# class VipCodeValidationViewTestCase(TestApiViewsMethods, TestTravelsModelBase):
+#     """Test vip code validation views"""
 
-    def setUp(self):
-        super().setUp(
-            endpoint="/api/validate-vip-code/",
-            restricted_post=False,
-            restricted_get=True,
-        )
+#     def setUp(self):
+#         super().setUp(
+#             endpoint="/api/validate-vip-code/",
+#             restricted_post=False,
+#             restricted_get=True,
+#         )
 
-        self.vip_code = self.create_vip_code(value="VIP123", active=True)
+#         self.vip_code = self.create_vip_code(value="VIP123", active=True)
 
-    def test_vip_code_valid(self):
-        """Test vip code valid"""
+#     def test_vip_code_valid(self):
+#         """Test vip code valid"""
 
-        # Send json post data and validate status code
-        response = self.client.post(
-            self.endpoint,
-            json.dumps({"vip_code": self.vip_code.value}),
-            content_type="application/json",
-        )
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+#         # Send json post data and validate status code
+#         response = self.client.post(
+#             self.endpoint,
+#             json.dumps({"vip_code": self.vip_code.value}),
+#             content_type="application/json",
+#         )
+#         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        # Validate data
-        response_json = response.json()
-        self.assertEqual(response_json["status"], "sucess")
-        self.assertEqual(response_json["message"], "VIP code is valid")
-        self.assertEqual(response_json["data"], [])
+#         # Validate data
+#         response_json = response.json()
+#         self.assertEqual(response_json["status"], "sucess")
+#         self.assertEqual(response_json["message"], "VIP code is valid")
+#         self.assertEqual(response_json["data"], [])
 
-    def test_vip_code_invalid(self):
-        """Test vip code invalid"""
+#     def test_vip_code_invalid(self):
+#         """Test vip code invalid"""
 
-        # Send json post data and validate status code
-        response = self.client.post(
-            self.endpoint,
-            json.dumps({"vip_code": "fake vip code"}),
-            content_type="application/json",
-        )
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+#         # Send json post data and validate status code
+#         response = self.client.post(
+#             self.endpoint,
+#             json.dumps({"vip_code": "fake vip code"}),
+#             content_type="application/json",
+#         )
+#         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-        # Validate data
-        response_json = response.json()
-        self.assertEqual(response_json["status"], "error")
-        self.assertEqual(response_json["message"], "Invalid VIP code")
-        self.assertEqual(response_json["data"], [])
+#         # Validate data
+#         response_json = response.json()
+#         self.assertEqual(response_json["status"], "error")
+#         self.assertEqual(response_json["message"], "Invalid VIP code")
+#         self.assertEqual(response_json["data"], [])
 
-    def test_vip_code_invalid_inactive(self):
-        """Test vip code invalid inactive"""
+#     def test_vip_code_invalid_inactive(self):
+#         """Test vip code invalid inactive"""
 
-        # Create vip code
-        self.vip_code.active = False
-        self.vip_code.save()
+#         # Create vip code
+#         self.vip_code.active = False
+#         self.vip_code.save()
 
-        # Send json post data and validate status code
-        response = self.client.post(self.endpoint, {"vip_code": self.vip_code.value})
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+#         # Send json post data and validate status code
+#         response = self.client.post(self.endpoint, {"vip_code": self.vip_code.value})
+#         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-        # Validate data
-        response_json = response.json()
-        self.assertEqual(response_json["status"], "error")
-        self.assertEqual(response_json["message"], "Invalid VIP code")
-        self.assertEqual(response_json["data"], [])
+#         # Validate data
+#         response_json = response.json()
+#         self.assertEqual(response_json["status"], "error")
+#         self.assertEqual(response_json["message"], "Invalid VIP code")
+#         self.assertEqual(response_json["data"], [])
 
-    def test_vip_code_no_value(self):
-        """Test vip code invalid empty"""
+#     def test_vip_code_no_value(self):
+#         """Test vip code invalid empty"""
 
-        # Send json post data and validate status code
-        response = self.client.post(
-            self.endpoint,
-            json.dumps({"vip_code": ""}),
-            content_type="application/json",
-        )
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+#         # Send json post data and validate status code
+#         response = self.client.post(
+#             self.endpoint,
+#             json.dumps({"vip_code": ""}),
+#             content_type="application/json",
+#         )
+#         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-        # Validate data
-        response_json = response.json()
-        self.assertEqual(response_json["status"], "error")
-        self.assertEqual(response_json["message"], "Invalid VIP code")
-        self.assertEqual(response_json["data"], [])
+#         # Validate data
+#         response_json = response.json()
+#         self.assertEqual(response_json["status"], "error")
+#         self.assertEqual(response_json["message"], "Invalid VIP code")
+#         self.assertEqual(response_json["data"], [])
 
-    def test_vip_code_missing_data(self):
-        """Test vip code no data"""
+#     def test_vip_code_missing_data(self):
+#         """Test vip code no data"""
 
-        # Send json post data and validate status code
-        response = self.client.post(
-            self.endpoint,
-            json.dumps({"invalid_key": "invalid_value"}),
-            content_type="application/json",
-        )
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+#         # Send json post data and validate status code
+#         response = self.client.post(
+#             self.endpoint,
+#             json.dumps({"invalid_key": "invalid_value"}),
+#             content_type="application/json",
+#         )
+#         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-        # Validate data
-        response_json = response.json()
-        self.assertEqual(response_json["status"], "error")
-        self.assertEqual(response_json["message"], "Invalid VIP code")
-        self.assertEqual(response_json["data"], [])
+#         # Validate data
+#         response_json = response.json()
+#         self.assertEqual(response_json["status"], "error")
+#         self.assertEqual(response_json["message"], "Invalid VIP code")
+#         self.assertEqual(response_json["data"], [])
 
 
 class SaleViewSetTestCase(TestApiViewsMethods, TestTravelsModelBase):
@@ -452,20 +452,20 @@ class SaleViewSetTestCase(TestApiViewsMethods, TestTravelsModelBase):
         self.data = {
             "service_type": 1,
             "client_name": "John",
-            "client_last_name": "Doe",
+            # "client_last_name": "Doe",
             "client_email": "john.doe@example.com",
-            "client_phone": "1234567890",
-            "passengers": 4,
+            # "client_phone": "1234567890",
+            # "passengers": 4,
             "location": 1,
-            "vip_code": "",
-            "arrival_date": "2025-01-01",
-            "arrival_time": "10:00",
-            "arrival_airline": "Airline",
-            "arrival_flight_number": "1234567890",
-            "departure_date": "2025-01-01",
-            "departure_time": "10:00",
-            "departure_airline": "Airline",
-            "departure_flight_number": "1234567890",
+            # "vip_code": "",
+            # "arrival_date": "2025-01-01",
+            # "arrival_time": "10:00",
+            # "arrival_airline": "Airline",
+            # "arrival_flight_number": "1234567890",
+            # "departure_date": "2025-01-01",
+            # "departure_time": "10:00",
+            # "departure_airline": "Airline",
+            # "departure_flight_number": "1234567890",
             "vehicle": 1,
         }
 
@@ -491,15 +491,8 @@ class SaleViewSetTestCase(TestApiViewsMethods, TestTravelsModelBase):
         required_fields = [
             "service_type",
             "client_name",
-            "client_last_name",
             "client_email",
-            "client_phone",
-            "passengers",
             "location",
-            "arrival_date",
-            "arrival_time",
-            "arrival_airline",
-            "arrival_flight_number",
             "vehicle",
         ]
         for field in required_fields:
@@ -565,131 +558,131 @@ class SaleViewSetTestCase(TestApiViewsMethods, TestTravelsModelBase):
         # Validate no data created
         self.validate_no_data_created()
 
-    def test_post_vip_code_invalid(self):
-        """Test post invalid vip code
-        Expected: vip code not found
-        """
+    # def test_post_vip_code_invalid(self):
+    #     """Test post invalid vip code
+    #     Expected: vip code not found
+    #     """
 
-        # Change vip code
-        vip_code = "fake vip code"
-        self.data["vip_code"] = vip_code
+    #     # Change vip code
+    #     vip_code = "fake vip code"
+    #     self.data["vip_code"] = vip_code
 
-        # Send json post data and validate status code
-        response = self.client.post(
-            self.endpoint, json.dumps(self.data), content_type="application/json"
-        )
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+    #     # Send json post data and validate status code
+    #     response = self.client.post(
+    #         self.endpoint, json.dumps(self.data), content_type="application/json"
+    #     )
+    #     self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-        # Validate data
-        response_json = response.json()
-        self.assertEqual(response_json["status"], "error")
-        self.assertEqual(response_json["message"], "Invalid sale data")
-        self.assertIn("vip_code", response_json["errors"])
-        self.assertIn(
-            f"Objeto con value={vip_code} no existe.",
-            response_json["errors"]["vip_code"],
-        )
+    #     # Validate data
+    #     response_json = response.json()
+    #     self.assertEqual(response_json["status"], "error")
+    #     self.assertEqual(response_json["message"], "Invalid sale data")
+    #     self.assertIn("vip_code", response_json["errors"])
+    #     self.assertIn(
+    #         f"Objeto con value={vip_code} no existe.",
+    #         response_json["errors"]["vip_code"],
+    #     )
 
-        # Validate no data created
-        self.validate_no_data_created()
+    #     # Validate no data created
+    #     self.validate_no_data_created()
 
-    def test_post_vip_code_inactive(self):
-        """Test post inactive vip code
-        Expected: vip code not found
-        """
+    # def test_post_vip_code_inactive(self):
+    #     """Test post inactive vip code
+    #     Expected: vip code not found
+    #     """
 
-        # Change vip code
-        vip_code = "VIP123"
-        self.create_vip_code(value=vip_code, active=False)
-        self.data["vip_code"] = vip_code
+    #     # Change vip code
+    #     vip_code = "VIP123"
+    #     self.create_vip_code(value=vip_code, active=False)
+    #     self.data["vip_code"] = vip_code
 
-        # Send json post data and validate status code
-        response = self.client.post(
-            self.endpoint, json.dumps(self.data), content_type="application/json"
-        )
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+    #     # Send json post data and validate status code
+    #     response = self.client.post(
+    #         self.endpoint, json.dumps(self.data), content_type="application/json"
+    #     )
+    #     self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-        # Validate data
-        response_json = response.json()
-        self.assertEqual(response_json["status"], "error")
-        self.assertEqual(response_json["message"], "Invalid sale data")
-        self.assertIn("vip_code", response_json["errors"])
-        self.assertIn(
-            f"Objeto con value={vip_code} no existe.",
-            response_json["errors"]["vip_code"],
-        )
+    #     # Validate data
+    #     response_json = response.json()
+    #     self.assertEqual(response_json["status"], "error")
+    #     self.assertEqual(response_json["message"], "Invalid sale data")
+    #     self.assertIn("vip_code", response_json["errors"])
+    #     self.assertIn(
+    #         f"Objeto con value={vip_code} no existe.",
+    #         response_json["errors"]["vip_code"],
+    #     )
 
-        # Validate no data created
-        self.validate_no_data_created()
+    #     # Validate no data created
+    #     self.validate_no_data_created()
 
-    def test_post_vip_code_empty(self):
-        """Test post empty vip code
-        Expected: ok
-        """
+    # def test_post_vip_code_empty(self):
+    #     """Test post empty vip code
+    #     Expected: ok
+    #     """
 
-        # Change vip code
-        self.data["vip_code"] = ""
+    #     # Change vip code
+    #     self.data["vip_code"] = ""
 
-        # Send json post data and validate status code
-        response = self.client.post(
-            self.endpoint, json.dumps(self.data), content_type="application/json"
-        )
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+    #     # Send json post data and validate status code
+    #     response = self.client.post(
+    #         self.endpoint, json.dumps(self.data), content_type="application/json"
+    #     )
+    #     self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-        # Validate data
-        response_json = response.json()
-        self.assertEqual(response_json["status"], "success")
-        self.assertEqual(response_json["message"], "Sale created successfully")
+    #     # Validate data
+    #     response_json = response.json()
+    #     self.assertEqual(response_json["status"], "success")
+    #     self.assertEqual(response_json["message"], "Sale created successfully")
 
-    def test_post_vip_code_missing(self):
-        """Test post missing vip code
-        Expected: ok
-        """
+    # def test_post_vip_code_missing(self):
+    #     """Test post missing vip code
+    #     Expected: ok
+    #     """
 
-        # Remove vip code from data if exists
-        if "vip_code" in self.data:
-            del self.data["vip_code"]
+    #     # Remove vip code from data if exists
+    #     if "vip_code" in self.data:
+    #         del self.data["vip_code"]
 
-        # Send json post data and validate status code
-        response = self.client.post(
-            self.endpoint, json.dumps(self.data), content_type="application/json"
-        )
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+    #     # Send json post data and validate status code
+    #     response = self.client.post(
+    #         self.endpoint, json.dumps(self.data), content_type="application/json"
+    #     )
+    #     self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-        # Validate data
-        response_json = response.json()
-        self.assertEqual(response_json["status"], "success")
-        self.assertEqual(response_json["message"], "Sale created successfully")
+    #     # Validate data
+    #     response_json = response.json()
+    #     self.assertEqual(response_json["status"], "success")
+    #     self.assertEqual(response_json["message"], "Sale created successfully")
 
-    def test_post_vip_code_paid(self):
-        """Test post vip code paid
-        Expected: ok
-        """
+    # def test_post_vip_code_paid(self):
+    #     """Test post vip code paid
+    #     Expected: ok
+    #     """
 
-        # Create vip code
-        vip_code = "VIP123"
-        self.create_vip_code(value=vip_code, active=True)
+    #     # Create vip code
+    #     vip_code = "VIP123"
+    #     self.create_vip_code(value=vip_code, active=True)
 
-        # Set vip code
-        self.data["vip_code"] = vip_code
+    #     # Set vip code
+    #     self.data["vip_code"] = vip_code
 
-        # Send json post data and validate status code
-        response = self.client.post(
-            self.endpoint, json.dumps(self.data), content_type="application/json"
-        )
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+    #     # Send json post data and validate status code
+    #     response = self.client.post(
+    #         self.endpoint, json.dumps(self.data), content_type="application/json"
+    #     )
+    #     self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-        # Validate data (payment link is not generated)
-        response_json = response.json()
-        self.assertEqual(response_json["status"], "success")
-        self.assertEqual(response_json["message"], "Sale created successfully")
-        self.assertEqual(
-            response_json["data"]["payment_link"], settings.LANDING_HOST_SUCCESS
-        )
+    #     # Validate data (payment link is not generated)
+    #     response_json = response.json()
+    #     self.assertEqual(response_json["status"], "success")
+    #     self.assertEqual(response_json["message"], "Sale created successfully")
+    #     self.assertEqual(
+    #         response_json["data"]["payment_link"], settings.LANDING_HOST_SUCCESS
+    #     )
 
-        # Validate sale paid
-        sale = models.Sale.objects.get(client__email=self.data["client_email"])
-        self.assertTrue(sale.paid)
+    #     # Validate sale paid
+    #     sale = models.Sale.objects.get(client__email=self.data["client_email"])
+    #     self.assertTrue(sale.paid)
 
     def test_post_vehicle_invalid(self):
         """Test post invalid vehicle
@@ -724,12 +717,6 @@ class SaleViewSetTestCase(TestApiViewsMethods, TestTravelsModelBase):
         Expected: ok
         """
 
-        # Change service type
-        del self.data["departure_date"]
-        del self.data["departure_time"]
-        del self.data["departure_airline"]
-        del self.data["departure_flight_number"]
-
         # Send json post data and validate status code
         response = self.client.post(
             self.endpoint, json.dumps(self.data), content_type="application/json"
@@ -749,28 +736,28 @@ class SaleViewSetTestCase(TestApiViewsMethods, TestTravelsModelBase):
         # Validate data created
         client = models.Client.objects.get(email=self.data["client_email"])
         self.assertEqual(client.name, self.data["client_name"])
-        self.assertEqual(client.last_name, self.data["client_last_name"])
+        self.assertEqual(client.last_name, None)
         self.assertEqual(client.email, self.data["client_email"])
-        self.assertEqual(client.phone, self.data["client_phone"])
+        self.assertEqual(client.phone, None)
 
         sale = models.Sale.objects.get(client=client)
         self.assertEqual(sale.service_type.name, "One Way")
         self.assertEqual(sale.location.name, "Alegranza")  # csv data
-        self.assertEqual(sale.vip_code, None)
+        # self.assertEqual(sale.vip_code, None)
         self.assertEqual(sale.vehicle.name, "Suburban")  # fixtures data
-        self.assertEqual(sale.passengers, 4)
+        # self.assertEqual(sale.passengers, 4)
 
-        transfer_arrival = models.Transfer.objects.get(sale=sale, type="arrival")
-        self.assertEqual(transfer_arrival.date.strftime("%Y-%m-%d"), "2025-01-01")
-        self.assertEqual(transfer_arrival.hour.strftime("%H:%M"), "10:00")
-        self.assertEqual(transfer_arrival.airline, "Airline")
-        self.assertEqual(transfer_arrival.flight_number, "1234567890")
+        # transfer_arrival = models.Transfer.objects.get(sale=sale, type="arrival")
+        # self.assertEqual(transfer_arrival.date.strftime("%Y-%m-%d"), "2025-01-01")
+        # self.assertEqual(transfer_arrival.hour.strftime("%H:%M"), "10:00")
+        # self.assertEqual(transfer_arrival.airline, "Airline")
+        # self.assertEqual(transfer_arrival.flight_number, "1234567890")
 
-        # Validate no departure data
-        transfers_departure = models.Transfer.objects.filter(
-            sale=sale, type="departure"
-        )
-        self.assertEqual(len(transfers_departure), 0)
+        # # Validate no departure data
+        # transfers_departure = models.Transfer.objects.filter(
+        #     sale=sale, type="departure"
+        # )
+        # self.assertEqual(len(transfers_departure), 0)
 
         # Validate total calculation (with csv pricing data )
         self.assertEqual(sale.total, 90.00)
@@ -802,125 +789,125 @@ class SaleViewSetTestCase(TestApiViewsMethods, TestTravelsModelBase):
         # Validate data created
         client = models.Client.objects.get(email=self.data["client_email"])
         self.assertEqual(client.name, self.data["client_name"])
-        self.assertEqual(client.last_name, self.data["client_last_name"])
+        self.assertEqual(client.last_name, None)
         self.assertEqual(client.email, self.data["client_email"])
-        self.assertEqual(client.phone, self.data["client_phone"])
+        self.assertEqual(client.phone, None)
 
         sale = models.Sale.objects.get(client=client)
         self.assertEqual(sale.service_type.name, "Round Trip")
         self.assertEqual(sale.location.name, "Alegranza")  # csv data
-        self.assertEqual(sale.vip_code, None)
+        # self.assertEqual(sale.vip_code, None)
         self.assertEqual(sale.vehicle.name, "Suburban")  # fixtures data
-        self.assertEqual(sale.passengers, 4)
+        # self.assertEqual(sale.passengers, 4)
 
-        transfer_arrival = models.Transfer.objects.get(sale=sale, type="arrival")
-        self.assertEqual(transfer_arrival.date.strftime("%Y-%m-%d"), "2025-01-01")
-        self.assertEqual(transfer_arrival.hour.strftime("%H:%M"), "10:00")
-        self.assertEqual(transfer_arrival.airline, "Airline")
-        self.assertEqual(transfer_arrival.flight_number, "1234567890")
+        # transfer_arrival = models.Transfer.objects.get(sale=sale, type="arrival")
+        # self.assertEqual(transfer_arrival.date.strftime("%Y-%m-%d"), "2025-01-01")
+        # self.assertEqual(transfer_arrival.hour.strftime("%H:%M"), "10:00")
+        # self.assertEqual(transfer_arrival.airline, "Airline")
+        # self.assertEqual(transfer_arrival.flight_number, "1234567890")
 
         # Validate departure data
-        transfer_departure = models.Transfer.objects.get(sale=sale, type="departure")
-        self.assertEqual(transfer_departure.date.strftime("%Y-%m-%d"), "2025-01-01")
-        self.assertEqual(transfer_departure.hour.strftime("%H:%M"), "10:00")
-        self.assertEqual(transfer_departure.airline, "Airline")
-        self.assertEqual(transfer_departure.flight_number, "1234567890")
+        # transfer_departure = models.Transfer.objects.get(sale=sale, type="departure")
+        # self.assertEqual(transfer_departure.date.strftime("%Y-%m-%d"), "2025-01-01")
+        # self.assertEqual(transfer_departure.hour.strftime("%H:%M"), "10:00")
+        # self.assertEqual(transfer_departure.airline, "Airline")
+        # self.assertEqual(transfer_departure.flight_number, "1234567890")
 
         # Validate total calculation (with csv pricing data)
         self.assertEqual(sale.total, 170.00)
 
-    def test_post_ok_one_way_vip_code(self):
-        """Test post ok one way with vip code
-        Expected: ok
-        """
+    # def test_post_ok_one_way_vip_code(self):
+    #     """Test post ok one way with vip code
+    #     Expected: ok
+    #     """
 
-        # Send json post data and validate status code
-        response = self.client.post(
-            self.endpoint, json.dumps(self.data), content_type="application/json"
-        )
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+    #     # Send json post data and validate status code
+    #     response = self.client.post(
+    #         self.endpoint, json.dumps(self.data), content_type="application/json"
+    #     )
+    #     self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-        # Validate data
-        response_json = response.json()
-        self.assertEqual(response_json["status"], "success")
-        self.assertEqual(response_json["message"], "Sale created successfully")
-        self.assertTrue(
-            response_json["data"]["payment_link"].startswith(
-                "https://checkout.stripe.com/"
-            )
-        )
+    #     # Validate data
+    #     response_json = response.json()
+    #     self.assertEqual(response_json["status"], "success")
+    #     self.assertEqual(response_json["message"], "Sale created successfully")
+    #     self.assertTrue(
+    #         response_json["data"]["payment_link"].startswith(
+    #             "https://checkout.stripe.com/"
+    #         )
+    #     )
 
-    def test_post_ok_round_trip_vip_code(self):
-        """Test post ok round trip with vip code
-        Expected: ok
-        """
+    # def test_post_ok_round_trip_vip_code(self):
+    #     """Test post ok round trip with vip code
+    #     Expected: ok
+    #     """
 
-        # Set service type to round trip
-        self.data["service_type"] = 2
+    #     # Set service type to round trip
+    #     self.data["service_type"] = 2
 
-        # Send json post data and validate status code
-        response = self.client.post(
-            self.endpoint, json.dumps(self.data), content_type="application/json"
-        )
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+    #     # Send json post data and validate status code
+    #     response = self.client.post(
+    #         self.endpoint, json.dumps(self.data), content_type="application/json"
+    #     )
+    #     self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-        # Validate data
-        response_json = response.json()
-        self.assertEqual(response_json["status"], "success")
-        self.assertEqual(response_json["message"], "Sale created successfully")
-        self.assertTrue(
-            response_json["data"]["payment_link"].startswith(
-                "https://checkout.stripe.com/"
-            )
-        )
+    #     # Validate data
+    #     response_json = response.json()
+    #     self.assertEqual(response_json["status"], "success")
+    #     self.assertEqual(response_json["message"], "Sale created successfully")
+    #     self.assertTrue(
+    #         response_json["data"]["payment_link"].startswith(
+    #             "https://checkout.stripe.com/"
+    #         )
+    #     )
 
-    def test_post_ok_details(self):
-        """Test post ok one way with details
-        Expected: ok
-        """
+    # def test_post_ok_details(self):
+    #     """Test post ok one way with details
+    #     Expected: ok
+    #     """
 
-        # Change service type
-        details = "This is a test details"
-        self.data["details"] = details
+    #     # Add details
+    #     details = "This is a test details"
+    #     self.data["details"] = details
 
-        # Send json post data and validate status code
-        response = self.client.post(
-            self.endpoint, json.dumps(self.data), content_type="application/json"
-        )
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+    #     # Send json post data and validate status code
+    #     response = self.client.post(
+    #         self.endpoint, json.dumps(self.data), content_type="application/json"
+    #     )
+    #     self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-        # Validate details in sale
-        sale = models.Sale.objects.get(client__email=self.data["client_email"])
-        self.assertEqual(sale.details, details)
+    #     # Validate details in sale
+    #     sale = models.Sale.objects.get(client__email=self.data["client_email"])
+    #     self.assertEqual(sale.details, details)
 
-    def test_post_ok_details_empty(self):
-        """Test post ok one way with empty details
-        Expected: ok
-        """
+    # def test_post_ok_details_empty(self):
+    #     """Test post ok one way with empty details
+    #     Expected: ok
+    #     """
 
-        # Change service type
-        self.data["details"] = ""
+    #     # Change service type
+    #     self.data["details"] = ""
 
-        # Send json post data and validate status code
-        response = self.client.post(
-            self.endpoint, json.dumps(self.data), content_type="application/json"
-        )
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+    #     # Send json post data and validate status code
+    #     response = self.client.post(
+    #         self.endpoint, json.dumps(self.data), content_type="application/json"
+    #     )
+    #     self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-    def test_post_ok_details_missing(self):
-        """Test post ok one way with missing details
-        Expected: ok
-        """
+    # def test_post_ok_details_missing(self):
+    #     """Test post ok one way with missing details
+    #     Expected: ok
+    #     """
 
-        # Remove details from data if exists
-        if "details" in self.data:
-            del self.data["details"]
+    #     # Remove details from data if exists
+    #     if "details" in self.data:
+    #         del self.data["details"]
 
-        # Send json post data and validate status code
-        response = self.client.post(
-            self.endpoint, json.dumps(self.data), content_type="application/json"
-        )
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+    #     # Send json post data and validate status code
+    #     response = self.client.post(
+    #         self.endpoint, json.dumps(self.data), content_type="application/json"
+    #     )
+    #     self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
 
 class SaleViewSetLiveTestCase(TestSeleniumBase):

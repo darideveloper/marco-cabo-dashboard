@@ -53,7 +53,7 @@ class SaleAdmin(admin.ModelAdmin):
     list_display = (
         "stripe_code",
         "client",
-        "vip_code",
+        # "vip_code",
         "vehicle",
         "service_type",
         "location",
@@ -66,7 +66,7 @@ class SaleAdmin(admin.ModelAdmin):
     )
     list_filter = (
         "client",
-        "vip_code",
+        # "vip_code",
         "vehicle",
         "service_type",
         "location",
@@ -78,7 +78,7 @@ class SaleAdmin(admin.ModelAdmin):
         "client__name",
         "client__email",
         "vehicle__name",
-        "vip_code__value",
+        # "vip_code__value",
         "total",
     )
     readonly_fields = ("stripe_code", "created_at", "updated_at")
@@ -121,7 +121,7 @@ class TransferAdmin(admin.ModelAdmin):
         "sale__client__name",
         "sale__client__email",
         "sale__vehicle__name",
-        "sale__vip_code__value",
+        # "sale__vip_code__value",
     )
     readonly_fields = ("created_at", "updated_at")
     ordering = ("-created_at",)
