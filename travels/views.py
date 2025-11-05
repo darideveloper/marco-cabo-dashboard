@@ -121,7 +121,6 @@ class SaleDoneView(APIView):
             except Exception:
                 return redirect(settings.LANDING_HOST_ERROR)
 
-            input(serializer.validated_data)
             # Update client
             client = models.Client.objects.filter(
                 email=serializer.validated_data["client"]["email"]
