@@ -13,10 +13,14 @@ from travels import models
 from travels import serializers
 from utils.stripe import get_payment_link
 
-
-class ZoneViewSet(viewsets.ReadOnlyModelViewSet):
-    # Return all zones except "Postal Code"
+    
+class HotelsViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = models.Zone.objects.exclude(name="Codigo Postal").order_by("id")
+    serializer_class = serializers.ZoneSerializer
+
+
+class PostalCodeViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = models.Location.objects.filter(zone__name="Codigo Postal").order_by("id")
     serializer_class = serializers.ZoneSerializer
 
 
