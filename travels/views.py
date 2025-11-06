@@ -6,7 +6,6 @@ from rest_framework import status
 # from rest_framework.permissions import AllowAny
 
 from django_filters.rest_framework import DjangoFilterBackend
-from django.shortcuts import redirect
 from django.conf import settings
 
 from travels import models
@@ -119,12 +118,17 @@ class SaleDoneView(APIView):
                     stripe_code=serializer.validated_data["sale_stripe_code"]
                 ).first()
             except Exception:
-                return redirect(settings.LANDING_HOST_ERROR)
+                return Response(
+                    {
+                        "status": "error",
+                        "message": "Invalid sale data",
+                        "data": serializer.errors,
+                    },
+                    status=status.HTTP_401_UNAUTHORIZED,
+                )
 
             # Update client
-            client = models.Client.objects.filter(
-                email=serializer.validated_data["client"]["email"]
-            ).first()
+            client = sale.client
             client.last_name = serializer.validated_data["client"]["last_name"]
             client.phone = serializer.validated_data["client"]["phone"]
             client.save()
@@ -151,13 +155,20 @@ class SaleDoneView(APIView):
             sale.save()
 
             # Check if sale is already confirmed
-            return redirect(settings.LANDING_HOST_SUCCESS)
+            return Response(
+                {
+                    "status": "success",
+                    "message": "Sale confirmed successfully",
+                    "data": [],
+                },
+                status=status.HTTP_200_OK,
+            )
         else:
             return Response(
                 {
                     "status": "error",
                     "message": "Invalid sale data",
-                    "errors": serializer.errors,
+                    "data": serializer.errors,
                 },
                 status=status.HTTP_400_BAD_REQUEST,
             )
