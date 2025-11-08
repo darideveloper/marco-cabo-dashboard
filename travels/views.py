@@ -121,7 +121,6 @@ class SaleDoneView(APIView):
                 sale = models.Sale.objects.filter(
                     stripe_code=serializer.validated_data["sale_stripe_code"]
                 ).first()
-                input(sale)
             except Exception:
                 return Response(
                     {
@@ -134,6 +133,7 @@ class SaleDoneView(APIView):
 
             # Update client
             client = sale.client
+            client.name = serializer.validated_data["client"]["name"]
             client.last_name = serializer.validated_data["client"]["last_name"]
             client.phone = serializer.validated_data["client"]["phone"]
             client.save()

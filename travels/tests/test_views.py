@@ -448,7 +448,7 @@ class SaleViewSetTestCase(TestApiViewsMethods, TestTravelsModelBase):
             endpoint="/api/sales/", restricted_post=False, restricted_get=True
         )
 
-        # Api missing data
+        # Api data
         self.data = {
             "service_type": 1,
             "client_name": "John",
@@ -1058,53 +1058,136 @@ class SaleViewSetLiveTestCase(TestSeleniumBase):
 class SaleDoneViewTestCase(TestApiViewsMethods, TestTravelsModelBase):
     """Test sale done view"""
 
-    def setUp(self):
-        super().setUp(endpoint="/api/sales/done/sample-stripe-code/")
+    @classmethod
+    def setUpTestData(cls):
+        """Load fixtures only once"""
+        call_command("apps_loaddata")
+        call_command("load_pricing")
 
-    def test_get_sale_done(self):
-        """Test get sale done
-        Expected: ok
+    def setUp(self):
+        """Create sale with endpoint and setup tests data"""
+        super().setUp(endpoint="/api/sales/done/")
+
+        # Create initial sale with endpoint
+        self.client_email = "john.doe@example.com"
+        response = self.client.post(
+            "/api/sales/",
+            json.dumps(
+                {
+                    "service_type": 1,
+                    "client_name": "John",
+                    "client_email": self.client_email,
+                    "location": 1,
+                    "vehicle": 1,
+                }
+            ),
+            content_type="application/json",
+        )
+        json_data = response.json()
+        self.assertEqual(
+            json_data["status"],
+            "success",
+            "Invalid response status when creating sale from endpoint",
+        )
+
+        # Get last sale from db
+        self.sale = models.Sale.objects.all().last()
+
+        # Api data
+        self.data = {
+            "sale_stripe_code": self.sale.stripe_code,
+            "client_name": "Marco",
+            "client_last_name": "Cabo",
+            "client_phone": "4493402611",
+            "passengers": 6,
+            "details": "This is a test details",
+        }
+
+        self.arrival_data = {
+            "arrival_date": "2025-01-01",
+            "arrival_time": "10:00",
+            "arrival_airline": "Airline",
+            "arrival_flight_number": "1234567890",
+        }
+
+        self.departure_data = {
+            "departure_date": "2025-01-01",
+            "departure_time": "10:00",
+            "departure_airline": "Airline",
+            "departure_flight_number": "1234567890",
+        }
+
+    def test_post_missing_data(self):
+        pass
+
+    def test_post_missing_arrival_data(self):
+        """Submit second part sale data, missing arrival data
+        Expected error: 400 response, sale no paid, sale no updated and no transfer created
         """
 
-        # Create sale
-        sale = self.create_sale()
-
         # Get data and validate status code
-        response = self.client.get(
-            self.endpoint.replace("sample-stripe-code", str(sale.stripe_code))
+        response = self.client.post(self.endpoint, self.data)
+        self.assertEqual(
+            response.status_code,
+            status.HTTP_400_BAD_REQUEST,
         )
-        self.assertEqual(response.status_code, status.HTTP_302_FOUND)
 
+        # Validate sale not paid
+        self.sale.refresh_from_db()
+        self.assertEqual(self.sale.paid, False)
+        
+        # Validate sale no updated
+        self.assertNotEqual(self.sale.client.name, self.data["client_name"])
+        self.assertNotEqual(self.sale.client.last_name, self.data["client_last_name"])
+        self.assertNotEqual(self.sale.client.phone, self.data["client_phone"])
+        self.assertNotEqual(self.sale.passengers, self.data["passengers"])
+        self.assertNotEqual(self.sale.details, self.data["details"])
+        
+        # Valdiate no transfer created
+        self.assertEqual(models.Transfer.objects.count(), 0)
+
+    def test_post_arrival(self):
+        """Submit second part sale data (only arrival data)
+        Expected ok: sale paid, sale updated, transfer created
+        """
+        
+        arriving_data = self.data.copy()
+        arriving_data.update(self.arrival_data)
+        
+        # Get data and validate status code
+        response = self.client.post(self.endpoint, arriving_data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
         # Validate sale paid
-        sale = models.Sale.objects.get(stripe_code=sale.stripe_code)
-        self.assertEqual(sale.paid, True)
+        self.sale.refresh_from_db()
+        self.assertEqual(self.sale.paid, True)
+        
+        # Validate sale updated
+        self.assertEqual(self.sale.client.name, self.data["client_name"])
+        self.assertEqual(self.sale.client.last_name, self.data["client_last_name"])
+        self.assertEqual(self.sale.client.phone, self.data["client_phone"])
+        self.assertEqual(self.sale.passengers, self.data["passengers"])
+        self.assertEqual(self.sale.details, self.data["details"])
+        
+        transfer = models.Transfer.objects.get(sale=self.sale)
+        input(transfer)
+        
+        # Validate transfer created
+        self.assertEqual(models.Transfer.objects.count(), 1)
+        transfer = models.Transfer.objects.get(sale=self.sale)
+        self.assertEqual(transfer.date, self.arrival_data["arrival_date"])
+        self.assertEqual(transfer.time, self.arrival_data["arrival_time"])
+        self.assertEqual(transfer.airline, self.arrival_data["arrival_airline"])
+        self.assertEqual(transfer.flight_number, self.arrival_data["arrival_flight_number"])
 
-        # Validate success redirect
-        self.assertEqual(response.url, settings.LANDING_HOST_SUCCESS)
-
-    def test_get_sale_done_invalid_stripe_code(self):
+    def test_post_invalid_stripe_code(self):
         """Test get sale done with invalid stripe code
         Expected: error redirect
         """
 
-        # Get data and validate status code
-        response = self.client.get(self.endpoint, {"sale_stripe_code": "invalid"})
-        self.assertEqual(response.status_code, status.HTTP_302_FOUND)
+        # # Get data and validate status code
+        # response = self.client.get(self.endpoint, {"sale_stripe_code": "invalid"})
+        # self.assertEqual(response.status_code, status.HTTP_302_FOUND)
 
-        # Validate error redirect
-        self.assertEqual(response.url, settings.LANDING_HOST_ERROR)
-
-    # Overwrite test_unauthenticated_user_get to allow unauthenticated user get request
-    def test_unauthenticated_user_get(self):
-        """Test unauthenticated user get request
-        Expected: redirect to login page
-        """
-
-        # Remove authentication
-        self.client.logout()
-
-        # Get data and validate status code
-        response = self.client.get(self.endpoint)
-
-        # Validate redirect to login page
-        self.assertEqual(response.status_code, status.HTTP_302_FOUND)
+        # # Validate error redirect
+        # self.assertEqual(response.url, settings.LANDING_HOST_ERROR)

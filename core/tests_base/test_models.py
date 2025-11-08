@@ -160,7 +160,7 @@ class TestTravelsModelBase(TestCase):
         location: models.Location = None,
         total: float = 100,
         paid: bool = False,
-        auto_create_vip_code: bool = True,
+        # auto_create_vip_code: bool = True,
     ):
         """Create a sale
 

@@ -96,6 +96,7 @@ class SaleSerializer(serializers.Serializer):
 
 class SaleDoneSerializer(serializers.Serializer):
     sale_stripe_code = serializers.CharField(required=True)
+    client_name = serializers.CharField(source="client.name")
     client_last_name = serializers.CharField(source="client.last_name")
     client_phone = serializers.CharField(source="client.phone")
     passengers = serializers.IntegerField(source="sale.passengers")
