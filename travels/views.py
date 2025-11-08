@@ -140,24 +140,24 @@ class SaleDoneView(APIView):
 
             # Confirm sale
             sale.paid = True
-            sale.arrival_date = serializer.validated_data["arrival"]["date"]
-            sale.arrival_time = serializer.validated_data["arrival"]["hour"]
-            sale.arrival_airline = serializer.validated_data["arrival"]["airline"]
-            sale.arrival_flight_number = serializer.validated_data["arrival"][
-                "flight_number"
-            ]
-            if sale.service_type.name == "Round Trip":
-                sale.departure_date = serializer.validated_data["departure"]["date"]
-                sale.departure_time = serializer.validated_data["departure"]["hour"]
-                sale.departure_airline = serializer.validated_data["departure"][
-                    "airline"
-                ]
-                sale.departure_flight_number = serializer.validated_data["departure"][
-                    "flight_number"
-                ]
-            sale.passengers = serializer.validated_data["sale"]["passengers"]
-            sale.details = serializer.validated_data["sale"]["details"]
             sale.save()
+            models.Transfer.objects.create(
+                sale=sale,
+                type="arrival",
+                date=serializer.validated_data["arrival"]["date"],
+                hour=serializer.validated_data["arrival"]["hour"],
+                airline=serializer.validated_data["arrival"]["airline"],
+                flight_number=serializer.validated_data["arrival"]["flight_number"],
+            )
+            if sale.service_type.name == "Round Trip":
+                models.Transfer.objects.create(
+                    sale=sale,
+                    type="departure",
+                    date=serializer.validated_data["departure"]["date"],
+                    hour=serializer.validated_data["departure"]["hour"],
+                    airline=serializer.validated_data["departure"]["airline"],
+                    flight_number=serializer.validated_data["departure"]["flight_number"],
+                )
 
             # Check if sale is already confirmed
             return Response(
