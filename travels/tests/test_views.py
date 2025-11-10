@@ -445,7 +445,7 @@ class SaleViewSetTestCase(TestApiViewsMethods, TestTravelsModelBase):
 
     def setUp(self):
         super().setUp(
-            endpoint="/api/sales/", restricted_post=False, restricted_get=True
+            endpoint="/api/sales/", restricted_post=False, restricted_get=False
         )
 
         # Api data
@@ -648,6 +648,48 @@ class SaleViewSetTestCase(TestApiViewsMethods, TestTravelsModelBase):
 
         # Validate total calculation (with csv pricing data)
         self.assertEqual(sale.total, 170.00)
+        
+    def test_get_sale_not_found(self):
+        """Test get sale done with sale not found
+        Expected: error redirect
+        """
+
+        # Get data and validate status code
+        endpoint = f"{self.endpoint}invalid/"
+        response = self.client.get(endpoint)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+        # Validate error
+        response_json = response.json()
+        self.assertEqual(response_json["status"], "error")
+        self.assertEqual(response_json["message"], "Sale not found")
+        self.assertEqual(response_json["data"], {})
+        
+    def test_get_sale_found(self):
+        """Test get sale done with sale found
+        Expected: success redirect
+        """
+        
+        # Create a sale
+        sale = self.create_sale()
+
+        # Get data and validate status code
+        endpoint = f"{self.endpoint}{sale.stripe_code}/"
+        response = self.client.get(endpoint)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # Validate error
+        response_json = response.json()
+        self.assertEqual(response_json["status"], "success")
+        self.assertEqual(response_json["message"], "Sale data retrieved successfully")
+        self.assertEqual(response_json["data"]["id"], sale.id)
+        self.assertEqual(response_json["data"]["service_type"]["name"], sale.service_type.name)
+        self.assertEqual(response_json["data"]["location"]["name"], sale.location.name)
+        self.assertEqual(response_json["data"]["vehicle"]["name"], sale.vehicle.name)
+        self.assertEqual(response_json["data"]["total"], sale.total)
+        self.assertEqual(response_json["data"]["stripe_code"], str(sale.stripe_code))
+        self.assertEqual(response_json["data"]["client"]["name"], sale.client.name)
+        self.assertEqual(response_json["data"]["client"]["email"], sale.client.email)
 
 
 class SaleViewSetLiveTestCase(TestSeleniumBase):

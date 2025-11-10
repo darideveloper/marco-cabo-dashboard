@@ -1,3 +1,5 @@
+import uuid
+
 from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -67,6 +69,49 @@ class SaleViewSet(APIView):
     """
     API endpoint to create sales
     """
+    
+    def get(self, request, stripe_code):
+        """Get already saved sale data"""
+        try:
+            sale = models.Sale.objects.get(stripe_code=stripe_code)
+        except Exception:
+            return Response(
+                {
+                    "status": "error",
+                    "message": "Sale not found",
+                    "data": {},
+                },
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
+
+        return Response(
+            {
+                "status": "success",
+                "message": "Sale data retrieved successfully",
+                "data": {
+                    "id": sale.id,
+                    "service_type": {
+                        "id": sale.service_type.id,
+                        "name": sale.service_type.name,
+                    },
+                    "location": {
+                        "id": sale.location.id,
+                        "name": sale.location.name,
+                    },
+                    "vehicle": {
+                        "id": sale.vehicle.id,
+                        "name": sale.vehicle.name,
+                    },
+                    "total": sale.total,
+                    "stripe_code": sale.stripe_code,
+                    "client": {
+                        "name": sale.client.name,
+                        "email": sale.client.email,
+                    },
+                },
+            },
+            status=status.HTTP_200_OK,
+        )
 
     def post(self, request):
         serializer = serializers.SaleSerializer(data=request.data)
@@ -111,9 +156,8 @@ class SaleDoneView(APIView):
     API endpoint to confirm a sale
     """
 
-    # permission_classes = [AllowAny]
-
     def post(self, request):
+        """Update sale data and confirm sale"""
         serializer = serializers.SaleDoneSerializer(data=request.data)
 
         if serializer.is_valid():
@@ -130,7 +174,7 @@ class SaleDoneView(APIView):
                     },
                     status=status.HTTP_401_UNAUTHORIZED,
                 )
-                
+
             # return error if sale already paid (already submited)
             if sale.paid:
                 return Response(
@@ -141,7 +185,7 @@ class SaleDoneView(APIView):
                     },
                     status=status.HTTP_400_BAD_REQUEST,
                 )
-                
+
             # Update sale
             sale.passengers = serializer.validated_data["sale"]["passengers"]
             sale.details = serializer.validated_data["sale"].get("details", None)
@@ -172,7 +216,9 @@ class SaleDoneView(APIView):
                     date=serializer.validated_data["departure"]["date"],
                     hour=serializer.validated_data["departure"]["hour"],
                     airline=serializer.validated_data["departure"]["airline"],
-                    flight_number=serializer.validated_data["departure"]["flight_number"],
+                    flight_number=serializer.validated_data["departure"][
+                        "flight_number"
+                    ],
                 )
 
             # Check if sale is already confirmed
