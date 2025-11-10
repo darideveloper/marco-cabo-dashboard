@@ -1066,7 +1066,9 @@ class SaleDoneViewTestCase(TestApiViewsMethods, TestTravelsModelBase):
 
     def setUp(self):
         """Create sale with endpoint and setup tests data"""
-        super().setUp(endpoint="/api/sales/done/")
+        super().setUp(
+            endpoint="/api/sales/done/", restricted_get=True, restricted_post=False
+        )
 
         # Create initial sale with endpoint
         self.client_email = "john.doe@example.com"
@@ -1118,7 +1120,30 @@ class SaleDoneViewTestCase(TestApiViewsMethods, TestTravelsModelBase):
         }
 
     def test_post_missing_data(self):
-        pass
+        """Submit second part sale data, missing data
+        Expected error: 400 response, sale no paid, sale no updated and no transfer created
+        """
+
+        # Get data and validate status code
+        response = self.client.post(self.endpoint, {})
+        self.assertEqual(
+            response.status_code,
+            status.HTTP_400_BAD_REQUEST,
+        )
+
+        # Validate sale not paid
+        self.sale.refresh_from_db()
+        self.assertEqual(self.sale.paid, False)
+
+        # Validate sale no updated
+        self.assertNotEqual(self.sale.client.name, self.data["client_name"])
+        self.assertNotEqual(self.sale.client.last_name, self.data["client_last_name"])
+        self.assertNotEqual(self.sale.client.phone, self.data["client_phone"])
+        self.assertNotEqual(self.sale.passengers, self.data["passengers"])
+        self.assertNotEqual(self.sale.details, self.data["details"])
+
+        # Valdiate no transfer created
+        self.assertEqual(models.Transfer.objects.count(), 0)
 
     def test_post_missing_arrival_data(self):
         """Submit second part sale data, missing arrival data
@@ -1135,14 +1160,14 @@ class SaleDoneViewTestCase(TestApiViewsMethods, TestTravelsModelBase):
         # Validate sale not paid
         self.sale.refresh_from_db()
         self.assertEqual(self.sale.paid, False)
-        
+
         # Validate sale no updated
         self.assertNotEqual(self.sale.client.name, self.data["client_name"])
         self.assertNotEqual(self.sale.client.last_name, self.data["client_last_name"])
         self.assertNotEqual(self.sale.client.phone, self.data["client_phone"])
         self.assertNotEqual(self.sale.passengers, self.data["passengers"])
         self.assertNotEqual(self.sale.details, self.data["details"])
-        
+
         # Valdiate no transfer created
         self.assertEqual(models.Transfer.objects.count(), 0)
 
@@ -1150,44 +1175,127 @@ class SaleDoneViewTestCase(TestApiViewsMethods, TestTravelsModelBase):
         """Submit second part sale data (only arrival data)
         Expected ok: sale paid, sale updated, transfer created
         """
-        
+
         arriving_data = self.data.copy()
         arriving_data.update(self.arrival_data)
-        
+
         # Get data and validate status code
         response = self.client.post(self.endpoint, arriving_data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        
+
         # Validate sale paid
         self.sale.refresh_from_db()
         self.assertEqual(self.sale.paid, True)
-        
+
         # Validate sale updated
         self.assertEqual(self.sale.client.name, self.data["client_name"])
         self.assertEqual(self.sale.client.last_name, self.data["client_last_name"])
         self.assertEqual(self.sale.client.phone, self.data["client_phone"])
         self.assertEqual(self.sale.passengers, self.data["passengers"])
         self.assertEqual(self.sale.details, self.data["details"])
-        
-        transfer = models.Transfer.objects.get(sale=self.sale)
-        input(transfer)
-        
+
         # Validate transfer created
         self.assertEqual(models.Transfer.objects.count(), 1)
         transfer = models.Transfer.objects.get(sale=self.sale)
-        self.assertEqual(transfer.date, self.arrival_data["arrival_date"])
-        self.assertEqual(transfer.time, self.arrival_data["arrival_time"])
+        self.assertEqual(
+            transfer.date.strftime("%Y-%m-%d"), self.arrival_data["arrival_date"]
+        )
+        self.assertEqual(
+            transfer.hour.strftime("%H:%M"), self.arrival_data["arrival_time"]
+        )
         self.assertEqual(transfer.airline, self.arrival_data["arrival_airline"])
-        self.assertEqual(transfer.flight_number, self.arrival_data["arrival_flight_number"])
+        self.assertEqual(
+            transfer.flight_number, self.arrival_data["arrival_flight_number"]
+        )
+
+    def test_post_departure(self):
+        """Submit second part sale data (arrival and departure data)
+        Expected ok: sale paid, sale updated, transfer created
+        """
+
+        # Update sale service type in db
+        self.sale.service_type = models.ServiceType.objects.get(name="Round Trip")
+        self.sale.save()
+
+        departing_data = self.data.copy()
+        departing_data.update(self.arrival_data)
+        departing_data.update(self.departure_data)
+
+        # Get data and validate status code
+        response = self.client.post(self.endpoint, departing_data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # Validate sale paid
+        self.sale.refresh_from_db()
+        self.assertEqual(self.sale.paid, True)
+
+        # Validate sale updated
+        self.assertEqual(self.sale.client.name, self.data["client_name"])
+        self.assertEqual(self.sale.client.last_name, self.data["client_last_name"])
+        self.assertEqual(self.sale.client.phone, self.data["client_phone"])
+        self.assertEqual(self.sale.passengers, self.data["passengers"])
+        self.assertEqual(self.sale.details, self.data["details"])
+
+        # Validate transfer created
+        self.assertEqual(
+            models.Transfer.objects.filter(sale=self.sale, type="arrival").count(), 1
+        )
+        transfer = models.Transfer.objects.get(sale=self.sale, type="arrival")
+        self.assertEqual(
+            transfer.date.strftime("%Y-%m-%d"), self.arrival_data["arrival_date"]
+        )
+        self.assertEqual(
+            transfer.hour.strftime("%H:%M"), self.arrival_data["arrival_time"]
+        )
+        self.assertEqual(transfer.airline, self.arrival_data["arrival_airline"])
+        self.assertEqual(
+            transfer.flight_number, self.arrival_data["arrival_flight_number"]
+        )
+
+        # Validate departure transfer created
+        self.assertEqual(
+            models.Transfer.objects.filter(sale=self.sale, type="departure").count(), 1
+        )
+        transfer = models.Transfer.objects.get(sale=self.sale, type="departure")
+        self.assertEqual(
+            transfer.date.strftime("%Y-%m-%d"), self.departure_data["departure_date"]
+        )
+        self.assertEqual(
+            transfer.hour.strftime("%H:%M"), self.departure_data["departure_time"]
+        )
+        self.assertEqual(transfer.airline, self.departure_data["departure_airline"])
+        self.assertEqual(
+            transfer.flight_number, self.departure_data["departure_flight_number"]
+        )
 
     def test_post_invalid_stripe_code(self):
         """Test get sale done with invalid stripe code
         Expected: error redirect
         """
 
-        # # Get data and validate status code
-        # response = self.client.get(self.endpoint, {"sale_stripe_code": "invalid"})
-        # self.assertEqual(response.status_code, status.HTTP_302_FOUND)
+        # Change stripe code in data
+        self.data["sale_stripe_code"] = "invalid"
+        self.data.update(self.arrival_data)
 
-        # # Validate error redirect
-        # self.assertEqual(response.url, settings.LANDING_HOST_ERROR)
+        # Get data and validate status code
+        response = self.client.post(self.endpoint, self.data)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+        # Validate error
+        response_json = response.json()
+        self.assertEqual(response_json["status"], "error")
+        self.assertEqual(response_json["message"], "Invalid sale data")
+        self.assertEqual(response_json["status"], "error")
+        self.assertEqual(response_json["message"], "Invalid sale data")
+
+        # Validate no sale updated
+        self.sale.refresh_from_db()
+        self.assertEqual(self.sale.paid, False)
+        self.assertNotEqual(self.sale.client.name, self.data["client_name"])
+        self.assertNotEqual(self.sale.client.last_name, self.data["client_last_name"])
+        self.assertNotEqual(self.sale.client.phone, self.data["client_phone"])
+        self.assertNotEqual(self.sale.passengers, self.data["passengers"])
+        self.assertNotEqual(self.sale.details, self.data["details"])
+
+        # Valdiate no transfer created
+        self.assertEqual(models.Transfer.objects.count(), 0)

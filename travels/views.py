@@ -130,6 +130,11 @@ class SaleDoneView(APIView):
                     },
                     status=status.HTTP_401_UNAUTHORIZED,
                 )
+                
+            # Update sale
+            sale.passengers = serializer.validated_data["sale"]["passengers"]
+            sale.details = serializer.validated_data["sale"]["details"]
+            sale.save()
 
             # Update client
             client = sale.client
