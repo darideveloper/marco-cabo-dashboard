@@ -1,11 +1,7 @@
-import uuid
-
 from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-
-# from rest_framework.permissions import AllowAny
 
 from django_filters.rest_framework import DjangoFilterBackend
 from django.conf import settings
@@ -70,9 +66,12 @@ class SaleViewSet(APIView):
     API endpoint to create sales
     """
     
-    def get(self, request, stripe_code):
+    def get(self, request):
         """Get already saved sale data"""
+        
         try:
+            # Get stripe code from query params
+            stripe_code = request.query_params.get("stripe_code")
             sale = models.Sale.objects.get(stripe_code=stripe_code)
         except Exception:
             return Response(

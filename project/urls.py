@@ -36,11 +36,6 @@ urlpatterns = [
     # ),
     path("api/sales/", travels_views.SaleViewSet.as_view(), name="sales"),
     path(
-        "api/sales/<str:stripe_code>/",
-        travels_views.SaleViewSet.as_view(),
-        name="sale-done-stripe-code",
-    ),
-    path(
         "api/sales/done/",
         travels_views.SaleDoneView.as_view(),
         name="sale-done",

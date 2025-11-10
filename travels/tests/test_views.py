@@ -655,7 +655,7 @@ class SaleViewSetTestCase(TestApiViewsMethods, TestTravelsModelBase):
         """
 
         # Get data and validate status code
-        endpoint = f"{self.endpoint}invalid/"
+        endpoint = f"{self.endpoint}?stripe_code=invalid"
         response = self.client.get(endpoint)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
@@ -674,7 +674,7 @@ class SaleViewSetTestCase(TestApiViewsMethods, TestTravelsModelBase):
         sale = self.create_sale()
 
         # Get data and validate status code
-        endpoint = f"{self.endpoint}{sale.stripe_code}/"
+        endpoint = f"{self.endpoint}?stripe_code={sale.stripe_code}"
         response = self.client.get(endpoint)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
