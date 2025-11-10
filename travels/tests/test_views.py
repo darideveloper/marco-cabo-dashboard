@@ -757,12 +757,8 @@ class SaleViewSetLiveTestCase(TestSeleniumBase):
 
         # Validate redirect to confirmation page after pay
         sale = models.Sale.objects.get(client__email=self.sale_data["client_email"])
-        confirmation_url = self.driver.current_url
-        self.assertIn(f"/api/sales/done/{sale.stripe_code}", confirmation_url)
-
-        # Open link in test live mode
-        confirmation_endpoint = confirmation_url.split("/api")[1]
-        self.set_page(f"/api{confirmation_endpoint}")
+        confirmation_url = self.driver.current_url.replace(settings.LANDING_HOST_SUCCESS, "")
+        self.assertIn(f"/confirmation/{sale.stripe_code}", confirmation_url)
 
     def test_stripe_back_button(self):
         """Test stripe back button

@@ -91,7 +91,7 @@ class SaleViewSet(APIView):
                 {
                     "status": "success",
                     "message": "Sale created successfully",
-                    "data": {"sale_id": sale.id, "payment_link": payment_link},
+                    "data": {"payment_link": payment_link},
                 },
                 status=status.HTTP_201_CREATED,
             )
