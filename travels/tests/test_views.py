@@ -698,7 +698,7 @@ class SaleViewSetLiveTestCase(TestSeleniumBase):
             "card_cvc": "input[name='cardCvc']",
             "card_name": "input[name='billingName']",
             "card_submit": "button.SubmitButton",
-            "ammount": "span.CurrencyAmount",
+            "amount": "span.CurrencyAmount",
             "back_button": 'a[data-testid="business-link"]',
         }
 
@@ -730,7 +730,8 @@ class SaleViewSetLiveTestCase(TestSeleniumBase):
 
         # Validate stripe amount
         fields = self.get_selenium_elems(self.selectors)
-        self.assertEqual(fields["ammount"].text, f"${self.stripe_data['amount']}.00")
+        amount = fields["amount"].text
+        self.assertEqual(amount, f"${self.stripe_data['amount']}.00")
 
     def test_stripe_sucess_payment(self):
         """Test stripe success payment
@@ -1057,3 +1058,23 @@ class SaleDoneViewTestCase(TestApiViewsMethods, TestTravelsModelBase):
 
         # Valdiate no transfer created
         self.assertEqual(models.Transfer.objects.count(), 0)
+
+    def test_post_sale_already_paid(self):
+        """Test get sale done with sale already paid
+        Expected: error redirect
+        """
+
+        # Formatd ata
+        self.data.update(self.arrival_data)
+
+        response = self.client.post(self.endpoint, self.data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # Submit form again
+        response = self.client.post(self.endpoint, self.data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        # Validate error
+        response_json = response.json()
+        self.assertEqual(response_json["status"], "error")
+        self.assertEqual(response_json["message"], "Sale already paid")

@@ -131,6 +131,17 @@ class SaleDoneView(APIView):
                     status=status.HTTP_401_UNAUTHORIZED,
                 )
                 
+            # return error if sale already paid (already submited)
+            if sale.paid:
+                return Response(
+                    {
+                        "status": "error",
+                        "message": "Sale already paid",
+                        "data": [],
+                    },
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+                
             # Update sale
             sale.passengers = serializer.validated_data["sale"]["passengers"]
             sale.details = serializer.validated_data["sale"].get("details", None)
