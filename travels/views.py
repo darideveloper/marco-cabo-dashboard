@@ -133,7 +133,7 @@ class SaleDoneView(APIView):
                 
             # Update sale
             sale.passengers = serializer.validated_data["sale"]["passengers"]
-            sale.details = serializer.validated_data["sale"]["details"]
+            sale.details = serializer.validated_data["sale"].get("details", None)
             sale.save()
 
             # Update client
