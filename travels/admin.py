@@ -6,7 +6,7 @@ from travels import models
 
 @admin.register(models.Zone)
 class ZoneAdmin(admin.ModelAdmin):
-    list_display = ("name", "created_at")
+    list_display = ("name", "updated_at")
     list_filter = ("created_at", "updated_at")
     search_fields = ("name",)
     readonly_fields = ("created_at", "updated_at")
@@ -15,7 +15,7 @@ class ZoneAdmin(admin.ModelAdmin):
 
 @admin.register(models.Location)
 class LocationAdmin(admin.ModelAdmin):
-    list_display = ("name", "zone", "created_at")
+    list_display = ("name", "zone", "updated_at")
     list_filter = ("zone", "created_at", "updated_at")
     search_fields = ("name",)
     readonly_fields = ("created_at", "updated_at")
@@ -24,7 +24,7 @@ class LocationAdmin(admin.ModelAdmin):
 
 @admin.register(models.Client)
 class ClientAdmin(admin.ModelAdmin):
-    list_display = ("name", "last_name", "email", "phone", "created_at")
+    list_display = ("name", "last_name", "email", "phone", "updated_at")
     list_filter = ("created_at", "updated_at")
     search_fields = ("name", "last_name", "email", "phone")
     readonly_fields = ("created_at", "updated_at")
@@ -33,7 +33,7 @@ class ClientAdmin(admin.ModelAdmin):
 
 @admin.register(models.VipCode)
 class VipCodeAdmin(admin.ModelAdmin):
-    list_display = ("value", "active", "created_at")
+    list_display = ("value", "active", "updated_at")
     list_filter = ("active", "created_at", "updated_at")
     search_fields = ("value",)
     readonly_fields = ("created_at", "updated_at")
@@ -42,7 +42,7 @@ class VipCodeAdmin(admin.ModelAdmin):
 
 @admin.register(models.Vehicle)
 class VehicleAdmin(admin.ModelAdmin):
-    list_display = ("name", "created_at")
+    list_display = ("name", "passengers", "updated_at")
     list_filter = ("created_at", "updated_at")
     readonly_fields = ("created_at", "updated_at")
     ordering = ("name",)
@@ -98,7 +98,7 @@ class SaleAdmin(admin.ModelAdmin):
 
 @admin.register(models.ServiceType)
 class ServiceTypeAdmin(admin.ModelAdmin):
-    list_display = ("name", "created_at")
+    list_display = ("name", "updated_at")
     list_filter = ("created_at", "updated_at")
     readonly_fields = ("created_at", "updated_at")
     ordering = ("name",)
@@ -106,7 +106,7 @@ class ServiceTypeAdmin(admin.ModelAdmin):
 
 @admin.register(models.Transfer)
 class TransferAdmin(admin.ModelAdmin):
-    list_display = ("date", "hour", "type", "sale", "created_at")
+    list_display = ("date", "hour", "type", "sale", "updated_at")
     list_filter = (
         "type",
         "sale",
@@ -134,7 +134,7 @@ class PricingAdmin(admin.ModelAdmin):
         "vehicle",
         "service_type",
         "price",
-        "created_at",
+        "updated_at",
     )
     list_filter = ("location", "vehicle", "service_type", "created_at", "updated_at")
     search_fields = (

@@ -99,6 +99,7 @@ class VipCode(models.Model):
 class Vehicle(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100, unique=True, verbose_name="Nombre")
+    passengers = models.IntegerField(verbose_name="Pasajeros", default=0)
     created_at = models.DateTimeField(
         auto_now_add=True, verbose_name="Fecha de creación"
     )

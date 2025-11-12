@@ -122,9 +122,9 @@ class VehicleViewSetTestCase(TestApiViewsMethods, TestTravelsModelBase):
     def test_get_vehicles(self):
         """Test get vehicles"""
 
-        self.create_vehicle("suburban")
-        self.create_vehicle("van")
-        self.create_vehicle("sprinter")
+        self.create_vehicle("suburban", 2)
+        self.create_vehicle("van", 4)
+        self.create_vehicle("sprinter", 6)
 
         # Get data and validate status code
         response = self.client.get(self.endpoint)
@@ -136,10 +136,13 @@ class VehicleViewSetTestCase(TestApiViewsMethods, TestTravelsModelBase):
         self.assertEqual(len(results), 3)
         self.assertEqual(results[0]["id"], 1)
         self.assertEqual(results[0]["name"], "suburban")
+        self.assertEqual(results[0]["passengers"], 2)
         self.assertEqual(results[1]["id"], 2)
         self.assertEqual(results[1]["name"], "van")
+        self.assertEqual(results[1]["passengers"], 4)
         self.assertEqual(results[2]["id"], 3)
         self.assertEqual(results[2]["name"], "sprinter")
+        self.assertEqual(results[2]["passengers"], 6)
 
     def test_get_vehicles_no_vehicle(self):
         """Test get vehicles with no vehicle"""

@@ -60,7 +60,7 @@ class TestTravelsModelBase(TestCase):
         name = self.__replace_random_string__(name)
         return models.ServiceType.objects.create(name=name)
 
-    def create_vehicle(self, name: str = "test vehicle {x}"):
+    def create_vehicle(self, name: str = "test vehicle {x}", passengers: int = 0):
         """Create a vehicle
 
         Args:
@@ -70,7 +70,7 @@ class TestTravelsModelBase(TestCase):
             Vehicle: Vehicle created
         """
         name = self.__replace_random_string__(name)
-        return models.Vehicle.objects.create(name=name)
+        return models.Vehicle.objects.create(name=name, passengers=passengers)
 
     def create_vip_code(self, value: str = "VIP123 {x}", active: bool = True):
         """Create a VIP code

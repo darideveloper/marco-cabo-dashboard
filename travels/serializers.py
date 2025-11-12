@@ -20,7 +20,7 @@ class ZoneSerializer(serializers.ModelSerializer):
 class VehicleSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Vehicle
-        fields = ("id", "name")
+        fields = ("id", "name", "passengers")
 
 
 class ServiceTypeSerializer(serializers.ModelSerializer):
