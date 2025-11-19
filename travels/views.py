@@ -4,7 +4,6 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from django_filters.rest_framework import DjangoFilterBackend
-from django.conf import settings
 
 from travels import models
 from travels import serializers
@@ -119,9 +118,6 @@ class SaleViewSet(APIView):
             # Create data
             sale = serializer.save()
 
-            # Go directly to confirmation page if vip code
-            # Or generate payment
-            payment_link = settings.LANDING_HOST_SUCCESS
             # if not sale.vip_code:
             payment_link = get_payment_link(
                 product_name="Marco Cabo Transfer",

@@ -608,7 +608,7 @@ class SaleViewSetTestCase(TestApiViewsMethods, TestTravelsModelBase):
         sale = models.Sale.objects.get(client=client)
         self.assertEqual(sale.service_type.name, "One Way")
         self.assertEqual(sale.location.name, "Alegranza")  # csv data
-        self.assertEqual(sale.vehicle.name, "Suburban")  # fixtures data
+        self.assertEqual(sale.vehicle.name, "Luxury SUV")  # fixtures data
 
         # Validate total calculation (with csv pricing data )
         self.assertEqual(sale.total, 90.00)
@@ -647,7 +647,7 @@ class SaleViewSetTestCase(TestApiViewsMethods, TestTravelsModelBase):
         sale = models.Sale.objects.get(client=client)
         self.assertEqual(sale.service_type.name, "Round Trip")
         self.assertEqual(sale.location.name, "Alegranza")  # csv data
-        self.assertEqual(sale.vehicle.name, "Suburban")  # fixtures data
+        self.assertEqual(sale.vehicle.name, "Luxury SUV")  # fixtures data
 
         # Validate total calculation (with csv pricing data)
         self.assertEqual(sale.total, 170.00)
@@ -803,7 +803,7 @@ class SaleViewSetLiveTestCase(TestSeleniumBase):
 
         # Validate redirect to confirmation page after pay
         sale = models.Sale.objects.get(client__email=self.sale_data["client_email"])
-        confirmation_url = self.driver.current_url.replace(settings.LANDING_HOST_SUCCESS, "")
+        confirmation_url = self.driver.current_url.replace(settings.LANDING_HOST, "")
         self.assertIn(f"/confirmation/{sale.stripe_code}", confirmation_url)
 
     def test_stripe_back_button(self):

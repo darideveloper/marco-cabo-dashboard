@@ -62,7 +62,6 @@ class Command(BaseCommand):
                 
                 # Get row models
                 zone = models.Zone.objects.get(name=zone_str)
-                print(f"location_str  {location_str}")
                 location = models.Location.objects.get(name=location_str, zone=zone)
 
                 # Create one way pricing
