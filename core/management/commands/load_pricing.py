@@ -21,8 +21,8 @@ class Command(BaseCommand):
         models.Pricing.objects.all().delete()
 
         # Get DB models
-        suburban = models.Vehicle.objects.get(name="Suburban")
-        van = models.Vehicle.objects.get(name="Van")
+        suburban = models.Vehicle.objects.get(name="Luxury SUV")
+        van = models.Vehicle.objects.get(name="Executive Van")
         sprinter = models.Vehicle.objects.get(name="Sprinter")
         oneway = models.ServiceType.objects.get(name="One Way")
         roundtrip = models.ServiceType.objects.get(name="Round Trip")

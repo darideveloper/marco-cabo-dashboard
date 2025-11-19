@@ -3,7 +3,8 @@
         "model": "travels.Vehicle",
         "pk": 1,
         "fields": {
-            "name": "Suburban",
+            "name": "Luxury SUV",
+            "passengers": 4,
             "created_at": "2025-01-01T00:00:00Z",
             "updated_at": "2025-01-01T00:00:00Z"
         }
@@ -12,7 +13,8 @@
         "model": "travels.Vehicle",
         "pk": 2,
         "fields": {
-            "name": "Van",
+            "name": "Executive Van",
+            "passengers": 8,
             "created_at": "2025-01-01T00:00:00Z",
             "updated_at": "2025-01-01T00:00:00Z"
         }
@@ -22,6 +24,7 @@
         "pk": 3,
         "fields": {
             "name": "Sprinter",
+            "passengers": 10,
             "created_at": "2025-01-01T00:00:00Z",
             "updated_at": "2025-01-01T00:00:00Z"
         }

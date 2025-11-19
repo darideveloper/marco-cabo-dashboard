@@ -15,7 +15,7 @@ class Command(BaseCommand):
                 "ServiceType",
                 "Zone",
                 "Location",
-                # "Vehicle",
+                "Vehicle",
             ],
         }
         
