@@ -1498,5 +1498,35 @@
             "created_at": "2025-01-01T00:00:00Z",
             "updated_at": "2025-01-01T00:00:00Z"
         }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 151,
+        "fields": {
+            "name": "23407",
+            "zone": 10,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 152,
+        "fields": {
+            "name": "23440",
+            "zone": 10,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "travels.Location",
+        "pk": 153,
+        "fields": {
+            "name": "23444",
+            "zone": 10,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
     }
 ] 
