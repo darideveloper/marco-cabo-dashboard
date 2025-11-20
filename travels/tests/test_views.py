@@ -689,6 +689,7 @@ class SaleViewSetTestCase(TestApiViewsMethods, TestTravelsModelBase):
         self.assertEqual(response_json["data"]["service_type"]["name"], sale.service_type.name)
         self.assertEqual(response_json["data"]["location"]["name"], sale.location.name)
         self.assertEqual(response_json["data"]["vehicle"]["name"], sale.vehicle.name)
+        self.assertEqual(response_json["data"]["vehicle"]["passengers"], sale.vehicle.passengers)
         self.assertEqual(response_json["data"]["total"], sale.total)
         self.assertEqual(response_json["data"]["stripe_code"], str(sale.stripe_code))
         self.assertEqual(response_json["data"]["client"]["name"], sale.client.name)

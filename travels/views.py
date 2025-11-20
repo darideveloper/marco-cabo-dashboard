@@ -99,6 +99,7 @@ class SaleViewSet(APIView):
                     "vehicle": {
                         "id": sale.vehicle.id,
                         "name": sale.vehicle.name,
+                        "passengers": sale.vehicle.passengers,
                     },
                     "total": sale.total,
                     "stripe_code": sale.stripe_code,
