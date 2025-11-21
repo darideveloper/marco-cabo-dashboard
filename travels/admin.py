@@ -2,6 +2,7 @@ import io
 import os
 
 import openpyxl
+from openpyxl.styles import numbers
 from openpyxl.utils import get_column_letter
 
 from django.conf import settings
@@ -105,11 +106,8 @@ class SaleAdmin(admin.ModelAdmin):
     def export_to_excel(self, request, queryset):
         """Export the selected sales to Excel"""
 
-        def format_date(value):
-            return value.strftime("%Y-%m-%d") if value else ""
-
-        def format_time(value):
-            return value.strftime("%H:%M") if value else ""
+        date_columns = {7, 11}
+        time_columns = {10, 14}
 
         if not queryset:
             self.message_user(
@@ -146,18 +144,23 @@ class SaleAdmin(admin.ModelAdmin):
                 sale.client.phone,
                 sale.vehicle.name,
                 sale.passengers,
-                format_date(arrival.date) if arrival else "",
+                arrival.date if arrival else None,
                 arrival.airline if arrival else "",
                 arrival.flight_number if arrival else "",
-                format_time(arrival.hour) if arrival else "",
-                format_date(departure.date) if departure else "",
+                arrival.hour if arrival else None,
+                departure.date if departure else None,
                 departure.airline if departure else "",
                 departure.flight_number if departure else "",
-                format_time(departure.hour) if departure else "",
+                departure.hour if departure else None,
             ]
 
             for col_index, value in enumerate(row, start=1):
-                sheet.cell(row=current_row, column=col_index, value=value)
+                cell = sheet.cell(row=current_row, column=col_index, value=value)
+                if value is not None:
+                    if col_index in date_columns:
+                        cell.number_format = numbers.FORMAT_DATE_YYYYMMDD2
+                    elif col_index in time_columns:
+                        cell.number_format = numbers.FORMAT_DATE_TIME4
             current_row += 1
 
         for col in range(1, sheet.max_column + 1):
