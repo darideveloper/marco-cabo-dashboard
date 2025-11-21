@@ -3,6 +3,7 @@ import io
 import uuid
 
 import openpyxl
+from openpyxl.styles import numbers
 
 from core.tests_base.test_admin import TestAdminBase
 from travels import models
@@ -139,6 +140,16 @@ class SaleAdminTestCase(TestAdminBase):
         content = b"".join(response.streaming_content)
         return openpyxl.load_workbook(io.BytesIO(content))
 
+    def _normalize_export_row(self, row: list):
+        date_columns = {7, 11}
+        normalized_row = []
+        for index, value in enumerate(row, start=1):
+            if index in date_columns and isinstance(value, datetime.datetime):
+                normalized_row.append(value.date())
+            else:
+                normalized_row.append(value)
+        return normalized_row
+
     def test_search_bar(self):
         """Validate search bar working"""
 
@@ -203,6 +214,7 @@ class SaleAdminTestCase(TestAdminBase):
         self.assertEqual(expected_headers, actual_headers)
 
         row_values = [sheet.cell(row=6, column=index).value for index in range(1, 15)]
+        row_values = self._normalize_export_row(row_values)
         self.assertEqual(
             row_values,
             [
@@ -212,14 +224,14 @@ class SaleAdminTestCase(TestAdminBase):
                 client.phone,
                 self.export_vehicle.name,
                 sale.passengers,
-                arrival.date.strftime("%Y-%m-%d"),
+                arrival.date,
                 arrival.airline,
                 arrival.flight_number,
-                arrival.hour.strftime("%H:%M"),
-                departure.date.strftime("%Y-%m-%d"),
+                arrival.hour,
+                departure.date,
                 departure.airline,
                 departure.flight_number,
-                departure.hour.strftime("%H:%M"),
+                departure.hour,
             ],
         )
 
@@ -263,9 +275,8 @@ class SaleAdminTestCase(TestAdminBase):
 
         rows = []
         for row_index in (6, 7):
-            rows.append(
-                [sheet.cell(row=row_index, column=col).value for col in range(1, 15)]
-            )
+            row_values = [sheet.cell(row=row_index, column=col).value for col in range(1, 15)]
+            rows.append(self._normalize_export_row(row_values))
 
         expected_rows = [
             [
@@ -275,14 +286,14 @@ class SaleAdminTestCase(TestAdminBase):
                 client1.phone,
                 self.export_vehicle.name,
                 sale1.passengers,
-                arrival1.date.strftime("%Y-%m-%d"),
+                arrival1.date,
                 arrival1.airline,
                 arrival1.flight_number,
-                arrival1.hour.strftime("%H:%M"),
-                departure1.date.strftime("%Y-%m-%d"),
+                arrival1.hour,
+                departure1.date,
                 departure1.airline,
                 departure1.flight_number,
-                departure1.hour.strftime("%H:%M"),
+                departure1.hour,
             ],
             [
                 client2.last_name,
@@ -291,18 +302,68 @@ class SaleAdminTestCase(TestAdminBase):
                 client2.phone,
                 self.export_vehicle.name,
                 sale2.passengers,
-                arrival2.date.strftime("%Y-%m-%d"),
+                arrival2.date,
                 arrival2.airline,
                 arrival2.flight_number,
-                arrival2.hour.strftime("%H:%M"),
-                departure2.date.strftime("%Y-%m-%d"),
+                arrival2.hour,
+                departure2.date,
                 departure2.airline,
                 departure2.flight_number,
-                departure2.hour.strftime("%H:%M"),
+                departure2.hour,
             ],
         ]
 
         self.assertCountEqual(expected_rows, rows)
+
+    def test_export_date_time_number_formats_applied(self):
+        """Ensure date/time cells use the configured number formats"""
+
+        sale, _, arrival, departure = self._create_export_sale(
+            client_name="Formatting",
+            client_last_name="Check",
+            email="format@example.com",
+            phone="5559871234",
+            passengers=1,
+            arrival_date=datetime.date(2025, 12, 7),
+            arrival_time=datetime.time(7, 5),
+            arrival_airline="FormatAir",
+            arrival_flight="FMT007",
+            departure_date=datetime.date(2025, 12, 8),
+            departure_time=datetime.time(14, 20),
+            departure_airline="FormatDepart",
+            departure_flight="FMT008",
+        )
+
+        workbook = self._run_export_action([sale.id])
+        sheet = workbook.active
+
+        format_expectations = {
+            7: numbers.FORMAT_DATE_YYYYMMDD2,
+            10: numbers.FORMAT_DATE_TIME4,
+            11: numbers.FORMAT_DATE_YYYYMMDD2,
+            14: numbers.FORMAT_DATE_TIME4,
+        }
+
+        for column, expected_format in format_expectations.items():
+            cell = sheet.cell(row=6, column=column)
+            self.assertEqual(
+                cell.number_format,
+                expected_format,
+                msg=f"Column {column} should use {expected_format}",
+            )
+            if column in {7, 11}:
+                cell_value = cell.value
+                if isinstance(cell_value, datetime.datetime):
+                    cell_value = cell_value.date()
+                self.assertEqual(
+                    cell_value,
+                    arrival.date if column == 7 else departure.date,
+                )
+            else:
+                self.assertEqual(
+                    cell.value,
+                    arrival.hour if column == 10 else departure.hour,
+                )
 
 
 class ServiceTypeAdminTestCase(TestAdminBase):
