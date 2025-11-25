@@ -168,10 +168,10 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # Jazzmin (layout template) settings
 JAZZMIN_SETTINGS = {
     # Text
-    "site_title": "Marco Cabo",
+    "site_title": "Mar Co. Cabo",
     "site_header": "Admin",
-    "site_brand": "Marco Cabo",
-    "welcome_sign": "Bienvenido a Marco Cabo",
+    "site_brand": "Mar Co. Cabo",
+    "welcome_sign": "Bienvenido a Mar Co. Cabo",
     "copyright": "Powered by Dari Developer and Niels Bored",
 
     # Media

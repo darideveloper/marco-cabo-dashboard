@@ -172,7 +172,8 @@ class Sale(models.Model):
         return f"{self.client} - {self.vehicle.name} - {self.created_at}"
 
     def get_summary(self):
-        summary = f"Marco Cabo {self.vehicle.name}"
+        summary = f"Mar Co. Cabo {self.vehicle.name}"
+        summary += f" - {self.client.name} {self.client.last_name}"
         summary += f" - {self.client.email}"
         summary += f" - {self.location.zone.name}"
         summary += f" - {self.location.name}"

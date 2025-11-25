@@ -35,7 +35,10 @@ class SaleTestCase(TestTravelsModelBase):
         summary = sale.get_summary()
         
         # Validate summary data
-        self.assertIn("Marco Cabo", summary)
+        self.assertIn("Mar Co. Cabo", summary)
+        self.assertIn(sale.client.name, summary)
+        self.assertIn(sale.client.last_name, summary)
+        self.assertIn(sale.client.email, summary)
         self.assertIn(sale.vehicle.name, summary)
         self.assertIn(sale.client.email, summary)
         self.assertIn(sale.location.zone.name, summary)

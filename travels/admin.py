@@ -1,4 +1,14 @@
-from django.contrib import admin
+import io
+import os
+
+import openpyxl
+from openpyxl.styles import numbers
+from openpyxl.utils import get_column_letter
+
+from django.conf import settings
+from django.contrib import admin, messages
+from django.http import FileResponse
+from django.utils import timezone
 from django.utils.html import format_html
 
 from travels import models
@@ -50,6 +60,7 @@ class VehicleAdmin(admin.ModelAdmin):
 
 @admin.register(models.Sale)
 class SaleAdmin(admin.ModelAdmin):
+    actions = ("export_to_excel",)
     list_display = (
         "stripe_code",
         "client",
@@ -91,9 +102,98 @@ class SaleAdmin(admin.ModelAdmin):
             '<a class="btn btn-secondary my-1" href="{}">Transportaciones</a>',
             f"/admin/travels/transfer/?sale__id__exact={obj.id}&q=",
         )
+    
+    def export_to_excel(self, request, queryset):
+        """Export the selected sales to Excel"""
 
+        date_columns = {8, 12}
+        time_columns = {11, 15}
+
+        if not queryset:
+            self.message_user(
+                request,
+                "Seleccione al menos una venta para exportar.",
+                level=messages.INFO,
+            )
+            return
+
+        template_path = os.path.join(settings.BASE_DIR, "utils", "export-template.xlsx")
+        if not os.path.exists(template_path):
+            self.message_user(
+                request,
+                "No se encontró la plantilla de exportación.",
+                level=messages.ERROR,
+            )
+            return
+
+        workbook = openpyxl.load_workbook(template_path)
+        sheet = workbook.active
+        queryset = queryset.select_related("client", "vehicle").prefetch_related(
+            "transfer_set"
+        )
+
+        current_row = 6
+        for sale in queryset:
+            arrival = sale.transfer_set.filter(type="arrival").first()
+            departure = sale.transfer_set.filter(type="departure").first()
+
+            row = [
+                sale.client.last_name,
+                sale.client.name,
+                sale.client.email,
+                sale.client.phone,
+                sale.location.name,  # Hotel
+                sale.vehicle.name,
+                sale.passengers,
+                arrival.date if arrival else None,
+                arrival.airline if arrival else "",
+                arrival.flight_number if arrival else "",
+                arrival.hour if arrival else None,
+                departure.date if departure else None,
+                departure.airline if departure else "",
+                departure.flight_number if departure else "",
+                departure.hour if departure else None,
+            ]
+
+            for col_index, value in enumerate(row, start=1):
+                cell = sheet.cell(row=current_row, column=col_index, value=value)
+                if value is not None:
+                    if col_index in date_columns:
+                        cell.number_format = numbers.FORMAT_DATE_YYYYMMDD2
+                    elif col_index in time_columns:
+                        cell.number_format = numbers.FORMAT_DATE_TIME4
+            current_row += 1
+
+        for col in range(1, sheet.max_column + 1):
+            max_length = 0
+            for row in range(1, sheet.max_row + 1):
+                cell_value = sheet.cell(row=row, column=col).value
+                if cell_value is None:
+                    continue
+                max_length = max(max_length, len(str(cell_value)))
+            if max_length:
+                sheet.column_dimensions[get_column_letter(col)].width = max_length * 2
+
+        output = io.BytesIO()
+        workbook.save(output)
+        output.seek(0)
+
+        filename = (
+            "marco-cabo-transportaciones-"
+            f"{timezone.localtime().strftime('%Y%m%d_%H%M%S')}.xlsx"
+        )
+        response = FileResponse(
+            output,
+            as_attachment=True,
+            filename=filename,
+            content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        )
+
+        return response
+    
     # Labels for custom fields
     custom_links.short_description = "Acciones"
+    export_to_excel.short_description = "Exportar a Excel"
 
 
 @admin.register(models.ServiceType)

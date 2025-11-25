@@ -121,7 +121,7 @@ class SaleViewSet(APIView):
 
             # if not sale.vip_code:
             payment_link = get_payment_link(
-                product_name="Marco Cabo Transfer",
+                product_name="Mar Co. Cabo Transfer",
                 total=sale.total,
                 description=sale.get_summary(),
                 email=sale.client.email,
