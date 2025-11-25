@@ -167,7 +167,7 @@ class Sale(models.Model):
         arrival_transfers = self.transfer_set.filter(type="arrival", sale=self)
         departure_transfers = self.transfer_set.filter(type="departure", sale=self)
 
-        summary = f"Marco Cabo {self.vehicle.name}"
+        summary = f"Mar Co. Cabo {self.vehicle.name}"
         summary += f" - {self.client.name} {self.client.last_name}"
         summary += f" - {self.client.email}"
         summary += f" - {self.client.phone}"
