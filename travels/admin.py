@@ -106,8 +106,8 @@ class SaleAdmin(admin.ModelAdmin):
     def export_to_excel(self, request, queryset):
         """Export the selected sales to Excel"""
 
-        date_columns = {7, 11}
-        time_columns = {10, 14}
+        date_columns = {8, 12}
+        time_columns = {11, 15}
 
         if not queryset:
             self.message_user(
@@ -142,6 +142,7 @@ class SaleAdmin(admin.ModelAdmin):
                 sale.client.name,
                 sale.client.email,
                 sale.client.phone,
+                sale.location.name,  # Hotel
                 sale.vehicle.name,
                 sale.passengers,
                 arrival.date if arrival else None,

@@ -141,11 +141,14 @@ class SaleAdminTestCase(TestAdminBase):
         return openpyxl.load_workbook(io.BytesIO(content))
 
     def _normalize_export_row(self, row: list):
-        date_columns = {7, 11}
+        date_columns = {8, 12}
         normalized_row = []
         for index, value in enumerate(row, start=1):
             if index in date_columns and isinstance(value, datetime.datetime):
                 normalized_row.append(value.date())
+            elif value is None:
+                # Convert None to empty string for consistency
+                normalized_row.append("")
             else:
                 normalized_row.append(value)
         return normalized_row
@@ -197,8 +200,9 @@ class SaleAdminTestCase(TestAdminBase):
             "First Name",
             "email",
             "Phone",
+            "Hotel",
             "Vehicle ",
-            "Guests",
+            "Number of Guests",
             "Arrival Date",
             "Airline",
             "Flight",
@@ -209,11 +213,11 @@ class SaleAdminTestCase(TestAdminBase):
             "Departure Time",
         ]
         actual_headers = [
-            sheet.cell(row=5, column=index).value for index in range(1, 15)
+            sheet.cell(row=5, column=index).value for index in range(1, 16)
         ]
         self.assertEqual(expected_headers, actual_headers)
 
-        row_values = [sheet.cell(row=6, column=index).value for index in range(1, 15)]
+        row_values = [sheet.cell(row=6, column=index).value for index in range(1, 16)]
         row_values = self._normalize_export_row(row_values)
         self.assertEqual(
             row_values,
@@ -222,6 +226,7 @@ class SaleAdminTestCase(TestAdminBase):
                 client.name,
                 client.email,
                 client.phone,
+                self.export_location.name,  # Hotel
                 self.export_vehicle.name,
                 sale.passengers,
                 arrival.date,
@@ -275,7 +280,7 @@ class SaleAdminTestCase(TestAdminBase):
 
         rows = []
         for row_index in (6, 7):
-            row_values = [sheet.cell(row=row_index, column=col).value for col in range(1, 15)]
+            row_values = [sheet.cell(row=row_index, column=col).value for col in range(1, 16)]
             rows.append(self._normalize_export_row(row_values))
 
         expected_rows = [
@@ -284,6 +289,7 @@ class SaleAdminTestCase(TestAdminBase):
                 client1.name,
                 client1.email,
                 client1.phone,
+                self.export_location.name,  # Hotel
                 self.export_vehicle.name,
                 sale1.passengers,
                 arrival1.date,
@@ -300,6 +306,7 @@ class SaleAdminTestCase(TestAdminBase):
                 client2.name,
                 client2.email,
                 client2.phone,
+                self.export_location.name,  # Hotel
                 self.export_vehicle.name,
                 sale2.passengers,
                 arrival2.date,
@@ -338,10 +345,10 @@ class SaleAdminTestCase(TestAdminBase):
         sheet = workbook.active
 
         format_expectations = {
-            7: numbers.FORMAT_DATE_YYYYMMDD2,
-            10: numbers.FORMAT_DATE_TIME4,
-            11: numbers.FORMAT_DATE_YYYYMMDD2,
-            14: numbers.FORMAT_DATE_TIME4,
+            8: numbers.FORMAT_DATE_YYYYMMDD2,
+            11: numbers.FORMAT_DATE_TIME4,
+            12: numbers.FORMAT_DATE_YYYYMMDD2,
+            15: numbers.FORMAT_DATE_TIME4,
         }
 
         for column, expected_format in format_expectations.items():
@@ -351,18 +358,18 @@ class SaleAdminTestCase(TestAdminBase):
                 expected_format,
                 msg=f"Column {column} should use {expected_format}",
             )
-            if column in {7, 11}:
+            if column in {8, 12}:
                 cell_value = cell.value
                 if isinstance(cell_value, datetime.datetime):
                     cell_value = cell_value.date()
                 self.assertEqual(
                     cell_value,
-                    arrival.date if column == 7 else departure.date,
+                    arrival.date if column == 8 else departure.date,
                 )
             else:
                 self.assertEqual(
                     cell.value,
-                    arrival.hour if column == 10 else departure.hour,
+                    arrival.hour if column == 11 else departure.hour,
                 )
 
 
