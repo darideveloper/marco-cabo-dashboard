@@ -117,19 +117,202 @@
  - Cabo del Este,La Ventana Villa/Hotel , $230.00 , $260.00 , $300.00 ,, $420.00 , $500.00 , $570.00 
  - Cabo del Este,Los Barriles Hotel, $230.00 , $260.00 , $300.00 ,, $420.00 , $500.00 , $570.00 
  - La Paz,La Paz - Villa or Hotel, $460.00 , $540.00 , $585.00 ,, $900.00 ," $1,050.00 "," $1,000.00 "
- - Codigo Postal,23400,90,100,130,,170,180,230
- - Codigo Postal,23403,120,130,165,,230,240,300
- - Codigo Postal,23405,105,115,150,,200,210,270
- - Codigo Postal,23406,90,100,130,,170,180,230
- - Codigo Postal,23407,90,100,130,,170,180,230
- - Codigo Postal,23440,90,100,130,,170,180,230
- - Codigo Postal,23443,90,100,130,,170,180,230
- - Codigo Postal,23444,90,100,130,,170,180,230
- - Codigo Postal,23450,120,130,165,,230,240,300
- - Codigo Postal,23453,130,140,200,,230,260,280
- - Codigo Postal,23454,120,130,165,,230,240,300
- - Codigo Postal,23455,120,130,165,,230,240,300
- - Codigo Postal,23456,130,140,200,,230,260,280
- - Codigo Postal,23460,120,130,165,,230,240,300
- - Codigo Postal,23463,120,130,165,,230,240,300
- - Codigo Postal,23467,120,130,165,,230,240,300
+ - Codigo Postal,"23400, San Jose Downtown", $90.00 , $100.00 , $130.00 ,, $170.00 , $180.00 , $230.00 
+ - Codigo Postal,"23403, Puerto Los Cabos", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23403, Fraccionamiento Rincón de la Playa", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23403, Colonia La Playa", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23403, Barrio San Vicente", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23403, Colonia La Choya INFONAVIT", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23405, Fraccionamiento Loma Encantada", $105.00 , $115.00 , $150.00 ,, $200.00 , $210.00 , $270.00 
+ - Codigo Postal,"23405, Fraccionamiento Palmilla", $105.00 , $115.00 , $150.00 ,, $200.00 , $210.00 , $270.00 
+ - Codigo Postal,"23405, Fraccionamiento Rancho Cerro Colorado", $105.00 , $115.00 , $150.00 ,, $200.00 , $210.00 , $270.00 
+ - Codigo Postal,"23405, Fraccionamiento Cabo Colorado", $105.00 , $115.00 , $150.00 ,, $200.00 , $210.00 , $270.00 
+ - Codigo Postal,"23405, Zona comercial Zona Hotelera San José del Cabo", $105.00 , $115.00 , $150.00 ,, $200.00 , $210.00 , $270.00 
+ - Codigo Postal,"23405, Cabo Real", $105.00 , $115.00 , $150.00 ,, $200.00 , $210.00 , $270.00 
+ - Codigo Postal,"23405, La Joya de los Cabos", $105.00 , $115.00 , $150.00 ,, $200.00 , $210.00 , $270.00 
+ - Codigo Postal,"23405, Mykonos", $105.00 , $115.00 , $150.00 ,, $200.00 , $210.00 , $270.00 
+ - Codigo Postal,"23405, Coral Baja", $105.00 , $115.00 , $150.00 ,, $200.00 , $210.00 , $270.00 
+ - Codigo Postal,"23405, Mañanitas", $105.00 , $115.00 , $150.00 ,, $200.00 , $210.00 , $270.00 
+ - Codigo Postal,"23405, Fraccionamiento Costa Brava", $105.00 , $115.00 , $150.00 ,, $200.00 , $210.00 , $270.00 
+ - Codigo Postal,"23405, Fraccionamiento Lomas del Tule", $105.00 , $115.00 , $150.00 ,, $200.00 , $210.00 , $270.00 
+ - Codigo Postal,"23405, Fraccionamiento El Tule", $105.00 , $115.00 , $150.00 ,, $200.00 , $210.00 , $270.00 
+ - Codigo Postal,"23405, Colonia Magisterial", $105.00 , $115.00 , $150.00 ,, $200.00 , $210.00 , $270.00 
+ - Codigo Postal,"23405, Fraccionamiento La Antigua", $105.00 , $115.00 , $150.00 ,, $200.00 , $210.00 , $270.00 
+ - Codigo Postal,"23405, Fraccionamiento Vista Colorada", $105.00 , $115.00 , $150.00 ,, $200.00 , $210.00 , $270.00 
+ - Codigo Postal,"23406, Colonia 8 de Octubre", $90.00 , $100.00 , $130.00 ,, $170.00 , $180.00 , $230.00 
+ - Codigo Postal,"23406, Fraccionamiento Club Campestre San José", $90.00 , $100.00 , $130.00 ,, $170.00 , $180.00 , $230.00 
+ - Codigo Postal,"23406, Colonia Primero de Mayo", $90.00 , $100.00 , $130.00 ,, $170.00 , $180.00 , $230.00 
+ - Codigo Postal,"23406, Colonia 5 de Febrero", $90.00 , $100.00 , $130.00 ,, $170.00 , $180.00 , $230.00 
+ - Codigo Postal,"23406, Colonia Costa Azul", $90.00 , $100.00 , $130.00 ,, $170.00 , $180.00 , $230.00 
+ - Codigo Postal,"23406, Condominio Gringos Hill", $90.00 , $100.00 , $130.00 ,, $170.00 , $180.00 , $230.00 
+ - Codigo Postal,"23406, Colonia Lomas de La Jolla", $90.00 , $100.00 , $130.00 ,, $170.00 , $180.00 , $230.00 
+ - Codigo Postal,"23406, Colonia Villas de La Joya", $90.00 , $100.00 , $130.00 ,, $170.00 , $180.00 , $230.00 
+ - Codigo Postal,"23406, Colonia Cerro del Vigía", $90.00 , $100.00 , $130.00 ,, $170.00 , $180.00 , $230.00 
+ - Codigo Postal,"23406, Colonia Terrazas Costa Azul", $90.00 , $100.00 , $130.00 ,, $170.00 , $180.00 , $230.00 
+ - Codigo Postal,"23407, Colonia Rosarito", $90.00 , $100.00 , $130.00 ,, $170.00 , $180.00 , $230.00 
+ - Codigo Postal,"23407, Colonia Animas Bajas", $90.00 , $100.00 , $130.00 ,, $170.00 , $180.00 , $230.00 
+ - Codigo Postal,"23407, Pueblo Animas Altas", $90.00 , $100.00 , $130.00 ,, $170.00 , $180.00 , $230.00 
+ - Codigo Postal,"23407, Colonia Guaymitas", $90.00 , $100.00 , $130.00 ,, $170.00 , $180.00 , $230.00 
+ - Codigo Postal,"23407, Colonia Rinconada La Huerta", $90.00 , $100.00 , $130.00 ,, $170.00 , $180.00 , $230.00 
+ - Codigo Postal,"23440, Colonia Jesús Castro Agundes", $90.00 , $100.00 , $130.00 ,, $170.00 , $180.00 , $230.00 
+ - Codigo Postal,"23443, Colonia Mauricio Castro", $90.00 , $100.00 , $130.00 ,, $170.00 , $180.00 , $230.00 
+ - Codigo Postal,"23443, Colonia Chula Vista", $90.00 , $100.00 , $130.00 ,, $170.00 , $180.00 , $230.00 
+ - Codigo Postal,"23443, Colonia El Aguajito", $90.00 , $100.00 , $130.00 ,, $170.00 , $180.00 , $230.00 
+ - Codigo Postal,"23444, Colonia Luis Donaldo Colosio", $90.00 , $100.00 , $130.00 ,, $170.00 , $180.00 , $230.00 
+ - Codigo Postal,"23444, Colonia Lomas de Rosarito", $90.00 , $100.00 , $130.00 ,, $170.00 , $180.00 , $230.00 
+ - Codigo Postal,"23444, Fraccionamiento Monte Real Residencial", $90.00 , $100.00 , $130.00 ,, $170.00 , $180.00 , $230.00 
+ - Codigo Postal,"23444, Fraccionamiento Colinas Plus", $90.00 , $100.00 , $130.00 ,, $170.00 , $180.00 , $230.00 
+ - Codigo Postal,"23444, Fraccionamiento Country del Mar", $90.00 , $100.00 , $130.00 ,, $170.00 , $180.00 , $230.00 
+ - Codigo Postal,"23450, Colonia Cabo San Lucas Centro", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23450, Zona Comercial Plaza Bonita", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23450, Zona Comercial Plaza Real", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23450, Zona Comercial Plaza del Marlin", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23450, Zona Comercial Plaza del Sol", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23450, Zona Comercial Plaza Náutica", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23450, Zona Comercial Plaza las Glorias", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23450, Zona Comercial La Dársena", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23450, Zona Comercial Modulo Turístico", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23453, Colonia El Medano", $130.00 , $140.00 , $200.00 ,, $230.00 , $260.00 , $280.00 
+ - Codigo Postal,"23453, Colonia La Marina", $130.00 , $140.00 , $200.00 ,, $230.00 , $260.00 , $280.00 
+ - Codigo Postal,"23453, Colonia Terrasol", $130.00 , $140.00 , $200.00 ,, $230.00 , $260.00 , $280.00 
+ - Codigo Postal,"23453, Colonia El Pedregal", $130.00 , $140.00 , $200.00 ,, $230.00 , $260.00 , $280.00 
+ - Codigo Postal,"23454, Fraccionamiento La Noria", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23454, Fraccionamiento Las Villas del Tezal", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23454, Fraccionamiento Luna del Tezal", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23454, Fraccionamiento Ventanas del Mar", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23454, Fraccionamiento Rancho Paraíso", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23454, Fraccionamiento Cabo del Mar", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23454, Fraccionamiento Ventanas de Cabo", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23454, Colonia El Tezal", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23454, Fraccionamiento Zona Hotelera", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23454, Fraccionamiento Residencial La Cima", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23454, Fraccionamiento Punta Arena", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23454, Fraccionamiento Residencial Maranata", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23454, Fraccionamiento Residencial San Luciano", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23454, Fraccionamiento Cumbres del Tezal", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23454, Fraccionamiento Privanzas", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23454, Fraccionamiento La Vista", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23454, Fraccionamiento Vista Bahía", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23454, Fraccionamiento Mediterránea", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23454, Fraccionamiento Puerta del Mar", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23454, Fraccionamiento Vistana", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23454, Fraccionamiento Ventanas del Cortés", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23455, Fraccionamiento Punta Ballena", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23455, Fraccionamiento Las Residencias", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23455, Fraccionamiento Hacienda Encantada", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23455, Fraccionamiento Residencial Olamar", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23455, Condominio San Antonio", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23455, Colonia Cabo Bello", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23455, Colonia Puesta del Sol", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23455, Fraccionamiento Santa Carmela", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23455, Fraccionamiento Misiones del Cabo", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23455, Fraccionamiento Residencial Cabo del Sol", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23455, Fraccionamiento Villa Serena", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23456, Fraccionamiento Altos de Miramar", $130.00 , $140.00 , $200.00 ,, $230.00 , $260.00 , $280.00 
+ - Codigo Postal,"23456, Fraccionamiento Rincón de Miramar", $130.00 , $140.00 , $200.00 ,, $230.00 , $260.00 , $280.00 
+ - Codigo Postal,"23456, Fraccionamiento Buenos Aires", $130.00 , $140.00 , $200.00 ,, $230.00 , $260.00 , $280.00 
+ - Codigo Postal,"23456, Fraccionamiento El Palmar", $130.00 , $140.00 , $200.00 ,, $230.00 , $260.00 , $280.00 
+ - Codigo Postal,"23456, Fraccionamiento Paraíso", $130.00 , $140.00 , $200.00 ,, $230.00 , $260.00 , $280.00 
+ - Codigo Postal,"23456, Fraccionamiento Privada Perla", $130.00 , $140.00 , $200.00 ,, $230.00 , $260.00 , $280.00 
+ - Codigo Postal,"23456, Fraccionamiento Real de Miramar", $130.00 , $140.00 , $200.00 ,, $230.00 , $260.00 , $280.00 
+ - Codigo Postal,"23456, Fraccionamiento Quintas California", $130.00 , $140.00 , $200.00 ,, $230.00 , $260.00 , $280.00 
+ - Codigo Postal,"23456, Fraccionamiento Pueblo Bonito Montecristo", $130.00 , $140.00 , $200.00 ,, $230.00 , $260.00 , $280.00 
+ - Codigo Postal,"23456, Fraccionamiento Pueblo Bonito Sunset", $130.00 , $140.00 , $200.00 ,, $230.00 , $260.00 , $280.00 
+ - Codigo Postal,"23456, Fraccionamiento Pueblo Bonito Palacio", $130.00 , $140.00 , $200.00 ,, $230.00 , $260.00 , $280.00 
+ - Codigo Postal,"23456, Fraccionamiento Estrella de Mar", $130.00 , $140.00 , $200.00 ,, $230.00 , $260.00 , $280.00 
+ - Codigo Postal,"23456, Fraccionamiento Arco Iris", $130.00 , $140.00 , $200.00 ,, $230.00 , $260.00 , $280.00 
+ - Codigo Postal,"23456, Fraccionamiento Colinas de Cabo Baja", $130.00 , $140.00 , $200.00 ,, $230.00 , $260.00 , $280.00 
+ - Codigo Postal,"23456, Fraccionamiento Balcones", $130.00 , $140.00 , $200.00 ,, $230.00 , $260.00 , $280.00 
+ - Codigo Postal,"23456, Fraccionamiento Jazmines", $130.00 , $140.00 , $200.00 ,, $230.00 , $260.00 , $280.00 
+ - Codigo Postal,"23456, Fraccionamiento Acuario", $130.00 , $140.00 , $200.00 ,, $230.00 , $260.00 , $280.00 
+ - Codigo Postal,"23456, Fraccionamiento Bugambilias", $130.00 , $140.00 , $200.00 ,, $230.00 , $260.00 , $280.00 
+ - Codigo Postal,"23456, Fraccionamiento Bella Vista", $130.00 , $140.00 , $200.00 ,, $230.00 , $260.00 , $280.00 
+ - Codigo Postal,"23456, Fraccionamiento Lomas del Cabo", $130.00 , $140.00 , $200.00 ,, $230.00 , $260.00 , $280.00 
+ - Codigo Postal,"23456, Fraccionamiento Miramar", $130.00 , $140.00 , $200.00 ,, $230.00 , $260.00 , $280.00 
+ - Codigo Postal,"23460, Colonia Zona Ejidal", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23460, Colonia Arenal", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23460, Colonia Ampliación Mariano Matamoros", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23460, Colonia La Joya", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23460, Fraccionamiento Tabachines", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23463, Fraccionamiento Cabo San Lucas Country Club", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23467, Fraccionamiento Residencial San Jerónimo", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23467, Fraccionamiento Cabo Toscana", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23467, Fraccionamiento Villa Neptuno", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23467, Fraccionamiento Cresta del Mar", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23467, Fraccionamiento Hermitage", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23467, Fraccionamiento Punta Arena", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23467, Fraccionamiento Residencial Ciruelos", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23467, Fraccionamiento Vista de Cortés", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23467, Fraccionamiento Terrazas las Fuentes", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23467, Fraccionamiento Las Misiones", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23467, Fraccionamiento Tamar Residencial", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23467, Fraccionamiento Sierra Dorada", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23467, Fraccionamiento Puerta de Hierro", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23467, Fraccionamiento Residencial Puerta del Sol", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23467, Fraccionamiento Vista Real", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23467, Fraccionamiento Reyna Avalos", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23467, Fraccionamiento Amalfi", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23467, Fraccionamiento Casa Mexicana", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23467, Fraccionamiento Coto San Diego", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23469, Colonia Benito Juárez", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23469, Unidad habitacional Coromuel", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23469, Colonia Ampliación Juárez", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23470, Colonia La Cruz", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23470, Colonia Ampliación 4 de Marzo", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23470, Colonia Ejidal", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23470, Colonia Ildefonso Green", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23470, Colonia Lienzo Charro Centro", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23470, Fraccionamiento Nueva Ejidal", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23470, Fraccionamiento Libertad", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23472, Colonia 4 de Marzo", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23472, Colonia Obrera", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23472, Colonia Lomas del Faro Viejo", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23472, Fraccionamiento Núcleo Agrario", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23472, Fraccionamiento Lomas Altas", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23472, Fraccionamiento Magisterial", $120.00 , $130.00 , $165.00 ,, $230.00 , $240.00 , $300.00 
+ - Codigo Postal,"23473, Fraccionamiento Reforma", $140.00 , $150.00 , $230.00 ,, $270.00 , $280.00 , $430.00 
+ - Codigo Postal,"23473, Fraccionamiento Altamira", $140.00 , $150.00 , $230.00 ,, $270.00 , $280.00 , $430.00 
+ - Codigo Postal,"23473, Fraccionamiento Altamira Condominios Plus", $140.00 , $150.00 , $230.00 ,, $270.00 , $280.00 , $430.00 
+ - Codigo Postal,"23473, Fraccionamiento Agua Clara", $140.00 , $150.00 , $230.00 ,, $270.00 , $280.00 , $430.00 
+ - Codigo Postal,"23473, Fraccionamiento Santa Bárbara", $140.00 , $150.00 , $230.00 ,, $270.00 , $280.00 , $430.00 
+ - Codigo Postal,"23473, Fraccionamiento Cabo Hills Villas", $140.00 , $150.00 , $230.00 ,, $270.00 , $280.00 , $430.00 
+ - Codigo Postal,"23473, Colonia Cerro de los Venados", $140.00 , $150.00 , $230.00 ,, $270.00 , $280.00 , $430.00 
+ - Codigo Postal,"23473, Fraccionamiento Lomas del Pacifico", $140.00 , $150.00 , $230.00 ,, $270.00 , $280.00 , $430.00 
+ - Codigo Postal,"23473, Fraccionamiento Jacarandas", $140.00 , $150.00 , $230.00 ,, $270.00 , $280.00 , $430.00 
+ - Codigo Postal,"23473, Fraccionamiento Hojazen", $140.00 , $150.00 , $230.00 ,, $270.00 , $280.00 , $430.00 
+ - Codigo Postal,"23473, Fraccionamiento Cerro de los Venados", $140.00 , $150.00 , $230.00 ,, $270.00 , $280.00 , $430.00 
+ - Codigo Postal,"23473, Fraccionamiento Auroras", $140.00 , $150.00 , $230.00 ,, $270.00 , $280.00 , $430.00 
+ - Codigo Postal,"23473, Fraccionamiento Brisas del Pacifico Codepa", $140.00 , $150.00 , $230.00 ,, $270.00 , $280.00 , $430.00 
+ - Codigo Postal,"23473, Fraccionamiento Brisas del Pacifico", $140.00 , $150.00 , $230.00 ,, $270.00 , $280.00 , $430.00 
+ - Codigo Postal,"23473, Unidad habitacional INFONAVIT Nuevo", $140.00 , $150.00 , $230.00 ,, $270.00 , $280.00 , $430.00 
+ - Codigo Postal,"23473, Colonia Los Cangrejos", $140.00 , $150.00 , $230.00 ,, $270.00 , $280.00 , $430.00 
+ - Codigo Postal,"23473, Fraccionamiento Vista Hermosa", $140.00 , $150.00 , $230.00 ,, $270.00 , $280.00 , $430.00 
+ - Codigo Postal,"23473, Colonia Gardenias", $140.00 , $150.00 , $230.00 ,, $270.00 , $280.00 , $430.00 
+ - Codigo Postal,"23473, Fraccionamiento Portales", $140.00 , $150.00 , $230.00 ,, $270.00 , $280.00 , $430.00 
+ - Codigo Postal,"23473, Fraccionamiento Casa Blanca", $140.00 , $150.00 , $230.00 ,, $270.00 , $280.00 , $430.00 
+ - Codigo Postal,"23473, Fraccionamiento Terranova", $140.00 , $150.00 , $230.00 ,, $270.00 , $280.00 , $430.00 
+ - Codigo Postal,"23500, Ranchería Santa Bárbara", $230.00 , $260.00 , $300.00 ,, $420.00 , $500.00 , $570.00 
+ - Codigo Postal,"23500, Ranchería Milpillas", $230.00 , $260.00 , $300.00 ,, $420.00 , $500.00 , $570.00 
+ - Codigo Postal,"23500, Pueblo Santiago", $230.00 , $260.00 , $300.00 ,, $420.00 , $500.00 , $570.00 
+ - Codigo Postal,"23500, Ranchería El Zacatal", $230.00 , $260.00 , $300.00 ,, $420.00 , $500.00 , $570.00 
+ - Codigo Postal,"23500, Ranchería Matancitas", $230.00 , $260.00 , $300.00 ,, $420.00 , $500.00 , $570.00 
+ - Codigo Postal,"23533, Ranchería Los Frailes", $230.00 , $260.00 , $300.00 ,, $420.00 , $500.00 , $570.00 
+ - Codigo Postal,"23535, Ranchería Palo Escopeta", $230.00 , $260.00 , $300.00 ,, $420.00 , $500.00 , $570.00 
+ - Codigo Postal,"23560, Colonia Las Cuevas", $230.00 , $260.00 , $300.00 ,, $420.00 , $500.00 , $570.00 
+ - Codigo Postal,"23560, Ranchería El Campamento", $230.00 , $260.00 , $300.00 ,, $420.00 , $500.00 , $570.00 
+ - Codigo Postal,"23563, Rancho El Leonero", $230.00 , $260.00 , $300.00 ,, $420.00 , $500.00 , $570.00 
+ - Codigo Postal,"23570, Rancho Don Martín", $230.00 , $260.00 , $300.00 ,, $420.00 , $500.00 , $570.00 
+ - Codigo Postal,"23570, Ranchería La Ribera", $230.00 , $260.00 , $300.00 ,, $420.00 , $500.00 , $570.00 
+ - Codigo Postal,"23574, Ranchería Cabo Pulmo", $230.00 , $260.00 , $300.00 ,, $420.00 , $500.00 , $570.00 
+ - Codigo Postal,"23575, Ranchería Las Barrancas", $230.00 , $260.00 , $300.00 ,, $420.00 , $500.00 , $570.00 
+ - Codigo Postal,"23580, Ranchería Buenavista", $230.00 , $260.00 , $300.00 ,, $420.00 , $500.00 , $570.00 
+ - Codigo Postal,"23597, Rancho Buenavista", $230.00 , $260.00 , $300.00 ,, $420.00 , $500.00 , $570.00 
+ - Codigo Postal,"23361, Pescadero", $320.00 , $385.00 , $515.00 ,, $640.00 , $770.00 ," $1,030.00 "
+ - Codigo Postal,"23362, Pescadero", $320.00 , $385.00 , $515.00 ,, $640.00 , $770.00 ," $1,030.00 "
+ - Codigo Postal,"23300, Todos Santos", $320.00 , $385.00 , $515.00 ,, $640.00 , $770.00 ," $1,030.00 "
+ - Codigo Postal,"23308, Todos Santos", $320.00 , $385.00 , $515.00 ,, $640.00 , $770.00 ," $1,030.00 "
+ - Codigo Postal,"23236, Ensenada de Muertos", $460.00 , $540.00 , $585.00 ,, $900.00 ," $1,050.00 "," $1,000.00 "
+ - Codigo Postal,"23232, La Ventana", $460.00 , $540.00 , $585.00 ,, $900.00 ," $1,050.00 "," $1,000.00 "
+ - Codigo Postal,"23232, El Sargento", $460.00 , $540.00 , $585.00 ,, $900.00 ," $1,050.00 "," $1,000.00 "
+ - Codigo Postal,"23209, Las Cruces", $460.00 , $540.00 , $585.00 ,, $900.00 ," $1,050.00 "," $1,000.00 "
+ - Codigo Postal,"23000, La Paz", $460.00 , $540.00 , $585.00 ,, $900.00 ," $1,050.00 "," $1,000.00 " 
