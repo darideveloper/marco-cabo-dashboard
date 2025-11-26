@@ -651,6 +651,31 @@ class SaleViewSetTestCase(TestApiViewsMethods, TestTravelsModelBase):
 
         # Validate total calculation (with csv pricing data)
         self.assertEqual(sale.total, 170.00)
+    
+    def test_post_ok_with_client_last_name(self):
+        """Test post ok with client last name
+        Expected: ok, client last name saved
+        """
+        
+        # Add client last name to data
+        self.data["client_last_name"] = "Doe"
+
+        # Send json post data and validate status code
+        response = self.client.post(
+            self.endpoint, json.dumps(self.data), content_type="application/json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        # Validate data
+        response_json = response.json()
+        self.assertEqual(response_json["status"], "success")
+        self.assertEqual(response_json["message"], "Sale created successfully")
+
+        # Validate data created
+        client = models.Client.objects.get(email=self.data["client_email"])
+        self.assertEqual(client.name, self.data["client_name"])
+        self.assertEqual(client.last_name, self.data["client_last_name"])
+        self.assertEqual(client.email, self.data["client_email"])
         
     def test_get_sale_not_found(self):
         """Test get sale done with sale not found
@@ -693,6 +718,7 @@ class SaleViewSetTestCase(TestApiViewsMethods, TestTravelsModelBase):
         self.assertEqual(response_json["data"]["total"], sale.total)
         self.assertEqual(response_json["data"]["stripe_code"], str(sale.stripe_code))
         self.assertEqual(response_json["data"]["client"]["name"], sale.client.name)
+        self.assertEqual(response_json["data"]["client"]["last_name"], sale.client.last_name)
         self.assertEqual(response_json["data"]["client"]["email"], sale.client.email)
 
 
@@ -862,12 +888,14 @@ class SaleDoneViewTestCase(TestApiViewsMethods, TestTravelsModelBase):
 
         # Get last sale from db
         self.sale = models.Sale.objects.all().last()
+        
+        # Store original client data (should not be changed)
+        self.original_client_name = self.sale.client.name
+        self.original_client_last_name = self.sale.client.last_name
 
         # Api data
         self.data = {
             "sale_stripe_code": self.sale.stripe_code,
-            "client_name": "Marco",
-            "client_last_name": "Cabo",
             "client_phone": "4493402611",
             "passengers": 6,
             "details": "This is a test details",
@@ -903,9 +931,9 @@ class SaleDoneViewTestCase(TestApiViewsMethods, TestTravelsModelBase):
         self.sale.refresh_from_db()
         self.assertEqual(self.sale.paid, False)
 
-        # Validate sale no updated
-        self.assertNotEqual(self.sale.client.name, self.data["client_name"])
-        self.assertNotEqual(self.sale.client.last_name, self.data["client_last_name"])
+        # Validate sale no updated (client name/last_name should remain unchanged)
+        self.assertEqual(self.sale.client.name, self.original_client_name)
+        self.assertEqual(self.sale.client.last_name, self.original_client_last_name)
         self.assertNotEqual(self.sale.client.phone, self.data["client_phone"])
         self.assertNotEqual(self.sale.passengers, self.data["passengers"])
         self.assertNotEqual(self.sale.details, self.data["details"])
@@ -929,9 +957,9 @@ class SaleDoneViewTestCase(TestApiViewsMethods, TestTravelsModelBase):
         self.sale.refresh_from_db()
         self.assertEqual(self.sale.paid, True)
 
-        # Validate sale updated
-        self.assertEqual(self.sale.client.name, self.data["client_name"])
-        self.assertEqual(self.sale.client.last_name, self.data["client_last_name"])
+        # Validate sale updated (client name/last_name should NOT be updated)
+        self.assertEqual(self.sale.client.name, self.original_client_name)
+        self.assertEqual(self.sale.client.last_name, self.original_client_last_name)
         self.assertEqual(self.sale.client.phone, self.data["client_phone"])
         self.assertEqual(self.sale.passengers, self.data["passengers"])
         self.assertEqual(self.sale.details, None)
@@ -966,9 +994,9 @@ class SaleDoneViewTestCase(TestApiViewsMethods, TestTravelsModelBase):
         self.sale.refresh_from_db()
         self.assertEqual(self.sale.paid, False)
 
-        # Validate sale no updated
-        self.assertNotEqual(self.sale.client.name, self.data["client_name"])
-        self.assertNotEqual(self.sale.client.last_name, self.data["client_last_name"])
+        # Validate sale no updated (client name/last_name should remain unchanged)
+        self.assertEqual(self.sale.client.name, self.original_client_name)
+        self.assertEqual(self.sale.client.last_name, self.original_client_last_name)
         self.assertNotEqual(self.sale.client.phone, self.data["client_phone"])
         self.assertNotEqual(self.sale.passengers, self.data["passengers"])
         self.assertNotEqual(self.sale.details, self.data["details"])
@@ -992,9 +1020,9 @@ class SaleDoneViewTestCase(TestApiViewsMethods, TestTravelsModelBase):
         self.sale.refresh_from_db()
         self.assertEqual(self.sale.paid, True)
 
-        # Validate sale updated
-        self.assertEqual(self.sale.client.name, self.data["client_name"])
-        self.assertEqual(self.sale.client.last_name, self.data["client_last_name"])
+        # Validate sale updated (client name/last_name should NOT be updated)
+        self.assertEqual(self.sale.client.name, self.original_client_name)
+        self.assertEqual(self.sale.client.last_name, self.original_client_last_name)
         self.assertEqual(self.sale.client.phone, self.data["client_phone"])
         self.assertEqual(self.sale.passengers, self.data["passengers"])
         self.assertEqual(self.sale.details, self.data["details"])
@@ -1034,9 +1062,9 @@ class SaleDoneViewTestCase(TestApiViewsMethods, TestTravelsModelBase):
         self.sale.refresh_from_db()
         self.assertEqual(self.sale.paid, True)
 
-        # Validate sale updated
-        self.assertEqual(self.sale.client.name, self.data["client_name"])
-        self.assertEqual(self.sale.client.last_name, self.data["client_last_name"])
+        # Validate sale updated (client name/last_name should NOT be updated)
+        self.assertEqual(self.sale.client.name, self.original_client_name)
+        self.assertEqual(self.sale.client.last_name, self.original_client_last_name)
         self.assertEqual(self.sale.client.phone, self.data["client_phone"])
         self.assertEqual(self.sale.passengers, self.data["passengers"])
         self.assertEqual(self.sale.details, self.data["details"])
@@ -1093,11 +1121,11 @@ class SaleDoneViewTestCase(TestApiViewsMethods, TestTravelsModelBase):
         self.assertEqual(response_json["status"], "error")
         self.assertEqual(response_json["message"], "Invalid sale data")
 
-        # Validate no sale updated
+        # Validate no sale updated (client name/last_name should remain unchanged)
         self.sale.refresh_from_db()
         self.assertEqual(self.sale.paid, False)
-        self.assertNotEqual(self.sale.client.name, self.data["client_name"])
-        self.assertNotEqual(self.sale.client.last_name, self.data["client_last_name"])
+        self.assertEqual(self.sale.client.name, self.original_client_name)
+        self.assertEqual(self.sale.client.last_name, self.original_client_last_name)
         self.assertNotEqual(self.sale.client.phone, self.data["client_phone"])
         self.assertNotEqual(self.sale.passengers, self.data["passengers"])
         self.assertNotEqual(self.sale.details, self.data["details"])

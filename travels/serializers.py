@@ -65,6 +65,9 @@ class SaleSerializer(serializers.Serializer):
         queryset=models.ServiceType.objects.all(), source="sale.service_type"
     )
     client_name = serializers.CharField(source="client.name")
+    client_last_name = serializers.CharField(
+        source="client.last_name", required=False, allow_blank=True, allow_null=True
+    )
     client_email = serializers.EmailField(source="client.email")
     location = serializers.PrimaryKeyRelatedField(
         queryset=models.Location.objects.all(), source="sale.location"
@@ -96,8 +99,6 @@ class SaleSerializer(serializers.Serializer):
 
 class SaleDoneSerializer(serializers.Serializer):
     sale_stripe_code = serializers.CharField(required=True)
-    client_name = serializers.CharField(source="client.name")
-    client_last_name = serializers.CharField(source="client.last_name")
     client_phone = serializers.CharField(source="client.phone")
     passengers = serializers.IntegerField(source="sale.passengers")
     details = serializers.CharField(

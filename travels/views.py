@@ -105,6 +105,7 @@ class SaleViewSet(APIView):
                     "stripe_code": sale.stripe_code,
                     "client": {
                         "name": sale.client.name,
+                        "last_name": sale.client.last_name,
                         "email": sale.client.email,
                     },
                 },
@@ -187,10 +188,8 @@ class SaleDoneView(APIView):
             sale.details = serializer.validated_data["sale"].get("details", None)
             sale.save()
 
-            # Update client
+            # Update client (only phone, not name or last_name)
             client = sale.client
-            client.name = serializer.validated_data["client"]["name"]
-            client.last_name = serializer.validated_data["client"]["last_name"]
             client.phone = serializer.validated_data["client"]["phone"]
             client.save()
 
