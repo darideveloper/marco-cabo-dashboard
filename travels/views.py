@@ -64,10 +64,10 @@ class SaleViewSet(APIView):
     """
     API endpoint to create sales
     """
-    
+
     def get(self, request):
         """Get already saved sale data"""
-        
+
         try:
             # Get stripe code from query params
             stripe_code = request.query_params.get("stripe_code")
@@ -122,7 +122,7 @@ class SaleViewSet(APIView):
 
             # if not sale.vip_code:
             payment_link = get_payment_link(
-                product_name="Mar Co. Cabo Transfer",
+                product_name="Mar Co. Cabo Transportation",
                 total=sale.total,
                 description=sale.get_summary(),
                 email=sale.client.email,
