@@ -239,6 +239,7 @@ class PricingAdmin(admin.ModelAdmin):
     list_filter = ("location", "vehicle", "service_type", "created_at", "updated_at")
     search_fields = (
         "location__name",
+        "location__zone__name",
         "vehicle__name",
         "service_type__name",
         "price",

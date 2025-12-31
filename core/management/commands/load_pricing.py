@@ -61,9 +61,14 @@ class Command(BaseCommand):
                 print(f"Saving pricing for {zone_str} - {location_str}")
                 
                 # Get row models
-                zone = models.Zone.objects.get(name=zone_str)
-                location = models.Location.objects.get(name=location_str, zone=zone)
+                try:
+                    zone = models.Zone.objects.get(name=zone_str)
+                except models.Zone.DoesNotExist:
+                    print(f"Skipping pricing for {zone_str} - {location_str}: Zone '{zone_str}' not found")
+                    continue
 
+                location, _ = models.Location.objects.get_or_create(name=location_str, zone=zone)
+                
                 # Create one way pricing
                 models.Pricing.objects.create(
                     location=location,
