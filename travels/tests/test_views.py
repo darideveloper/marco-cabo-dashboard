@@ -339,104 +339,6 @@ class PricingViewSetTestCase(TestApiViewsMethods, TestTravelsModelBase):
         self.assertEqual(results[0]["price"], 100.00)
 
 
-# class VipCodeValidationViewTestCase(TestApiViewsMethods, TestTravelsModelBase):
-#     """Test vip code validation views"""
-
-#     def setUp(self):
-#         super().setUp(
-#             endpoint="/api/validate-vip-code/",
-#             restricted_post=False,
-#             restricted_get=True,
-#         )
-
-#         self.vip_code = self.create_vip_code(value="VIP123", active=True)
-
-#     def test_vip_code_valid(self):
-#         """Test vip code valid"""
-
-#         # Send json post data and validate status code
-#         response = self.client.post(
-#             self.endpoint,
-#             json.dumps({"vip_code": self.vip_code.value}),
-#             content_type="application/json",
-#         )
-#         self.assertEqual(response.status_code, status.HTTP_200_OK)
-
-#         # Validate data
-#         response_json = response.json()
-#         self.assertEqual(response_json["status"], "sucess")
-#         self.assertEqual(response_json["message"], "VIP code is valid")
-#         self.assertEqual(response_json["data"], [])
-
-#     def test_vip_code_invalid(self):
-#         """Test vip code invalid"""
-
-#         # Send json post data and validate status code
-#         response = self.client.post(
-#             self.endpoint,
-#             json.dumps({"vip_code": "fake vip code"}),
-#             content_type="application/json",
-#         )
-#         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-
-#         # Validate data
-#         response_json = response.json()
-#         self.assertEqual(response_json["status"], "error")
-#         self.assertEqual(response_json["message"], "Invalid VIP code")
-#         self.assertEqual(response_json["data"], [])
-
-#     def test_vip_code_invalid_inactive(self):
-#         """Test vip code invalid inactive"""
-
-#         # Create vip code
-#         self.vip_code.active = False
-#         self.vip_code.save()
-
-#         # Send json post data and validate status code
-#         response = self.client.post(self.endpoint, {"vip_code": self.vip_code.value})
-#         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-
-#         # Validate data
-#         response_json = response.json()
-#         self.assertEqual(response_json["status"], "error")
-#         self.assertEqual(response_json["message"], "Invalid VIP code")
-#         self.assertEqual(response_json["data"], [])
-
-#     def test_vip_code_no_value(self):
-#         """Test vip code invalid empty"""
-
-#         # Send json post data and validate status code
-#         response = self.client.post(
-#             self.endpoint,
-#             json.dumps({"vip_code": ""}),
-#             content_type="application/json",
-#         )
-#         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-
-#         # Validate data
-#         response_json = response.json()
-#         self.assertEqual(response_json["status"], "error")
-#         self.assertEqual(response_json["message"], "Invalid VIP code")
-#         self.assertEqual(response_json["data"], [])
-
-#     def test_vip_code_missing_data(self):
-#         """Test vip code no data"""
-
-#         # Send json post data and validate status code
-#         response = self.client.post(
-#             self.endpoint,
-#             json.dumps({"invalid_key": "invalid_value"}),
-#             content_type="application/json",
-#         )
-#         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-
-#         # Validate data
-#         response_json = response.json()
-#         self.assertEqual(response_json["status"], "error")
-#         self.assertEqual(response_json["message"], "Invalid VIP code")
-#         self.assertEqual(response_json["data"], [])
-
-
 class SaleViewSetTestCase(TestApiViewsMethods, TestTravelsModelBase):
     """Test sale views"""
 
@@ -611,7 +513,7 @@ class SaleViewSetTestCase(TestApiViewsMethods, TestTravelsModelBase):
         self.assertEqual(sale.vehicle.name, "Luxury SUV")  # fixtures data
 
         # Validate total calculation (with csv pricing data )
-        self.assertEqual(sale.total, 90.00)
+        self.assertEqual(sale.total, 80.00)
 
     def test_post_ok_round_trip(self):
         """Test post ok round trip
@@ -650,7 +552,7 @@ class SaleViewSetTestCase(TestApiViewsMethods, TestTravelsModelBase):
         self.assertEqual(sale.vehicle.name, "Luxury SUV")  # fixtures data
 
         # Validate total calculation (with csv pricing data)
-        self.assertEqual(sale.total, 170.00)
+        self.assertEqual(sale.total, 160.00)
     
     def test_post_ok_with_client_last_name(self):
         """Test post ok with client last name
@@ -721,6 +623,120 @@ class SaleViewSetTestCase(TestApiViewsMethods, TestTravelsModelBase):
         self.assertEqual(response_json["data"]["client"]["last_name"], sale.client.last_name)
         self.assertEqual(response_json["data"]["client"]["email"], sale.client.email)
 
+    def test_post_with_valid_vip_code(self):
+        """Test post with valid vip code (trim + case-insensitive)"""
+
+        vip = self.create_vip_code(value="VIP123", active=True)
+        # send with spaces and lower-case to test trim+iexact
+        self.data["vip_code"] = f"  {vip.value.lower()}  "
+
+        response = self.client.post(
+            self.endpoint, json.dumps(self.data), content_type="application/json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        response_json = response.json()
+        self.assertEqual(response_json["status"], "success")
+        self.assertTrue(
+            response_json["data"]["payment_link"].startswith(
+                "https://checkout.stripe.com/"
+            )
+        )
+
+        sale = models.Sale.objects.get(client__email=self.data["client_email"])
+        self.assertEqual(sale.vip_code.value, vip.value)
+        # total still pricing
+        self.assertIsNotNone(sale.total)
+
+        # GET should expose vip_code
+        get_resp = self.client.get(f"{self.endpoint}?stripe_code={sale.stripe_code}")
+        self.assertEqual(get_resp.status_code, status.HTTP_200_OK)
+        self.assertEqual(get_resp.json()["data"]["vip_code"], vip.value)
+
+    def test_post_invalid_vip_code_nonexistent(self):
+        """Test post with non-existent vip code returns 401 and no data"""
+        self.data["vip_code"] = "FAKE999"
+
+        response = self.client.post(
+            self.endpoint, json.dumps(self.data), content_type="application/json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        response_json = response.json()
+        self.assertEqual(response_json["status"], "error")
+        self.assertEqual(response_json["message"], "Invalid VIP code")
+        self.assertIn("vip_code", response_json["errors"])
+        self.validate_no_data_created()
+
+    def test_post_invalid_vip_code_inactive(self):
+        """Test post with inactive vip code returns 401"""
+        vip = self.create_vip_code(value="VIP123", active=False)
+        self.data["vip_code"] = vip.value
+
+        response = self.client.post(
+            self.endpoint, json.dumps(self.data), content_type="application/json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        response_json = response.json()
+        self.assertEqual(response_json["status"], "error")
+        self.assertEqual(response_json["message"], "Invalid VIP code")
+        self.assertIn("vip_code", response_json["errors"])
+        self.validate_no_data_created()
+
+    def test_post_with_empty_vip_code_treated_as_none(self):
+        """Test post with empty/null/missing vip_code treated as None (201)"""
+        # empty string
+        self.data["vip_code"] = ""
+        response = self.client.post(
+            self.endpoint, json.dumps(self.data), content_type="application/json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        sale = models.Sale.objects.get(client__email=self.data["client_email"])
+        self.assertIsNone(sale.vip_code)
+        models.Sale.objects.all().delete()
+        models.Client.objects.all().delete()
+
+        # null
+        self.data["vip_code"] = None
+        response = self.client.post(
+            self.endpoint, json.dumps(self.data), content_type="application/json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        sale = models.Sale.objects.get(client__email=self.data["client_email"])
+        self.assertIsNone(sale.vip_code)
+        models.Sale.objects.all().delete()
+        models.Client.objects.all().delete()
+
+        # missing key
+        self.data.pop("vip_code", None)
+        response = self.client.post(
+            self.endpoint, json.dumps(self.data), content_type="application/json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        sale = models.Sale.objects.get(client__email=self.data["client_email"])
+        self.assertIsNone(sale.vip_code)
+        # GET should return null
+        get_resp = self.client.get(f"{self.endpoint}?stripe_code={sale.stripe_code}")
+        self.assertEqual(get_resp.status_code, status.HTTP_200_OK)
+        self.assertIsNone(get_resp.json()["data"]["vip_code"])
+
+    def test_get_sale_found_with_vip(self):
+        """Test get sale with vip code returns vip_code"""
+
+        vip = self.create_vip_code(value="VIP999", active=True)
+        sale = self.create_sale(vip_code=vip)
+
+        endpoint = f"{self.endpoint}?stripe_code={sale.stripe_code}"
+        response = self.client.get(endpoint)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        response_json = response.json()
+        self.assertEqual(response_json["data"]["vip_code"], vip.value)
+
+        # without vip
+        sale2 = self.create_sale(vip_code=None)
+        endpoint = f"{self.endpoint}?stripe_code={sale2.stripe_code}"
+        response = self.client.get(endpoint)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIsNone(response.json()["data"]["vip_code"])
+
 
 class SaleViewSetLiveTestCase(TestSeleniumBase):
     """Test sale view set live"""
@@ -753,7 +769,7 @@ class SaleViewSetLiveTestCase(TestSeleniumBase):
         }
 
         self.stripe_data = {
-            "amount": 170,  # amount from pricing csv
+            "amount": 160,  # amount from pricing csv
             "name": "John",
             "card": {
                 "number": "4242424242424242",

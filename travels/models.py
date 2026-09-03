@@ -167,6 +167,14 @@ class Sale(models.Model):
     )
     total = models.FloatField(verbose_name="Total")
     paid = models.BooleanField(default=False, verbose_name="Pagado")
+    vip_code = models.ForeignKey(
+        VipCode,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="sales",
+        verbose_name="Código VIP",
+    )
 
     def __str__(self):
         return f"{self.client} - {self.vehicle.name} - {self.created_at}"

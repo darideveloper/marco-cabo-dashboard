@@ -29,11 +29,6 @@ urlpatterns = [
     ),
     # API URLs
     path("api/", include(router.urls)),
-    # path(
-    #     "api/validate-vip-code/",
-    #     travels_views.VipCodeValidationView.as_view(),
-    #     name="validate-vip-code",
-    # ),
     path("api/sales/", travels_views.SaleViewSet.as_view(), name="sales"),
     path(
         "api/sales/done/",

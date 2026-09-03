@@ -1,3 +1,5 @@
+from django.db import transaction
+
 from rest_framework import serializers
 
 from travels import models
@@ -45,20 +47,6 @@ class PricingSerializer(serializers.ModelSerializer):
         )
 
 
-# class VipCodeValidationSerializer(serializers.Serializer):
-#     vip_code = serializers.CharField(max_length=10, required=True)
-
-#     def validate_vip_code(self, value):
-#         """
-#         Validate that the VIP code exists and is active
-#         """
-#         try:
-#             models.VipCode.objects.get(value=value, active=True)
-#             return value
-#         except models.VipCode.DoesNotExist:
-#             raise serializers.ValidationError("Invalid or inactive VIP code")
-
-
 class SaleSerializer(serializers.Serializer):
 
     service_type = serializers.PrimaryKeyRelatedField(
@@ -75,26 +63,50 @@ class SaleSerializer(serializers.Serializer):
     vehicle = serializers.PrimaryKeyRelatedField(
         queryset=models.Vehicle.objects.all(), source="sale.vehicle"
     )
+    vip_code = serializers.CharField(
+        required=False, allow_blank=True, allow_null=True, max_length=10, write_only=True
+    )
+
+    def validate_vip_code(self, value):
+        # Empty / null / missing -> None (optional)
+        if value is None or value == "":
+            return None
+        trimmed = value.strip()
+        if not trimmed:
+            return None
+        try:
+            vip = models.VipCode.objects.get(value__iexact=trimmed, active=True)
+            return vip
+        except models.VipCode.DoesNotExist:
+            raise serializers.ValidationError("Invalid or inactive VIP code")
+
+    def validate(self, attrs):
+        # Map validated VipCode object to nested sale dict
+        vip = attrs.pop("vip_code", None)
+        if "sale" not in attrs:
+            attrs["sale"] = {}
+        attrs["sale"]["vip_code"] = vip
+        return attrs
 
     def create(self, validated_data):
+        with transaction.atomic():
+            # Create client
+            client = models.Client.objects.create(**validated_data["client"])
 
-        # Create client
-        client = models.Client.objects.create(**validated_data["client"])
+            # Get total from pricing
+            pricing = models.Pricing.objects.get(
+                location=validated_data["sale"]["location"],
+                vehicle=validated_data["sale"]["vehicle"],
+                service_type=validated_data["sale"]["service_type"],
+            )
 
-        # Get total from pricing
-        pricing = models.Pricing.objects.get(
-            location=validated_data["sale"]["location"],
-            vehicle=validated_data["sale"]["vehicle"],
-            service_type=validated_data["sale"]["service_type"],
-        )
+            # Create sale
+            validated_data["sale"]["client"] = client
 
-        # Create sale
-        validated_data["sale"]["client"] = client
+            validated_data["sale"]["total"] = pricing.price
+            sale = models.Sale.objects.create(**validated_data["sale"])
 
-        validated_data["sale"]["total"] = pricing.price
-        sale = models.Sale.objects.create(**validated_data["sale"])
-
-        return sale
+            return sale
 
 
 class SaleDoneSerializer(serializers.Serializer):

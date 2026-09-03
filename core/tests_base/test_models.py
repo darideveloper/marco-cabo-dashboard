@@ -153,14 +153,13 @@ class TestTravelsModelBase(TestCase):
     def create_sale(
         self,
         client: models.Client = None,
-        # vip_code: models.VipCode = None,
+        vip_code: models.VipCode = None,
         vehicle: models.Vehicle = None,
         passengers: int = 1,
         service_type: models.ServiceType = None,
         location: models.Location = None,
         total: float = 100,
         paid: bool = False,
-        # auto_create_vip_code: bool = True,
     ):
         """Create a sale
 
@@ -174,14 +173,10 @@ class TestTravelsModelBase(TestCase):
             stripe_code (str): Stripe code of the sale
             total (float): Total of the sale
             paid (bool): Whether the sale is paid
-            auto_create_vip_code (bool): Whether to create a VIP code automatically
         """
 
         if not client:
             client = self.create_client()
-
-        # if not vip_code and auto_create_vip_code:
-        #     vip_code = self.create_vip_code()
 
         if not vehicle:
             vehicle = self.create_vehicle()
@@ -194,7 +189,7 @@ class TestTravelsModelBase(TestCase):
 
         return models.Sale.objects.create(
             client=client,
-            # vip_code=vip_code,
+            vip_code=vip_code,
             vehicle=vehicle,
             passengers=passengers,
             service_type=service_type,

@@ -37,29 +37,6 @@ class PricingViewSet(viewsets.ReadOnlyModelViewSet):
     filterset_fields = ["location", "vehicle", "service_type"]
 
 
-# class VipCodeValidationView(APIView):
-#     """
-#     API endpoint to validate VIP codes
-#     """
-
-#     def post(self, request):
-#         serializer = serializers.VipCodeValidationSerializer(data=request.data)
-
-#         if serializer.is_valid():
-#             return Response(
-#                 {"status": "sucess", "message": "VIP code is valid", "data": []}
-#             )
-#         else:
-#             return Response(
-#                 {
-#                     "status": "error",
-#                     "message": "Invalid VIP code",
-#                     "data": [],
-#                 },
-#                 status=status.HTTP_400_BAD_REQUEST,
-#             )
-
-
 class SaleViewSet(APIView):
     """
     API endpoint to create sales
@@ -103,6 +80,7 @@ class SaleViewSet(APIView):
                     },
                     "total": sale.total,
                     "stripe_code": sale.stripe_code,
+                    "vip_code": sale.vip_code.value if sale.vip_code else None,
                     "client": {
                         "name": sale.client.name,
                         "last_name": sale.client.last_name,
@@ -120,7 +98,6 @@ class SaleViewSet(APIView):
             # Create data
             sale = serializer.save()
 
-            # if not sale.vip_code:
             payment_link = get_payment_link(
                 product_name="Mar Co. Cabo Transportation",
                 total=sale.total,
@@ -138,6 +115,15 @@ class SaleViewSet(APIView):
                 status=status.HTTP_201_CREATED,
             )
         else:
+            if "vip_code" in serializer.errors:
+                return Response(
+                    {
+                        "status": "error",
+                        "message": "Invalid VIP code",
+                        "errors": serializer.errors,
+                    },
+                    status=status.HTTP_401_UNAUTHORIZED,
+                )
             return Response(
                 {
                     "status": "error",
