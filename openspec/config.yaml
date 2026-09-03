@@ -1,20 +1,33 @@
 schema: spec-driven
 
-# Project context (optional)
-# This is shown to AI when creating artifacts.
-# Add your tech stack, conventions, style guides, domain knowledge, etc.
-# Example:
-#   context: |
-#     Tech stack: TypeScript, React, Node.js
-#     We use conventional commits
-#     Domain: e-commerce platform
+# Project context — injected into `openspec instructions ... --json` as `context`
+# Keep in sync with AGENTS.md §§1-8 if stack/domain changes.
+context: |
+  Tech stack: Python 3.12, Django 4.2.7, DRF 3.15.2 + django-filter, Token+Session auth (IsAuthenticated default), Postgres (psycopg) / sqlite for tests, Jazzmin admin + whitenoise, SASS->custom.css, S3 via django-storages+boto3 toggled by STORAGE_AWS, Stripe via external POST to STRIPE_API_HOST (utils/stripe.py), openpyxl Excel export.
+  No pyproject.toml / docker-compose / Makefile. Single requirements.txt. TEMPLATES DIRS=[], API+admin only, no frontend in repo (landing at LANDING_HOST).
+  Domain: Mar Co. Cabo — private transfer booking for Los Cabos. Models: Zone -> Location (hotels + postal codes in zone "Codigo Postal"), Vehicle (Luxury SUV 4, Executive Van 8, Sprinter 10), ServiceType (One Way/Round Trip), Pricing (location×vehicle×service_type, ~1956 rows from pricing.csv), Client, VipCode (value unique10, active, tracking-only PROTECT FK on Sale), Sale (stripe_code UUID unique, total Float, paid Bool), Transfer (date/hour/type departure/arrival, airline/flight_number).
+  Booking flow (v2-flowchart.mermaid): POST /api/sales/ -> SaleSerializer (atomic, vip_code trim+iexact+active -> 401 if bad) -> create Client+Sale(paid=False, stripe_code uuid4, total from Pricing) -> get_payment_link(product_name="Mar Co. Cabo Transportation", total, sale.get_summary(), email, sale_id=stripe_code) -> 201 {payment_link}; Stripe redirect ONLY on success -> LANDING_HOST/confirmation/{stripe_code}; GET /api/sales/?stripe_code=UUID; POST /api/sales/done/ (sale_stripe_code, client_phone, passengers, arrival_* + departure_* if Round Trip) -> validate, if paid 400 else update client/sale, paid=True, create Transfer(s).
+  API: Router hotels/postal-codes/vehicles/service-types/pricing (ReadOnly) + api/sales/ + api/sales/done/. Pagination CustomPageNumberPagination (page-size, max 1000), errors via utils/handlers custom_exception_handler -> {status:"error", message, data}. Admin SaleAdmin export_to_excel (openpyxl, row 5 headers, data from row 6).
+  Conventions: Conventional Commits feat/fix/chore (<scope>):, branches main / abel / dari / testing, code English / admin verbose_name Spanish (es-mx, America/Mexico_City), minimal diffs (ponytail/YAGNI), add type hints on new utils, reference file paths as path:line.
+  Env: dotenv loads .env then .env.{ENV}; IS_TESTING sys.argv[1]=="test" -> sqlite; PAGE_SIZE override; STORAGE_AWS toggles local vs S3.
+  Gotchas: validate vip_code via value__iexact+strip()+active=True, 401 with {errors:{vip_code:[...]}} zero rows (atomic); never resurrect POST /api/validate-vip-code/; never bypass Stripe for VIP; do not add pricing logic for VIP; Transfer.type default casing bug ("Departure" vs departure/arrival); PostalCodeViewSet serializer bug; Pricing.get missing -> 500 intentional; SaleDoneView NPE on None sale; Zone.locations N+1.
 
-# Per-artifact rules (optional)
-# Add custom rules for specific artifacts.
-# Example:
-#   rules:
-#     proposal:
-#       - Keep proposals under 500 words
-#       - Always include a "Non-goals" section
-#     tasks:
-#       - Break tasks into chunks of max 2 hours
+# Per-artifact rules — injected as `rules` per artifact type
+rules:
+  proposal:
+    - Keep under 500 words; include Why / What Changes / Capabilities (New/Modified) / Impact (Code/APIs/DB/Dependencies/Risks)
+    - Always include Non-Goals; explicitly call out what stays unchanged (e.g. pricing, frontend if out of scope)
+    - Reference file paths with :line (e.g. travels/models.py:136) for every touched area
+  design:
+    - List Goals / Non-Goals, then Decisions with Rationale + Alt considered + Reversibility
+    - Cover Risks / Trade-offs and Migration Plan (deploy, data, rollback, grep verification)
+    - Address auth (IsAuthenticated default), atomicity, 401 vs 400 contracts, PROTECT vs CASCADE trade-offs where relevant
+  tasks:
+    - Break into chunks of max 2h; group by area (Model/Migration, Serializer, Views, Admin, Tests, Docs)
+    - Each task references exact file:line and includes verification step; keep checkboxes in sync (- [ ] -> - [x])
+    - Include purge tasks for deleting commented dead code where applicable and a final `openspec validate ... --strict` task
+  specs:
+    - One capability per file (kebab-case); use Requirement + Scenario (Given/When/Then) format
+    - Scenarios must cover happy path, invalid/inactive cases, empty/null/missing treated as absent, and error shapes (401 vs 400 vs 401 Sale not found disambiguation)
+    - No pricing/discount scenarios for VIP tracking-only changes unless explicitly requested
+
