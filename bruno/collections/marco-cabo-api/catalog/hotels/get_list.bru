@@ -1,0 +1,62 @@
+meta {
+  name: get_list
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{base_url}}/api/hotels/
+  body: none
+  auth: none
+}
+
+headers {
+  Authorization: Token {{token}}
+}
+
+docs {
+  # GET /api/hotels/ — List zones with locations
+  
+  Returns paginated zones excluding `Codigo Postal`. Requires `Authorization: Token {{token}}` (`project/settings.py:359`). Source: `travels/views.py:13 HotelsViewSet` + `ZoneSerializer` (`travels/serializers.py:12`).
+  
+  ## Status codes
+  
+  - `200 OK` — success
+  - `401 Unauthorized` — missing or invalid token (see `_auth/get_unauthenticated.bru` exemplar, same `401` for all endpoints via `utils/handlers.py:4`)
+  
+  ## Response (200)
+  
+  ```json
+  {
+    "count": 1,
+    "next": null,
+    "previous": null,
+    "results": [
+      {
+        "id": 1,
+        "name": "Los Cabos",
+        "locations": [
+          { "id": 1, "name": "Alegranza" }
+        ]
+      }
+    ]
+  }
+  ```
+  
+  Pagination envelope is `{count, next, previous, results}` per `core/pagination.py:4` (`CustomPageNumberPagination`, `page_size=12`, `max 1000`, `?page-size=`). No `page`/`total_pages`. One abbreviated item shown.
+  
+  ## Error (401)
+  
+  ```json
+  {
+    "status": "error",
+    "message": "Invalid token.",
+    "data": {}
+  }
+  ```
+  
+  ## Notes
+  
+  - `401` is cross-cutting — omitted here, see `_auth/get_unauthenticated.bru`.
+  - Serializer change must update this `docs` in same PR.
+}

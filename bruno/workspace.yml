@@ -1,0 +1,8 @@
+opencollection: 1.0.0
+info:
+  name: "Marco Cabo Dashboard"
+  type: workspace
+
+collections:
+  - name: "Marco Cabo API"
+    path: "collections/marco-cabo-api"

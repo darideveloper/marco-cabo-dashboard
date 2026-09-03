@@ -1,0 +1,57 @@
+meta {
+  name: get_list
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{base_url}}/api/pricing/
+  body: none
+  auth: none
+}
+
+headers {
+  Authorization: Token {{token}}
+}
+
+docs {
+  # GET /api/pricing/ — List pricing
+
+  Returns paginated pricing with nested relations. Requires `Authorization: Token {{token}}`. Source: `travels/views.py:33 PricingViewSet` + `PricingSerializer` (`travels/serializers.py:34`, nested `location, vehicle, service_type`).
+
+  ## Status codes
+
+  - `200 OK` — success
+  - `401 Unauthorized` — missing/invalid token (see `_auth/get_unauthenticated.bru`)
+
+  ## Response (200)
+
+  ```json
+  {
+    "count": 1,
+    "next": null,
+    "previous": null,
+    "results": [
+      {
+        "id": 1,
+        "location": { "id": 1, "name": "Alegranza" },
+        "vehicle": { "id": 1, "name": "Luxury SUV", "passengers": 4 },
+        "service_type": { "id": 1, "name": "One Way" },
+        "price": 80.0
+      }
+    ]
+  }
+  ```
+
+  Prices are numbers (float) per `Pricing.price`; example totals `80.00` One Way / `160.00` Round Trip for Lux SUV at Alegranza per current `pricing.csv`. See `get_filtered.bru` for filter params.
+
+  ## Error (401)
+
+  ```json
+  {
+    "status": "error",
+    "message": "Invalid token.",
+    "data": {}
+  }
+  ```
+}

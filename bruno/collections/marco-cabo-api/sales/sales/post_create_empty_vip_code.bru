@@ -1,0 +1,68 @@
+meta {
+  name: post_create_empty_vip_code
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{base_url}}/api/sales/
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Token {{token}}
+}
+
+body:json {
+  {
+    "service_type": 1,
+    "client_name": "John",
+    "client_email": "john@example.com",
+    "location": 1,
+    "vehicle": 1,
+    "vip_code": ""
+  }
+}
+
+docs {
+  # POST /api/sales/ — Create sale with empty/null/missing vip_code
+
+  Demonstrates optional `vip_code` mapping to `None`. Requires `Authorization: Token {{token}}`. Source: `travels/serializers.py:72-76` (`validate_vip_code` returns `None` for `""`/whitespace/`null`/missing).
+
+  This file uses `vip_code: ""`. Variants that also succeed with `201` and `sale.vip_code=None` (`GET` returns `vip_code:null`):
+
+  ```json
+  { "vip_code": null }
+  { "vip_code": "   " }
+  // or omit vip_code entirely
+  {
+    "service_type": 1,
+    "client_name": "John",
+    "client_email": "john@example.com",
+    "location": 1,
+    "vehicle": 1
+  }
+  ```
+
+  ## Status codes
+
+  - `201 Created` — `vip_code` treated as `None`, sale created, `GET` `vip_code:null`
+  - `401 Unauthorized` — only for non-empty invalid vip_code (see `post_create_invalid_vip_code.bru`)
+
+  ## Response (201)
+
+  ```json
+  {
+    "status": "success",
+    "message": "Sale created successfully",
+    "data": {
+      "payment_link": "https://checkout.stripe.com/c/pay/..."
+    }
+  }
+  ```
+
+  ## Notes
+
+  - Use this to test “no vip” flow without removing the key.
+}

@@ -1,0 +1,83 @@
+meta {
+  name: get_by_stripe_code
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{base_url}}/api/sales/?stripe_code={{stripe_code}}
+  body: none
+  auth: none
+}
+
+headers {
+  Authorization: Token {{token}}
+}
+
+docs {
+  # GET /api/sales/?stripe_code= — Retrieve sale by stripe_code
+  
+  Returns sale data for a UUID `stripe_code` from `POST /api/sales/` creation. Requires `Authorization: Token {{token}}`. Source: `travels/views.py:40 SaleViewSet.get` + `travels/models.py:170` `Sale.vip_code` FK.
+  
+  ## Status codes
+  
+  - `200 OK` — sale found
+  - `401 Unauthorized` — sale not found (`"Sale not found"`, intentional `401` reuse, not `404`, per `views.py:75`) or missing/invalid token
+  
+  ## Response (200) — with vip_code
+  
+  ```json
+  {
+    "status": "success",
+    "message": "Sale data retrieved successfully",
+    "data": {
+      "id": 1,
+      "service_type": { "id": 1, "name": "One Way" },
+      "location": { "id": 1, "name": "Alegranza" },
+      "vehicle": { "id": 1, "name": "Luxury SUV", "passengers": 4 },
+      "total": 80.0,
+      "stripe_code": "550e8400-e29b-41d4-a716-446655440000",
+      "vip_code": "VIP123",
+      "client": { "name": "John", "last_name": "Doe", "email": "john@example.com" }
+    }
+  }
+  ```
+  
+  ## Response (200) — without vip_code (null)
+  
+  ```json
+  {
+    "status": "success",
+    "message": "Sale data retrieved successfully",
+    "data": {
+      "id": 2,
+      "service_type": { "id": 1, "name": "One Way" },
+      "location": { "id": 1, "name": "Alegranza" },
+      "vehicle": { "id": 1, "name": "Luxury SUV", "passengers": 4 },
+      "total": 80.0,
+      "stripe_code": "550e8400-e29b-41d4-a716-446655440001",
+      "vip_code": null,
+      "client": { "name": "John", "last_name": null, "email": "john@example.com" }
+    }
+  }
+  ```
+  
+  `vip_code` is `value` if Sale has FK (`sale.vip_code.value` per `views.py:83`) else `null`. `stripe_code` is UUID query param, required.
+  
+  ## Error (401) — not found
+  
+  ```json
+  {
+    "status": "error",
+    "message": "Sale not found",
+    "data": {}
+  }
+  ```
+  
+  Distinct from `_auth` `401 Invalid token.` and `POST /api/sales/` `401 Invalid VIP code`.
+  
+  ## Notes
+  
+  - Paste `{{stripe_code}}` from `POST /api/sales/` `201` or via `environments/dev.bru.example` `stripe_code` var.
+  - `total` is pricing-derived float per `travels/serializers.py:97`.
+}

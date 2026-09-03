@@ -1,0 +1,42 @@
+meta {
+  name: get_unauthenticated
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{base_url}}/api/hotels/
+  body: none
+  auth: none
+}
+
+docs {
+  # GET /api/hotels/ — Unauthenticated exemplar
+  
+  Cross-cutting `401` for all `IsAuthenticated` endpoints. This file omits `Authorization: Token` to demonstrate the error. Same `401` applies to every endpoint under `project/urls.py:13-42`:
+  `GET /api/hotels/`, `/api/postal-codes/`, `/api/vehicles/`, `/api/service-types/`, `/api/pricing/`, `GET /api/sales/?stripe_code=`, `POST /api/sales/`, `POST /api/sales/done/` via `utils/handlers.py:4` (`TokenAuthentication`) and `project/settings.py:359`.
+  
+  Representative target is `GET /api/hotels/` (cheapest, no query params). Either omit the `Authorization` header (as here) or leave `{{token}}` empty — both trigger the same response.
+  
+  ## Status codes
+  
+  - `401 Unauthorized` — missing or invalid token (always, regardless of endpoint)
+  - `401` is distinct from `POST /api/sales/` `401 Invalid VIP code` (vip branch) and `GET /api/sales/?stripe_code=invalid` `401 Sale not found` — those carry different `message`/`errors` shapes.
+  
+  ## Response (401)
+  
+  ```json
+  {
+    "status": "error",
+    "message": "Invalid token.",
+    "data": {}
+  }
+  ```
+  
+  Alternative shape when `Authentication credentials were not provided.` is normalized via `utils/handlers.py:4` to the envelope above.
+  
+  ## Notes
+  
+  - `{{base_url}}` must match `HOST` in `.env.dev` (`http://127.0.1:8000`, fallback `http://localhost:8000`).
+  - To test authenticated flow, copy `environments/dev.bru.example` to `dev.bru`, paste a real token from `Token.objects.get_or_create`, and use `catalog/hotels/get_list.bru`.
+}

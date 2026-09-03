@@ -1,0 +1,58 @@
+meta {
+  name: post_create_invalid
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{base_url}}/api/sales/
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Token {{token}}
+}
+
+body:json {
+  {
+    "service_type": 99,
+    "client_name": "",
+    "location": 999,
+    "vehicle": 999
+  }
+}
+
+docs {
+  # POST /api/sales/ — Invalid sale data (400)
+
+  Demonstrates missing/invalid FKs → `400` (distinct from vip `401`). Requires `Authorization: Token {{token}}`. Source: `travels/views.py:127-134` + `travels/tests/test_views.py:491`.
+
+  Body is intentionally broken: missing `client_email`, invalid FKs.
+
+  ## Status codes
+
+  - `400 Bad Request` — invalid sale data (other fields)
+
+  ## Response (400)
+
+  ```json
+  {
+    "status": "error",
+    "message": "Invalid sale data",
+    "errors": {
+      "service_type": ["Clave primaria \"99\" inválida - objeto no existe."],
+      "location": ["Clave primaria \"999\" inválida - objeto no existe."],
+      "vehicle": ["Clave primaria \"999\" inválida - objeto no existe."],
+      "client_name": ["Este campo es requerido."],
+      "client_email": ["Este campo es requerido."]
+    }
+  }
+  ```
+
+  Spanish messages appear when `LANGUAGE_CODE='es-mx'` (`project/settings.py:154`).
+
+  ## Notes
+
+  - Compare with `post_create_invalid_vip_code.bru` `401` — different `message` and status.
+}

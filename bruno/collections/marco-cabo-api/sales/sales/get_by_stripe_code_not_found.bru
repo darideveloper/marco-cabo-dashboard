@@ -1,0 +1,37 @@
+meta {
+  name: get_by_stripe_code_not_found
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{base_url}}/api/sales/?stripe_code=invalid
+  body: none
+  auth: none
+}
+
+headers {
+  Authorization: Token {{token}}
+}
+
+docs {
+  # GET /api/sales/?stripe_code=invalid — Not found exemplar
+
+  Demonstrates intentional `401` for unknown `stripe_code` (not `404`). Requires `Authorization: Token {{token}}`. Source: `travels/views.py:52-60`.
+
+  ## Status codes
+
+  - `401 Unauthorized` — sale not found (intentional reuse, `views.py:75`)
+
+  ## Response (401)
+
+  ```json
+  {
+    "status": "error",
+    "message": "Sale not found",
+    "data": {}
+  }
+  ```
+
+  Compare with `get_by_stripe_code.bru` `200` and `_auth/get_unauthenticated.bru` `401 Invalid token.` and `post_create_invalid_vip_code.bru` `401 Invalid VIP code` — three distinct `401` shapes.
+}

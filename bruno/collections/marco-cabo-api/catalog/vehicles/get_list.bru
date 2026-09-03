@@ -1,0 +1,53 @@
+meta {
+  name: get_list
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{base_url}}/api/vehicles/
+  body: none
+  auth: none
+}
+
+headers {
+  Authorization: Token {{token}}
+}
+
+docs {
+  # GET /api/vehicles/ — List vehicles
+
+  Returns paginated vehicles. Requires `Authorization: Token {{token}}`. Source: `travels/views.py:23 VehicleViewSet` + `VehicleSerializer` (`travels/serializers.py:20`, fields `id,name,passengers`).
+
+  ## Status codes
+
+  - `200 OK` — success
+  - `401 Unauthorized` — missing/invalid token (see `_auth/get_unauthenticated.bru`)
+
+  ## Response (200)
+
+  ```json
+  {
+    "count": 3,
+    "next": null,
+    "previous": null,
+    "results": [
+      { "id": 1, "name": "Luxury SUV", "passengers": 4 },
+      { "id": 2, "name": "Executive Van", "passengers": 8 },
+      { "id": 3, "name": "Sprinter", "passengers": 10 }
+    ]
+  }
+  ```
+
+  Envelope `{count, next, previous, results}` per `core/pagination.py:4`.
+
+  ## Error (401)
+
+  ```json
+  {
+    "status": "error",
+    "message": "Invalid token.",
+    "data": {}
+  }
+  ```
+}

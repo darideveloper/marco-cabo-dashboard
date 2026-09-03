@@ -1,0 +1,57 @@
+meta {
+  name: post_create_full
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{base_url}}/api/sales/
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Token {{token}}
+}
+
+body:json {
+  {
+    "service_type": 1,
+    "client_name": "John",
+    "client_last_name": "Doe",
+    "client_email": "john@example.com",
+    "location": 1,
+    "vehicle": 1
+  }
+}
+
+docs {
+  # POST /api/sales/ — Create sale (full)
+
+  Same as `post_create_minimal.bru` but includes optional `client_last_name`. Requires `Authorization: Token {{token}}`. Source: `SaleSerializer:56` (`client_last_name` `required=False, allow_blank, allow_null`).
+
+  No `vip_code` here either → `vip_code:null`.
+
+  ## Status codes
+
+  - `201 Created` — success
+  - `400 Bad Request` — invalid FKs
+  - `401 Unauthorized` — invalid `vip_code` or token
+
+  ## Response (201)
+
+  ```json
+  {
+    "status": "success",
+    "message": "Sale created successfully",
+    "data": {
+      "payment_link": "https://checkout.stripe.com/c/pay/..."
+    }
+  }
+  ```
+
+  ## Notes
+
+  - `client_last_name` `""` or `null` also allowed (same optional handling as `vip_code`).
+  - See `post_create_with_valid_vip_code.bru` for vip variant.
+}

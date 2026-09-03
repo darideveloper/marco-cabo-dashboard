@@ -1,0 +1,57 @@
+meta {
+  name: get_filtered
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{base_url}}/api/pricing/?location=1&vehicle=1&service_type=1
+  body: none
+  auth: none
+}
+
+headers {
+  Authorization: Token {{token}}
+}
+
+docs {
+  # GET /api/pricing/?location=&vehicle=&service_type= — Filtered pricing
+
+  Same as `get_list.bru` but with optional filters via `DjangoFilterBackend` (`travels/views.py:36`, `filterset_fields=["location","vehicle","service_type"]`). Each query param is optional; combine any subset. Requires `Authorization: Token {{token}}`.
+
+  ## Status codes
+
+  - `200 OK` — success (filtered)
+  - `401 Unauthorized` — missing/invalid token
+
+  ## Response (200)
+
+  ```json
+  {
+    "count": 1,
+    "next": null,
+    "previous": null,
+    "results": [
+      {
+        "id": 1,
+        "location": { "id": 1, "name": "Alegranza" },
+        "vehicle": { "id": 1, "name": "Luxury SUV", "passengers": 4 },
+        "service_type": { "id": 1, "name": "One Way" },
+        "price": 80.0
+      }
+    ]
+  }
+  ```
+
+  Filter is exact by PK (`?location=1&vehicle=1&service_type=1` → 1 row for Alegranza + Lux SUV + One Way). Use `One Way=1, Round Trip=2` per fixtures.
+
+  ## Error (401)
+
+  ```json
+  {
+    "status": "error",
+    "message": "Invalid token.",
+    "data": {}
+  }
+  ```
+}

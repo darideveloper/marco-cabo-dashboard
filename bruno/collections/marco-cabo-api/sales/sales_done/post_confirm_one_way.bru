@@ -1,0 +1,59 @@
+meta {
+  name: post_confirm_one_way
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base_url}}/api/sales/done/
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Token {{token}}
+}
+
+body:json {
+  {
+    "sale_stripe_code": "{{stripe_code}}",
+    "client_phone": "4493402611",
+    "passengers": 2,
+    "details": "Near lobby, extra luggage",
+    "arrival_date": "2025-01-15",
+    "arrival_time": "10:00",
+    "arrival_airline": "Aeromexico",
+    "arrival_flight_number": "AM123"
+  }
+}
+
+docs {
+  # POST /api/sales/done/ — Confirm sale (One Way, arrival only)
+
+  Updates `Sale.passengers`/`details`, `Client.phone`, sets `paid=True`, creates `Transfer type="arrival"`. Requires `Authorization: Token {{token}}`. Source: `travels/views.py:137 SaleDoneView` + `serializers.py:112 SaleDoneSerializer`.
+
+  Use when `service_type` is `One Way` (e.g., `1`) — departure fields omitted. `details` is optional.
+
+  ## Status codes
+
+  - `200 OK` — sale confirmed, arrival `Transfer` created
+  - `400 Bad Request` — already paid (`"Sale already paid"`)
+  - `401 Unauthorized` — invalid `stripe_code` or missing/invalid token
+
+  ## Response (200)
+
+  ```json
+  {
+    "status": "success",
+    "message": "Sale confirmed successfully",
+    "data": []
+  }
+  ```
+
+  Creates 1 row `Transfer(type="arrival", date, hour, airline, flight_number, sale)` per `views.py:185`.
+
+  ## Notes
+
+  - `{{stripe_code}}` from `POST /api/sales/` `201`.
+  - For Round Trip, see `post_confirm_round_trip.bru`.
+}

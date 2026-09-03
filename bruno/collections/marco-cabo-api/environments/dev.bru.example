@@ -1,0 +1,19 @@
+vars {
+  @description('''Base URL of the local dev server. Matches HOST in .env.dev (http://127.0.1:8000). Fallback: http://localhost:8000 (only usable when port 8000 is free). Must stay in sync with .env.dev HOST.''')
+  base_url: http://127.0.1:8000
+
+  @description('''DRF Token placeholder. Mint a real token from the Django shell and paste it here. Never commit a real token. See django-bruno.md section 10:
+
+python manage.py shell
+from rest_framework.authtoken.models import Token
+from django.contrib.auth.models import User
+user = User.objects.get(username="admin")
+token, created = Token.objects.get_or_create(user=user)
+print(token.key)
+
+Paste the printed key into this variable. Leave empty to test 401 via _auth/get_unauthenticated.bru.''')
+  token: <paste-token-here>
+
+  @description('''Stripe code from POST /api/sales/ response (Sale.stripe_code UUID). Paste a real code from a created sale to test GET /api/sales/?stripe_code= and POST /api/sales/done/.''')
+  stripe_code: <paste-stripe-code-here>
+}

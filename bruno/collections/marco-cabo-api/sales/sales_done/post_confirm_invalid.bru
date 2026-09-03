@@ -1,0 +1,77 @@
+meta {
+  name: post_confirm_invalid
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{base_url}}/api/sales/done/
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Token {{token}}
+}
+
+body:json {
+  {
+    "sale_stripe_code": "invalid",
+    "client_phone": "",
+    "passengers": 0,
+    "arrival_date": "",
+    "arrival_time": "",
+    "arrival_airline": "",
+    "arrival_flight_number": ""
+  }
+}
+
+docs {
+  # POST /api/sales/done/ — Invalid confirmation
+
+  Demonstrates validation and state errors. Requires `Authorization: Token {{token}}`. Source: `travels/views.py:137-222`.
+
+  ## Status codes
+
+  - `400 Bad Request` — missing arrival fields or already paid
+  - `401 Unauthorized` — invalid `sale_stripe_code` or token
+
+  ## Response (401) — invalid stripe_code
+
+  ```json
+  {
+    "status": "error",
+    "message": "Invalid sale data",
+    "data": {}
+  }
+  ```
+
+  ## Response (400) — missing fields
+
+  ```json
+  {
+    "status": "error",
+    "message": "Invalid sale data",
+    "data": {
+      "arrival_date": ["Este campo es requerido."],
+      "sale_stripe_code": ["Este campo es requerido."]
+    }
+  }
+  ```
+
+  ## Response (400) — already paid
+
+  ```json
+  {
+    "status": "error",
+    "message": "Sale already paid",
+    "data": []
+  }
+  ```
+
+  `views.py:162` checks `sale.paid` after first confirmation.
+
+  ## Notes
+
+  - `sale_stripe_code` is required — copy from `POST /api/sales/` `201` via `{{stripe_code}}`.
+}

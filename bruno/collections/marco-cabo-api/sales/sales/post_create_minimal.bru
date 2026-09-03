@@ -1,0 +1,74 @@
+meta {
+  name: post_create_minimal
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base_url}}/api/sales/
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Token {{token}}
+}
+
+body:json {
+  {
+    "service_type": 1,
+    "client_name": "John",
+    "client_email": "john@example.com",
+    "location": 1,
+    "vehicle": 1
+  }
+}
+
+docs {
+  # POST /api/sales/ — Create sale (minimal)
+  
+  Creates `Client` + `Sale` (atomic via `transaction.atomic()`) and returns Stripe checkout link. Requires `Authorization: Token {{token}}`. Source: `travels/views.py:94 SaleViewSet.post` + `travels/serializers.py:50 SaleSerializer` (`source="client.name"` nesting, `vip_code` writeOnly `CharField(10)`).
+  
+  No `vip_code` key here → `sale.vip_code=None` and subsequent `GET /api/sales/?stripe_code=` returns `vip_code:null`.
+  
+  ## Status codes
+  
+  - `201 Created` — success, sale created
+  - `400 Bad Request` — missing/invalid FKs (see `post_create_invalid.bru`)
+  - `401 Unauthorized` — invalid `vip_code` (see `post_create_invalid_vip_code.bru`), or missing/invalid token
+  
+  ## Response (201)
+  
+  ```json
+  {
+    "status": "success",
+    "message": "Sale created successfully",
+    "data": {
+      "payment_link": "https://checkout.stripe.com/c/pay/..."
+    }
+  }
+  ```
+  
+  `payment_link` is dynamic per sale (`utils/stripe.py:42` → external `STRIPE_API_HOST`), only prefix `https://checkout.stripe.com/` is assertable. `total` is derived from `Pricing` per `serializers.py:97` (example `80.00` One Way Lux SUV at Alegranza, `160.00` Round Trip).
+  
+  ## Error (400) — missing fields
+  
+  ```json
+  {
+    "status": "error",
+    "message": "Invalid sale data",
+    "errors": {
+      "service_type": ["Este campo es requerido."],
+      "client_name": ["Este campo es requerido."],
+      "client_email": ["Este campo es requerido."],
+      "location": ["Este campo es requerido."],
+      "vehicle": ["Este campo es requerido."]
+    }
+  }
+  ```
+  
+  ## Notes
+  
+  - `client_last_name` is optional here (see `post_create_full.bru`).
+  - `vip_code` omitted → `null` (see `post_create_empty_vip_code.bru` for explicit `""`/`null`).
+}

@@ -1,0 +1,52 @@
+meta {
+  name: get_list
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{base_url}}/api/service-types/
+  body: none
+  auth: none
+}
+
+headers {
+  Authorization: Token {{token}}
+}
+
+docs {
+  # GET /api/service-types/ — List service types
+
+  Returns paginated service types. Requires `Authorization: Token {{token}}`. Source: `travels/views.py:28 ServiceTypeViewSet` + `ServiceTypeSerializer` (`travels/serializers.py:26`, fields `id,name`).
+
+  ## Status codes
+
+  - `200 OK` — success
+  - `401 Unauthorized` — missing/invalid token (see `_auth/get_unauthenticated.bru`)
+
+  ## Response (200)
+
+  ```json
+  {
+    "count": 2,
+    "next": null,
+    "previous": null,
+    "results": [
+      { "id": 1, "name": "One Way" },
+      { "id": 2, "name": "Round Trip" }
+    ]
+  }
+  ```
+
+  Envelope `{count, next, previous, results}` per `core/pagination.py:4`.
+
+  ## Error (401)
+
+  ```json
+  {
+    "status": "error",
+    "message": "Invalid token.",
+    "data": {}
+  }
+  ```
+}

@@ -1,0 +1,60 @@
+meta {
+  name: post_confirm_round_trip
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{base_url}}/api/sales/done/
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Token {{token}}
+}
+
+body:json {
+  {
+    "sale_stripe_code": "{{stripe_code}}",
+    "client_phone": "4493402611",
+    "passengers": 4,
+    "details": "Two-way with golf bags",
+    "arrival_date": "2025-01-15",
+    "arrival_time": "10:00",
+    "arrival_airline": "Aeromexico",
+    "arrival_flight_number": "AM123",
+    "departure_date": "2025-01-20",
+    "departure_time": "14:30",
+    "departure_airline": "Aeromexico",
+    "departure_flight_number": "AM124"
+  }
+}
+
+docs {
+  # POST /api/sales/done/ — Confirm sale (Round Trip, arrival + departure)
+
+  Same as `post_confirm_one_way.bru` but with `departure_*` fields. Only send departure when `sale.service_type.name=="Round Trip"` (`travels/views.py:193`). Requires `Authorization: Token {{token}}`.
+
+  ## Status codes
+
+  - `200 OK` — sale confirmed, `arrival` + `departure` `Transfer`s created
+  - `400 Bad Request` — already paid
+  - `401 Unauthorized` — invalid `stripe_code`
+
+  ## Response (200)
+
+  ```json
+  {
+    "status": "success",
+    "message": "Sale confirmed successfully",
+    "data": []
+  }
+  ```
+
+  Creates 2 rows: `Transfer(type="arrival", …)` + `Transfer(type="departure", …)` per `views.py:193-203`.
+
+  ## Notes
+
+  - Departure fields are `required=False` in serializer but required by business when Round Trip — omit for One Way.
+}

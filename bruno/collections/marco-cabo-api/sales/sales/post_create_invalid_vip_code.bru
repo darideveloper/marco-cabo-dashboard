@@ -1,0 +1,61 @@
+meta {
+  name: post_create_invalid_vip_code
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{base_url}}/api/sales/
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Token {{token}}
+}
+
+body:json {
+  {
+    "service_type": 1,
+    "client_name": "John",
+    "client_email": "john@example.com",
+    "location": 1,
+    "vehicle": 1,
+    "vip_code": "FAKE999"
+  }
+}
+
+docs {
+  # POST /api/sales/ — Invalid vip_code (401)
+
+  Demonstrates non-existent or inactive `vip_code` → `401` with no rows. Requires `Authorization: Token {{token}}`. Source: `travels/serializers.py:81` `ValidationError("Invalid or inactive VIP code")` + `travels/views.py:118-126` + `transaction.atomic()`.
+
+  Body uses `vip_code:"FAKE999"` (nonexistent). Inactive example is same with existing but `active=False`:
+
+  ```json
+  { "vip_code": "VIP123" } // where VipCode(active=False)
+  ```
+
+  ## Status codes
+
+  - `401 Unauthorized` — `vip_code` invalid/inactive. **Distinct** from `_auth` `401 Invalid token.` and `GET` `401 Sale not found` — different `message` and `errors` shape.
+
+  ## Response (401)
+
+  ```json
+  {
+    "status": "error",
+    "message": "Invalid VIP code",
+    "errors": {
+      "vip_code": ["Invalid or inactive VIP code"]
+    }
+  }
+  ```
+
+  No `Client`/`Sale` persisted (atomic, `validate_no_data_created` per `travels/tests/test_views.py`).
+
+  ## Notes
+
+  - `trim` still applied — `"  FAKE999  "` also 401.
+  - Tracking-only, no Stripe call on 401.
+}

@@ -1,0 +1,60 @@
+meta {
+  name: post_create_with_valid_vip_code
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{base_url}}/api/sales/
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Token {{token}}
+}
+
+body:json {
+  {
+    "service_type": 1,
+    "client_name": "John",
+    "client_last_name": "Doe",
+    "client_email": "john@example.com",
+    "location": 1,
+    "vehicle": 1,
+    "vip_code": "  vip123  "
+  }
+}
+
+docs {
+  # POST /api/sales/ — Create sale with valid vip_code (tracking-only)
+
+  Demonstrates `vip_code` `trim + case-insensitive + active=True` validation. Requires `Authorization: Token {{token}}`. Source: `travels/serializers.py:66-89` (`vip_code` `CharField(10) writeOnly`, `validate_vip_code:70` `value__iexact` + `active=True`, `validate:83` maps to `sale.vip_code`, `create:91` `transaction.atomic()`), `travels/views.py:94-126`, `travels/models.py:170` FK `PROTECT`.
+
+  Body uses `"  vip123  "` (spaces + lowercase) to prove trimming and `iexact`. Any active `VipCode` value (e.g., `VIP123` in DB) matches.
+
+  ## Status codes
+
+  - `201 Created` — valid active vip_code, sale created with `Sale.vip_code` FK. Subsequent `GET /api/sales/?stripe_code={{stripe_code}}` returns `vip_code:"VIP123"` (stored value, upper as in DB).
+  - `401 Unauthorized` — invalid/inactive vip_code (see `post_create_invalid_vip_code.bru`)
+  - `400 Bad Request` — other validation errors
+
+  ## Response (201)
+
+  ```json
+  {
+    "status": "success",
+    "message": "Sale created successfully",
+    "data": {
+      "payment_link": "https://checkout.stripe.com/c/pay/..."
+    }
+  }
+  ```
+
+  `payment_link` prefix-only; `total` pricing-derived. `vip_code` is tracked, **no discount/bypass** — Stripe link always created (`views.py:101`).
+
+  ## Notes
+
+  - `PROTECT` blocks deletion of in-use codes (admin `ProtectedError`).
+  - `transaction.atomic()` ensures no orphan `Client` on `401`.
+}
