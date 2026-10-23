@@ -5,8 +5,13 @@ class AdminSetup {
    */
   constructor() {
 
-    // Get current page
-    this.currentPage = document.querySelector('h1').textContent.toLowerCase().trim()
+    // Get current page. jazzmin 3.0.5 moved the page title from an h1 to an
+    // h3 inside .app-content-header; 3.0.1 used an h1. Try both so page
+    // detection keeps working, then fall back to empty instead of crashing.
+    const titleEl =
+      document.querySelector('.app-content-header h3') ||
+      document.querySelector('h1')
+    this.currentPage = titleEl ? titleEl.textContent.toLowerCase().trim() : ''
     console.log(this.currentPage)
 
     // Run methods in each page
