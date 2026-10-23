@@ -7,6 +7,10 @@
 # Use Python 3.12 slim image
 FROM python:3.12-slim
 
+# Pull Debian security updates the floating base tag may lag behind.
+RUN apt-get update && apt-get upgrade -y \
+    && rm -rf /var/lib/apt/lists/*
+
 # ENV variables
 
 # Django core settings
