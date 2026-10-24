@@ -135,7 +135,12 @@ class TestSeleniumBase(LiveServerTestCase):
         chrome_options.add_experimental_option("useAutomationExtension", False)
         chrome_options.add_argument("--disable-blink-features=AutomationControlled")
 
-        self.driver = webdriver.Chrome(options=chrome_options)
+        # Production images have no Chrome, so these E2E tests must skip there
+        # instead of failing (a red suite should mean a real regression).
+        try:
+            self.driver = webdriver.Chrome(options=chrome_options)
+        except Exception as exc:  # noqa: BLE001 - any driver/browser failure means "no browser"
+            self.skipTest(f"Selenium/Chrome not available: {exc}")
         self.driver.implicitly_wait(5)
 
     def set_page(self, endpoint):
